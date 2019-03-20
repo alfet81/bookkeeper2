@@ -1,8 +1,9 @@
 package com.bookkeeper.ui.csv;
 
-import static com.bookkeeper.core.type.Constants.CSV_IMPORT_DIALOG_TITLE;
-import static com.bookkeeper.core.PrototypeBeanFactory.getBean;
-import static com.bookkeeper.core.utils.CommonUtils.asOptional;
+import static com.bookkeeper.AppConstants.CSV_IMPORT_DIALOG_TITLE;
+import static com.bookkeeper.app.AppContext.getAccountRoot;
+import static com.bookkeeper.app.AppContext.getCurrentAccount;
+import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static com.bookkeeper.ui.dialog.DialogHelper.showAlertDialog;
 
 import static java.util.stream.Collectors.toList;
@@ -13,12 +14,9 @@ import static javafx.scene.control.ButtonType.CANCEL;
 import static javafx.scene.control.ButtonType.FINISH;
 import static javafx.stage.Modality.NONE;
 
-import com.bookkeeper.core.AppContext;
 import com.bookkeeper.csv.CsvRecordWrapper;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.entry.Entry;
-
-import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -31,6 +29,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 public class CsvImportDialog extends Dialog<List<Entry>> {
 
@@ -38,12 +37,9 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
 
   private ComboBox<Account> accountComboBox;
 
-  private AppContext appContext;
-
   public CsvImportDialog(List<CsvRecordWrapper> records) {
     super();
     this.csvRecords = records;
-    this.appContext  = getBean(AppContext.class);
     initDialog();
   }
 
@@ -87,10 +83,10 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   private ComboBox<Account> buildAccountComboBox() {
     var comboBox = new ComboBox<Account>(getAccountComboBoxModel());
     //comboBox.valueProperty().addListener();
-    var account = appContext.getCurrentAccount();
+    var account = getCurrentAccount();
     //System.out.println(account);
     comboBox.getSelectionModel().select(account);
-    comboBox.setConverter(new StringConverter<Account>() {
+    comboBox.setConverter(new StringConverter<>() {
       @Override
       public String toString(Account value) {
         return asOptional(value).map(Account::getName).orElse(null);
@@ -150,7 +146,7 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   }
 
   private ObservableList<Account> getAccountComboBoxModel() {
-    var accounts = appContext.getAccountRoot().collectLeafChildren();
+    var accounts = getAccountRoot().collectLeafChildren();
     return observableArrayList(accounts);
   }
 

@@ -5,7 +5,7 @@ import com.bookkeeper.domain.attachment.Attachment;
 import com.bookkeeper.domain.attachment.AttachmentRepository;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.core.type.EntryType;
+import com.bookkeeper.types.EntryType;
 
 import org.junit.Before;
 import org.junit.Test;

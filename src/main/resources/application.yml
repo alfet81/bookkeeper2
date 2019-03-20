@@ -19,3 +19,14 @@ spring:
         format_sql: true
         jdbc:
           batch_size: 50
+
+logging:
+  level:
+    root: INFO
+
+javafx:
+  title: Bookkeeper
+  stage:
+    width: 800
+    height: 600
+    resizable: true

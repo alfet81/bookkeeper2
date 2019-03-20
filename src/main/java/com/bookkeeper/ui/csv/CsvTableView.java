@@ -1,16 +1,15 @@
 package com.bookkeeper.ui.csv;
 
-import static com.bookkeeper.core.type.CsvRecordColumn.ERRORS;
-import static com.bookkeeper.core.type.CsvRecordColumn.STATUS;
-import static com.bookkeeper.core.utils.CommonUtils.asOptional;
+import static com.bookkeeper.types.CsvRecordColumn.ERRORS;
+import static com.bookkeeper.types.CsvRecordColumn.STATUS;
+import static com.bookkeeper.utils.CsvUtils.getCsvRecordModifier;
+import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-import com.bookkeeper.csv.CsvEntryBuilder;
-import com.bookkeeper.core.PrototypeBeanFactory;
 import com.bookkeeper.csv.CsvRecordWrapper;
-import com.bookkeeper.core.type.CsvRecordColumn;
-import com.bookkeeper.core.type.CsvRecordStatus;
+import com.bookkeeper.types.CsvRecordColumn;
+import com.bookkeeper.types.CsvRecordStatus;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -29,21 +28,18 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private final Map<CsvRecordStatus, Image> statusImages = new EnumMap<>(CsvRecordStatus.class);
 
-  private CsvEntryBuilder entryBuilder;
-
   {
     initStatusImages();
   }
 
   private void initStatusImages() {
     for (CsvRecordStatus status : CsvRecordStatus.values()) {
-      statusImages.put(status, new Image(status.getImageUrl()));
+      statusImages.put(status, new Image(status.getImagePath()));
     }
   }
 
   CsvTableView(ObservableList<CsvRecordWrapper> items) {
     super(items);
-    this.entryBuilder = PrototypeBeanFactory.getBean(CsvEntryBuilder.class);
     init();
   }
 
@@ -70,8 +66,8 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
     var column = new TableColumn<CsvRecordWrapper, CsvRecordStatus>(STATUS.getName());
 
-    column.setMinWidth(STATUS.getWidth());
-    column.setPrefWidth(STATUS.getWidth());
+    column.setMinWidth(STATUS.getDefaultWidth());
+    column.setPrefWidth(STATUS.getDefaultWidth());
     column.setResizable(STATUS.isResizable());
     column.setSortable(STATUS.isSortable());
     column.setEditable(STATUS.isEditable());
@@ -112,9 +108,9 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
     var column = new TableColumn<CsvRecordWrapper, String>(columnType.getName());
 
-    column.setMinWidth(columnType.getWidth());
+    column.setMinWidth(columnType.getDefaultWidth());
 
-    column.setPrefWidth(columnType.getWidth());
+    column.setPrefWidth(columnType.getDefaultWidth());
 
     column.setResizable(columnType.isResizable());
 
@@ -132,38 +128,17 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
     getColumns().add(column);
   }
 
-  private static CsvRecordModifier<CsvRecordWrapper, String> getCsvRecordModifier(CsvRecordColumn column) {
-    switch (column) {
-      case DATE:
-        return CsvRecordWrapper::setDate;
-      case AMOUNT:
-        return CsvRecordWrapper::setAmount;
-      case CATEGORY:
-        return CsvRecordWrapper::setCategory;
-      case NOTES:
-        return CsvRecordWrapper::setNotes;
-    }
-    return null;
-  }
-
   private EventHandler<CellEditEvent<CsvRecordWrapper, String>> getCellEditEventHandler(CsvRecordColumn column) {
 
-    var recordModifier = getCsvRecordModifier(column);
-
-    return recordModifier == null ? null : handler -> {
+    return handler -> {
 
       var record = handler.getTableView().getItems().get(handler.getTablePosition().getRow());
 
-      recordModifier.modify(record, trimToNull(handler.getNewValue()));
+      getCsvRecordModifier(column).modify(record, trimToNull(handler.getNewValue()));
 
-      entryBuilder.build(record);
+      record.process();
 
       handler.getTableView().refresh();
     };
-  }
-
-  @FunctionalInterface
-  private interface CsvRecordModifier<R, V> {
-    void modify(R record, V value);
   }
 }

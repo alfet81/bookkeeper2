@@ -2,10 +2,9 @@ package com.bookkeeper.mvc.facade;
 
 import static com.bookkeeper.ui.dialog.DialogHelper.buildCustomDialog;
 
-import com.bookkeeper.core.exceptions.BookkeeperException;
-import com.bookkeeper.ui.account.AccountDialogOld;
-import com.bookkeeper.ui.account.AccountDialog;
-
+import com.bookkeeper.Main;
+import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.ui.account.AccountManagerDialog;
 import org.springframework.stereotype.Component;
 
 import javafx.stage.Stage;
@@ -13,26 +12,24 @@ import javafx.stage.Stage;
 @Component
 public class AccountManager {
 
-  private AccountDialogOld accountDialog;
+  private Stage accountDialog;
 
   public void showDialog() {
-    //getAccountDialog().showAndWait();
-    getTestDialog().showAndWait();
+    getAccountDialog().showAndWait();
   }
 
-  private AccountDialogOld getAccountDialog() {
+  private Stage getAccountDialog() {
     if (accountDialog == null) {
-      accountDialog = new AccountDialogOld();
+      try {
+        accountDialog = buildCustomDialog(new AccountManagerDialog());
+        accountDialog.initOwner(Main.getStage());
+      } catch (Exception e) {
+        System.out.println(e);
+        throw new BookkeeperException("Ooops!!", e);
+      }
     }
+
     return accountDialog;
   }
 
-  private Stage getTestDialog() {
-    try {
-      return buildCustomDialog(new AccountDialog());
-    } catch (Exception e) {
-      System.out.println(e);
-      throw new BookkeeperException("Ooops!!", e);
-    }
-  }
 }

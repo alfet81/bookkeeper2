@@ -18,8 +18,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import static com.bookkeeper.core.type.EntryType.CREDIT;
-import static com.bookkeeper.core.utils.CommonUtils.getDefaultCurrency;
+import static com.bookkeeper.types.EntryType.CREDIT;
+import static com.bookkeeper.utils.MiscUtils.getDefaultCurrency;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)

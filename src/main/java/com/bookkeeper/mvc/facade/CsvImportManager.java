@@ -31,7 +31,9 @@ public class CsvImportManager {
 
   private void loadFile(File csvFile) {
     try {
+
       var records = csvDataImportService.importCsvFile(csvFile);
+
       records.forEach(System.out::println);
 
       if (records.isEmpty()) {
@@ -39,12 +41,12 @@ public class CsvImportManager {
         return;
       }
 
-      new CsvImportDialog(records)
-          .showAndWait()
-          .ifPresent(l -> l.forEach(System.out::println));
+      var result = new CsvImportDialog(records).showAndWait();
 
-      //result.ifPresent(entryService::save);
+      result.ifPresent(entryService::save);
+
     } catch (Exception e) {
+      e.printStackTrace();
       showExceptionDialog(e);
     }
   }

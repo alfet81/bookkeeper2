@@ -2,6 +2,8 @@ package com.bookkeeper.domain.entry;
 
 import static lombok.AccessLevel.NONE;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Collections.unmodifiableList;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
@@ -10,7 +12,7 @@ import static javax.persistence.FetchType.EAGER;
 
 //import org.hibernate.search.annotations.Field;
 //import org.hibernate.search.annotations.Indexed;
-import com.bookkeeper.core.type.BaseEntity;
+import com.bookkeeper.types.BaseEntity;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.attachment.Attachment;
@@ -23,6 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
@@ -78,9 +81,9 @@ public class Entry extends BaseEntity {
   //@Field
   private String notes;
 
-  private LocalDate createdDate;
+  private LocalDateTime createdDate;
 
-  private LocalDate modifiedDate;
+  private LocalDateTime modifiedDate;
 
   @ManyToMany(cascade = {PERSIST, MERGE, REFRESH}, fetch = EAGER)
   @JoinTable(name = "xref_entries_labels", joinColumns = @JoinColumn(name = "entry_id"),
@@ -109,16 +112,16 @@ public class Entry extends BaseEntity {
 
   @PrePersist
   protected void onPrePersist() {
-    createdDate = LocalDate.now();
+    createdDate = now();
   }
 
   @PreUpdate
   protected void onPreUpdate() {
-    modifiedDate = LocalDate.now();
+    modifiedDate = now();
   }
 
   public List<Attachment> getAttachments() {
-    return Collections.unmodifiableList(attachments);
+    return unmodifiableList(attachments);
   }
 
   public void addAttachment(Attachment attachment) {

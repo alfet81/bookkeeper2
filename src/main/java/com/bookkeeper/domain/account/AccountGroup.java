@@ -1,29 +1,24 @@
 package com.bookkeeper.domain.account;
 
-import static com.bookkeeper.core.utils.CommonUtils.asOptional;
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.FetchType.EAGER;
+import static com.bookkeeper.utils.MiscUtils.asOptional;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 @ToString(callSuper = true, exclude = {"children"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class AccountGroup extends Account {
 
-  @OneToMany(mappedBy = "parent", cascade = {PERSIST, REMOVE}, fetch = EAGER)
-  private List<Account> children = new ArrayList<>();
+  @Transient
+  private Set<Account> children = new HashSet<>();
 
   protected AccountGroup(Account parent, String name, Currency currency) {
     super(parent, name, currency, null, null);
@@ -35,17 +30,20 @@ public class AccountGroup extends Account {
   }
 
   @Override
-  public List<Account> getChildren() {
+  @Transient
+  public Set<Account> getChildren() {
     return children;
   }
 
   @Override
+  @Transient
   public void addChild(Account child) {
     asOptional(currency).ifPresent(child::setCurrency);
     super.addChild(child);
   }
 
   @Override
+  @Transient
   public boolean isLeaf() {
     return false;
   }

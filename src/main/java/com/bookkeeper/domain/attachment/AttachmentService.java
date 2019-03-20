@@ -1,12 +1,30 @@
 package com.bookkeeper.domain.attachment;
 
-import com.bookkeeper.domain.attachment.Attachment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface AttachmentService {
-  void save(Attachment attachment);
-  void delete(Attachment attachment);
-  void delete(List<Attachment> attachments);
-  Optional<Attachment> getAttachment(Long attachmentId);
+@Service
+public class AttachmentService {
+
+  @Autowired
+  protected AttachmentRepository attachmentRepository;
+
+  public void save(Attachment attachment) {
+    attachmentRepository.save(attachment);
+  }
+
+  public void delete(Attachment attachment) {
+    attachmentRepository.delete(attachment);
+  }
+
+  public void delete(List<Attachment> attachments) {
+    attachmentRepository.deleteAll(attachments);
+  }
+
+  public Optional<Attachment> getAttachment(Long attachmentId) {
+    return attachmentRepository.findById(attachmentId);
+  }
 }

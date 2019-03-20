@@ -2,11 +2,26 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-  prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-  xmlns:fx="http://javafx.com/fxml/1" fx:id="mainWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+  fx:id="mainWindow">
    <top>
-        <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
+     <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
    </top>
+  <center>
+    <BorderPane prefHeight="601.0" prefWidth="853.0" BorderPane.alignment="CENTER">
+      <top>
+        <fx:include fx:id="toolBar" source="ToolBar.fxml"/>
+      </top>
+      <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <top>
+            <fx:include fx:id="filterBar" source="FilterBar.fxml"/>
+          </top>
+          <center>
+            <fx:include fx:id="workSpace" source="WorkSpace.fxml"/>
+          </center>
+        </BorderPane>
+      </center>
+    </BorderPane>
+  </center>
 </BorderPane>

@@ -1,14 +1,14 @@
 package com.bookkeeper.ui.dialog;
 
-import static com.bookkeeper.core.type.Constants.CSV_FILE_EXTENSION;
-import static com.bookkeeper.core.type.Constants.CSV_FILE_FILTER_DESCRIPTION;
-import static com.bookkeeper.core.utils.CommonUtils.asOptional;
+import static com.bookkeeper.AppConstants.CSV_FILE_EXTENSION;
+import static com.bookkeeper.AppConstants.CSV_FILE_FILTER_DESCRIPTION;
+import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import java.io.File;
 import java.util.Optional;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -32,7 +32,7 @@ public class DialogHelper {
     return asOptional(csvChooser.showOpenDialog(null));
   }
 
-  public static Stage buildCustomDialog(DialogPane dialogPane) {
+  public static Stage buildCustomDialog(Pane dialogPane) {
     var stage = new Stage();
     stage.setScene(new Scene(dialogPane));
     stage.setMinHeight(200);

@@ -1,29 +1,28 @@
 package com.bookkeeper.ui.account;
 
-import static com.bookkeeper.core.type.AccountColumn.CURRENCY;
-import static com.bookkeeper.core.type.AccountColumn.NAME;
+import static com.bookkeeper.types.AccountColumn.CURRENCY;
+import static com.bookkeeper.types.AccountColumn.NAME;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static java.util.stream.Collectors.toList;
-import static javafx.scene.control.SelectionMode.SINGLE;
 
 import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.core.type.AccountColumn;
-import com.bookkeeper.core.type.CurrencyUnit;
-import com.bookkeeper.ui.support.TreeItemChangeSupport;
+import com.bookkeeper.types.AccountColumn;
+import com.bookkeeper.types.CurrencyUnit;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Currency;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.ComboBoxTreeTableCell;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.util.Callback;
 
-public class AccountTreeTableView extends TreeTableView<Account> implements TreeItemChangeSupport {
+public class AccountTreeTableView extends TreeTableView<Account> /*implements TreeItemChangeSupport*/ {
 
   private PropertyChangeSupport itemChangeSupport;
 
@@ -37,10 +36,12 @@ public class AccountTreeTableView extends TreeTableView<Account> implements Tree
   }
 
   private void init() {
-    itemChangeSupport = new PropertyChangeSupport(this);
-    getSelectionModel().setSelectionMode(SINGLE);
-    setEditable(true);
+    //itemChangeSupport = new PropertyChangeSupport(this);
+    //getSelectionModel().setSelectionMode(SINGLE);
+    setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
+    setEditable(false);
     initTreeTableColumns();
+    //getStylesheets().add("/css/tree_view.css");
   }
 
   private void initTreeTableColumns() {
@@ -64,25 +65,14 @@ public class AccountTreeTableView extends TreeTableView<Account> implements Tree
     var column = new TreeTableColumn<Account, String>(NAME.getName());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(NAME.getProperty()));
     //column.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-    column.setCellFactory(cell -> new TreeTableCell<>() {
-      //private final ImageView graphic = new ImageView(icon);
-
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        setText(empty ? null : item);
-        //setGraphic(empty ? null : graphic);
-        //getTreeItem(getIndex()).isExpanded();
-      }
-
-
-    });
     column.setOnEditCommit(handler -> {
       var account = handler.getRowValue().getValue();
       account.setName(trimToNull(handler.getNewValue()));
       System.out.println(account);
       itemChangeSupport.firePropertyChange("account", null, account);
     });
+
+    column.setCellFactory(DEFAULT_CELL_FACTORY);
 
     getColumns().add(column);
   }
@@ -106,8 +96,37 @@ public class AccountTreeTableView extends TreeTableView<Account> implements Tree
     return CurrencyUnit.stream().map(CurrencyUnit::getCurrency).collect(toList());
   }
 
-  @Override
+/*  @Override
   public PropertyChangeSupport getItemChangeSupport() {
     return itemChangeSupport;
-  }
+  }*/
+
+  public static final Callback<TreeTableColumn<Account,String>, TreeTableCell<Account,String>> DEFAULT_CELL_FACTORY =  new Callback<>() {
+
+
+        @Override public TreeTableCell<Account,String> call(TreeTableColumn<Account,String> param) {
+          return new TreeTableCell() {
+
+
+            @Override protected void updateItem(Object item, boolean empty) {
+
+              if (item == getItem()) return;
+
+              super.updateItem(item, empty);
+
+              if (item == null) {
+                super.setText(null);
+                super.setGraphic(null);
+              } else if (item instanceof Node) {
+                super.setText(null);
+                super.setGraphic((Node)item);
+              } else {
+                super.setText(item.toString());
+                super.setGraphic(null);
+              }
+            }
+          };
+        }
+      };
+
 }

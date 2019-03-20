@@ -1,27 +1,25 @@
 package com.bookkeeper.domain.category;
 
-import static com.bookkeeper.core.utils.CommonUtils.asOptional;
-import static javax.persistence.CascadeType.REMOVE;
+import static com.bookkeeper.utils.MiscUtils.asOptional;
 
-import com.bookkeeper.core.type.EntryType;
+import com.bookkeeper.types.EntryType;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 @ToString(callSuper = true, exclude = {"children"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class CategoryGroup extends Category {
 
-  @OneToMany(mappedBy = "parent", cascade = {REMOVE})
-  private List<Category> children = new ArrayList<>();
+  @Transient
+  private Set<Category> children = new HashSet<>();
 
   protected CategoryGroup(Category parent, String name, EntryType type) {
     super(parent, name, type, null, null);
@@ -33,17 +31,20 @@ public class CategoryGroup extends Category {
   }
 
   @Override
-  public List<Category> getChildren() {
+  @Transient
+  public Set<Category> getChildren() {
     return children;
   }
 
   @Override
+  @Transient
   public void addChild(Category child) {
     asOptional(entryType).ifPresent(child::setEntryType);
     super.addChild(child);
   }
 
   @Override
+  @Transient
   public boolean isLeaf() {
     return false;
   }

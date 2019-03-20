@@ -1,24 +1,34 @@
 package com.bookkeeper.csv;
 
-import static com.bookkeeper.core.type.CsvRecordColumn.AMOUNT;
-import static com.bookkeeper.core.type.CsvRecordColumn.CATEGORY;
-import static com.bookkeeper.core.type.CsvRecordColumn.DATE;
-import static com.bookkeeper.core.type.CsvRecordColumn.NOTES;
-import static com.bookkeeper.core.utils.CsvUtils.getColumnValue;
+import static com.bookkeeper.types.CsvRecordColumn.AMOUNT;
+import static com.bookkeeper.types.CsvRecordColumn.CATEGORY;
+import static com.bookkeeper.types.CsvRecordColumn.DATE;
+import static com.bookkeeper.types.CsvRecordColumn.NOTES;
+import static com.bookkeeper.utils.CsvUtils.getColumnValue;
+
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.core.type.CsvRecordStatus;
+import com.bookkeeper.types.CsvRecordStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.function.Function;
 
 @Data
+@ToString(of = {"date", "amount", "category", "notes", "status", "errors", "entry"})
+@Scope(SCOPE_PROTOTYPE)
 public class CsvRecordWrapper {
 
   @NotNull(message = "Missing date")
@@ -39,9 +49,18 @@ public class CsvRecordWrapper {
 
   private String errors;
 
-  @Getter(AccessLevel.NONE)
   private Entry entry;
 
+  @Autowired
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private Function<CsvRecordWrapper, CsvEntryBuilder> entryBuilderFactory;
+
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private CsvEntryBuilder csvEntryBuilder;
+
+  @SuppressWarnings("ConstantConditions")
   public CsvRecordWrapper(CSVRecord csvRecord) {
     date = getColumnValue(csvRecord, DATE);
     amount = getColumnValue(csvRecord, AMOUNT);
@@ -49,10 +68,16 @@ public class CsvRecordWrapper {
     notes = getColumnValue(csvRecord, NOTES);
   }
 
-  public Entry getEntry() {
-    if (entry == null) {
-      entry = new Entry();
-    }
-    return entry;
+  @PostConstruct
+  protected void init() {
+    csvEntryBuilder = getCsvEntryBuilder();
+  }
+
+  public void process() {
+    csvEntryBuilder.build();
+  }
+
+  private CsvEntryBuilder getCsvEntryBuilder() {
+    return entryBuilderFactory.apply(this);
   }
 }

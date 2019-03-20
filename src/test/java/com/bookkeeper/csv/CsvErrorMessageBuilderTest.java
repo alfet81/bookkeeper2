@@ -7,9 +7,8 @@ import org.junit.Test;
 public class CsvErrorMessageBuilderTest {
 
   @Test
-  public void whenThereNoErrors_ThenEmpty() {
+  public void whenThereNoErrors_ThenNull() {
     var builder = new CsvErrorMessageBuilder();
-
-    assertThat(builder.getErrorMessages().isPresent()).isFalse();
+    assertThat(builder.getErrorMessages()).isNull();
   }
 }

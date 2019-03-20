@@ -1,7 +1,6 @@
 package com.bookkeeper.domain.settings;
 
-import com.bookkeeper.domain.settings.Settings;
-import com.bookkeeper.core.type.Property;
+import com.bookkeeper.types.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

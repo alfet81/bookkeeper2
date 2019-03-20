@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml">
+    <VBox fx:id="box" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ToolBar fx:id="toolBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" VBox.vgrow="NEVER">
+          <items>
+            <Button mnemonicParsing="false" text="New Top" onAction="#addTopLevelGroup"/>
+            <Button mnemonicParsing="false" text="New Grp" onAction="#addGroup"/>
+            <Button mnemonicParsing="false" text="New Cat" onAction="#addCategory"/>
+            <Button mnemonicParsing="false" text="Edit" onAction="#edit"/>
+            <Button mnemonicParsing="false" text="Del" onAction="#delete"/>
+          </items>
+        </ToolBar>
+      <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" />
+    </VBox>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+  </padding>
+</fx:root>

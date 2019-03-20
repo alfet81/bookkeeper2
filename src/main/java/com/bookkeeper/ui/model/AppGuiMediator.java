@@ -1,15 +1,16 @@
 package com.bookkeeper.ui.model;
 
-import static com.bookkeeper.core.type.Property.DEFAULT_ACCOUNT;
+import static com.bookkeeper.types.Property.DEFAULT_ACCOUNT;
 
-import com.bookkeeper.core.AppContext;
+import com.bookkeeper.app.AppContext;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.settings.Settings;
 import com.bookkeeper.domain.settings.SettingsService;
 
-import javafx.beans.value.ChangeListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javafx.beans.value.ChangeListener;
 
 @Component
 public class AppGuiMediator {
@@ -22,7 +23,7 @@ public class AppGuiMediator {
 
   public ChangeListener<Account> getAccountListener() {
     return (observableValue, oldValue, newValue) -> {
-      appContext.setCurrentAccount(newValue);
+      //setCurrentAccount(newValue);
       updateDefaultAccountSettings(newValue);
     };
   }

@@ -4,11 +4,11 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.CSVParser.parse;
 import static java.util.stream.Collectors.toList;
 
-import com.bookkeeper.core.PrototypeBeanFactory;
-import com.bookkeeper.csv.CsvEntryBuilder;
 import com.bookkeeper.csv.CsvRecordWrapper;
-import com.bookkeeper.core.exceptions.BookkeeperException;
+import com.bookkeeper.exceptions.BookkeeperException;
 
+import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,9 +16,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class CsvDataImportService {
+
+  @Autowired
+  private Function<CSVRecord, CsvRecordWrapper> csvRecordWrapperFactory;
+
+  private CsvRecordWrapper buildCsvRecordWrapper(CSVRecord record) {
+    return csvRecordWrapperFactory.apply(record);
+  }
 
   public List<CsvRecordWrapper> importCsvFile(File file) {
 
@@ -36,16 +44,11 @@ public class CsvDataImportService {
     var csvParser = parse(csvFileReader, RFC4180.withFirstRecordAsHeader());
 
     try(csvParser) {
-      return csvParser.getRecords().stream().map(CsvRecordWrapper::new).collect(toList());
+      return csvParser.getRecords().stream().map(this::buildCsvRecordWrapper).collect(toList());
     }
   }
 
   private void processCsvRecords(List<CsvRecordWrapper> records) {
-    var entryBuilder = getCsvEntryBuilder();
-    records.forEach(entryBuilder::build);
-  }
-
-  private CsvEntryBuilder getCsvEntryBuilder() {
-    return PrototypeBeanFactory.getBean(CsvEntryBuilder.class);
+    records.forEach(CsvRecordWrapper::process);
   }
 }

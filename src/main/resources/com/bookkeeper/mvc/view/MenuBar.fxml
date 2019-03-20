@@ -6,7 +6,8 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 
 <MenuBar prefHeight="29.0" prefWidth="270.0" xmlns:fx="http://javafx.com/fxml/1"
-  xmlns="http://javafx.com/javafx/9.0.4" fx:controller="com.bookkeeper.mvc.controller.MenuBarController" fx:id="menuBar">
+  xmlns="http://javafx.com/javafx/9.0.4" fx:controller="com.bookkeeper.mvc.controller.MenuController"
+  fx:id="menuBar">
   <menus>
     <Menu mnemonicParsing="false" text="File">
       <items>
@@ -44,7 +45,7 @@
       <Menu mnemonicParsing="false" text="Other">
         <items>
             <MenuItem mnemonicParsing="false" text="Manage Accounts" onAction="#manageAccounts"/>
-            <MenuItem mnemonicParsing="false" text="Manage Categories" />
+            <MenuItem mnemonicParsing="false" text="Manage Categories" onAction="#manageCategories"/>
             <MenuItem mnemonicParsing="false" text="Manage Labels" />
             <SeparatorMenuItem mnemonicParsing="false" />
           <MenuItem mnemonicParsing="false" text="Change Password" />

@@ -2,7 +2,7 @@ package com.bookkeeper.domain.label;
 
 import static javax.persistence.FetchType.LAZY;
 
-import com.bookkeeper.core.type.BaseEntity;
+import com.bookkeeper.types.BaseEntity;
 import com.bookkeeper.domain.entry.Entry;
 
 import lombok.AccessLevel;

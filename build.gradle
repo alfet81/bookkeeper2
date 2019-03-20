@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.3.RELEASE'
+        springBootVersion = '2.1.3'
     }
     repositories {
         mavenCentral()
@@ -55,7 +55,7 @@ dependencies {
 
 generateSchema {
   vendor = 'hibernate'
-  packageToScan = ['com.bookkeeper.domain.model.entity']
+  packageToScan = ['com.bookkeeper.domain']
   scriptAction = 'create'
   jdbcDriver = 'org.h2.Driver'
   jdbcUrl = 'jdbc:h2:~/bookkeeper;MODE=MySQL'

@@ -2,8 +2,8 @@ package com.bookkeeper.domain.settings;
 
 import static javax.persistence.EnumType.STRING;
 
-import com.bookkeeper.core.type.BaseEntity;
-import com.bookkeeper.core.type.Property;
+import com.bookkeeper.types.BaseEntity;
+import com.bookkeeper.types.Property;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

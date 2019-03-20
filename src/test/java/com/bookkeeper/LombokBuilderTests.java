@@ -4,7 +4,7 @@ import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.category.CategoryGroup;
 import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.core.type.EntryType;
+import com.bookkeeper.types.EntryType;
 import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LombokBuilderTests {
 
-  String exptectedName = "test name";
+  String expectedName = "test name";
   EntryType expectedType = EntryType.CREDIT;
   boolean expectedIsReadonly = true;
   int expectedLeftBoundary = 1;
@@ -28,7 +28,7 @@ public class LombokBuilderTests {
         .type(EntryType.CREDIT)
         .build();
 
-    assertEquals(exptectedName, categoryGroup.getName());
+    assertEquals(expectedName, categoryGroup.getName());
     assertEquals(expectedType, categoryGroup.getEntryType());
   }
 
@@ -36,11 +36,11 @@ public class LombokBuilderTests {
   public void testCategory() {
 
     Category category = Category.builder()
-        .name(exptectedName)
+        .name(expectedName)
         .entryType(expectedType)
         .build();
 
-    assertEquals(exptectedName, category.getName());
+    assertEquals(expectedName, category.getName());
     assertEquals(expectedType, category.getEntryType());
   }
 

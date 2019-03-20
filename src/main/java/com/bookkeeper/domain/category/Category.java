@@ -1,15 +1,15 @@
 package com.bookkeeper.domain.category;
 
-import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 
 import static javax.persistence.EnumType.ORDINAL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
-import com.bookkeeper.core.type.TreeNode;
-import com.bookkeeper.core.type.CategoryIcon;
-import com.bookkeeper.core.type.EntryType;
-import com.bookkeeper.core.type.BaseEntity;
+import com.bookkeeper.types.TreeNode;
+import com.bookkeeper.types.CategoryIcon;
+import com.bookkeeper.types.EntryType;
+import com.bookkeeper.types.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -31,14 +31,15 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "categories")
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 @Getter @Setter
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"parent"})
 public class Category extends BaseEntity implements TreeNode<Category> {
 
@@ -68,7 +69,8 @@ public class Category extends BaseEntity implements TreeNode<Category> {
   }
 
   @Override
-  public List<Category> getChildren() {
-    return emptyList();
+  @Transient
+  public Set<Category> getChildren() {
+    return emptySet();
   }
 }

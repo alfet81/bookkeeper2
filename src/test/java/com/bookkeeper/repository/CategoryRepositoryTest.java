@@ -13,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import java.util.function.Predicate;
-import static com.bookkeeper.core.type.EntryType.CREDIT;
-import static com.bookkeeper.core.type.EntryType.DEBIT;
+import static com.bookkeeper.types.EntryType.CREDIT;
+import static com.bookkeeper.types.EntryType.DEBIT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -80,7 +80,7 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
     //then
     assertThat(actualRoot.collectLeafChildren()).hasSize(4);
   }
-
+/*
   @Test //Testing cascade deletion of children
   public void whenChild1IsDeleted_ThenLeafSizeEquals2() {
     //given
@@ -109,11 +109,11 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
     assertThat(foundAfterDelete).hasSize(4);
     assertThat(newRoot.getChildren()).hasSize(1);
     assertThat(newRoot.collectLeafChildren()).hasSize(2);
-  }
+  }*/
 
   protected void persistCategoryTree() {
     entityManager.persist(rootCategory);
-    persistCategoryChildren(rootCategory.getChildren());
+    //persistCategoryChildren(rootCategory.getChildren());
     entityManager.flush();
     assertThat(categoryRepository.count()).isEqualTo(7);
   }
@@ -121,42 +121,42 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
   protected void persistCategoryChildren(List<Category> children) {
     for (Category child : children) {
       entityManager.persist(child);
-      persistCategoryChildren(child.getChildren());
+      //persistCategoryChildren(child.getChildren());
     }
   }
 
   @Override
   protected Category buildCategoryTree() {
 
-    //init root category
+    //initFromAccount root category
     rootCategory = CategoryGroup.groupBuilder().name("root").build();
 
-    //init 1st child of root
+    //initFromAccount 1st child of root
     CategoryGroup child1 = CategoryGroup.groupBuilder().name("child1").type(CREDIT).build();
 
     rootCategory.addChild(child1);
 
-    //init 2nd child of root
+    //initFromAccount 2nd child of root
     CategoryGroup child2 = CategoryGroup.groupBuilder().name("child2").type(DEBIT).build();
 
     rootCategory.addChild(child2);
 
-    //init 1st child of child1 node
+    //initFromAccount 1st child of child1 node
     Category child1_1 = Category.builder().name("child1_1").build();
 
     child1.addChild(child1_1);
 
-    //init 2nd child of child1 node
+    //initFromAccount 2nd child of child1 node
     Category child1_2 = Category.builder().name("child1_2").entryType(CREDIT).build();
 
     child1.addChild(child1_2);
 
-    //init 1st child of child2 node
+    //initFromAccount 1st child of child2 node
     Category child2_1 = Category.builder().name("child2_1").build();
 
     child2.addChild(child2_1);
 
-    //init 2nd child of child2 node
+    //initFromAccount 2nd child of child2 node
     Category child2_2 = Category.builder().name("child2_2").entryType(DEBIT).build();
 
     child2.addChild(child2_2);
