@@ -13,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import java.util.function.Predicate;
-import static com.bookkeeper.types.EntryType.CREDIT;
-import static com.bookkeeper.types.EntryType.DEBIT;
+import static com.bookkeeper.type.EntryType.CREDIT;
+import static com.bookkeeper.type.EntryType.DEBIT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)

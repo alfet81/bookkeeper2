@@ -2,7 +2,7 @@ package com.bookkeeper.domain.category;
 
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
-import com.bookkeeper.types.EntryType;
+import com.bookkeeper.type.EntryType;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;

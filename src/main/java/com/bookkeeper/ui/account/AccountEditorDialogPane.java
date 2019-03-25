@@ -2,9 +2,9 @@ package com.bookkeeper.ui.account;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
-import com.bookkeeper.types.CurrencyUnit;
+import com.bookkeeper.type.CurrencyUnit;
 import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.ui.dialog.FxmlDialogPane;
+import com.bookkeeper.ui.support.FxmlDialogPane;
 
 import java.net.URL;
 import java.util.ArrayList;

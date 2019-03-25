@@ -1,11 +1,11 @@
 package com.bookkeeper.csv;
 
-import static com.bookkeeper.types.CsvRecordColumn.getCsvColumns;
+import static com.bookkeeper.type.CsvRecordColumn.getCsvColumns;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static org.hibernate.internal.util.StringHelper.isNotEmpty;
 import static java.util.stream.Collectors.joining;
 
-import com.bookkeeper.types.CsvRecordColumn;
+import com.bookkeeper.type.CsvRecordColumn;
 
 import java.util.Collection;
 import java.util.EnumMap;

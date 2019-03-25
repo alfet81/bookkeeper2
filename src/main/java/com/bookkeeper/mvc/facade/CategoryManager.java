@@ -1,6 +1,6 @@
 package com.bookkeeper.mvc.facade;
 
-import static com.bookkeeper.ui.dialog.DialogHelper.buildCustomDialog;
+import static com.bookkeeper.ui.support.DialogHelper.buildCustomDialog;
 
 import com.bookkeeper.Main;
 import com.bookkeeper.exceptions.BookkeeperException;

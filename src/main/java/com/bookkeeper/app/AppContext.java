@@ -1,7 +1,7 @@
 package com.bookkeeper.app;
 
-import static com.bookkeeper.types.Property.DEFAULT_ACCOUNT;
-import static com.bookkeeper.types.Property.PREFERRED_CURRENCY;
+import static com.bookkeeper.type.Property.DEFAULT_ACCOUNT;
+import static com.bookkeeper.type.Property.PREFERRED_CURRENCY;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import com.bookkeeper.domain.account.Account;
@@ -11,7 +11,7 @@ import com.bookkeeper.domain.category.CategoryService;
 import com.bookkeeper.domain.entry.EntryService;
 import com.bookkeeper.domain.label.Label;
 import com.bookkeeper.exceptions.BookkeeperException;
-import com.bookkeeper.types.Property;
+import com.bookkeeper.type.Property;
 import com.bookkeeper.domain.label.LabelService;
 import com.bookkeeper.domain.settings.SettingsService;
 

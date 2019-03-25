@@ -1,20 +1,16 @@
-package com.bookkeeper.types;
+package com.bookkeeper.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import java.util.stream.Stream;
 
+@Getter
+@AllArgsConstructor
 public enum EntryType {
   DEBIT("Income"),
   CREDIT("Expense");
 
   private String text;
-
-  EntryType(String text) {
-    this.text = text;
-  }
-
-  public String getText() {
-    return text;
-  }
 
   @Override
   public String toString() {

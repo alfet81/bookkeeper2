@@ -1,11 +1,15 @@
-package com.bookkeeper.types;
+package com.bookkeeper.type;
 
-import static com.bookkeeper.AppConstants.DEFAULT_DATE_FORMATTER;
+import static com.bookkeeper.app.AppConstants.DEFAULT_DATE_FORMATTER;
 import static com.bookkeeper.utils.MiscUtils.getDefaultCurrency;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import java.time.LocalDate;
 import java.util.Locale;
 
+@Getter
+@AllArgsConstructor
 public enum Property {
   USER_NAME(null),
   USER_PASSWORD(null),
@@ -16,14 +20,6 @@ public enum Property {
   LAST_CSV_FILE_DIR(null);
 
   private String defaultValue;
-
-  Property(String defaultValue) {
-    this.defaultValue = defaultValue;
-  }
-
-  public String getDefaultValue() {
-    return defaultValue;
-  }
 
   private static String getDefaultCurrencyCode() {
     return getDefaultCurrency().getCurrencyCode();

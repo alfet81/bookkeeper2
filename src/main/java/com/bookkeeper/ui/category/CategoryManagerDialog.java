@@ -5,10 +5,10 @@ import static com.bookkeeper.app.AppContext.getCategoryService;
 
 import static java.util.stream.Collectors.toList;
 
-import com.bookkeeper.types.TreeNode;
+import com.bookkeeper.type.TreeNode;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.category.CategoryGroup;
-import com.bookkeeper.ui.dialog.FxmlDialogPane;
+import com.bookkeeper.ui.support.FxmlDialogPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;

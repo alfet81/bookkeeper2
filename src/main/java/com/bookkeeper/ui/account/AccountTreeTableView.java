@@ -1,13 +1,13 @@
 package com.bookkeeper.ui.account;
 
-import static com.bookkeeper.types.AccountColumn.CURRENCY;
-import static com.bookkeeper.types.AccountColumn.NAME;
+import static com.bookkeeper.type.AccountColumn.CURRENCY;
+import static com.bookkeeper.type.AccountColumn.NAME;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static java.util.stream.Collectors.toList;
 
 import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.types.AccountColumn;
-import com.bookkeeper.types.CurrencyUnit;
+import com.bookkeeper.type.AccountColumn;
+import com.bookkeeper.type.CurrencyUnit;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Currency;
@@ -50,19 +50,14 @@ public class AccountTreeTableView extends TreeTableView<Account> /*implements Tr
 
   private void addColumn(AccountColumn column) {
     switch (column) {
-      case NAME:
-        addNameColumn();
-        break;
-      case CURRENCY:
-        addCurrencyColumn();
-        break;
-      default:
-        addDefaultColumn(column);
+      case NAME -> addNameColumn();
+      case CURRENCY -> addCurrencyColumn();
+      default -> addDefaultColumn(column);
     }
   }
 
   private void addNameColumn() {
-    var column = new TreeTableColumn<Account, String>(NAME.getName());
+    var column = new TreeTableColumn<Account, String>(NAME.toString());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(NAME.getProperty()));
     //column.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
     column.setOnEditCommit(handler -> {
@@ -78,7 +73,7 @@ public class AccountTreeTableView extends TreeTableView<Account> /*implements Tr
   }
 
   private void addCurrencyColumn() {
-    var column = new TreeTableColumn<Account, Currency>(CURRENCY.getName());
+    var column = new TreeTableColumn<Account, Currency>(CURRENCY.toString());
     var data = FXCollections.observableArrayList(getCurrencies());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(CURRENCY.getProperty()));
     column.setCellFactory(ComboBoxTreeTableCell.forTreeTableColumn(data));
@@ -86,7 +81,7 @@ public class AccountTreeTableView extends TreeTableView<Account> /*implements Tr
   }
 
   private void addDefaultColumn(AccountColumn columnType) {
-    var column = new TreeTableColumn<Account, String>(columnType.getName());
+    var column = new TreeTableColumn<Account, String>(columnType.toString());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(columnType.getProperty()));
     //column.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
     getColumns().add(column);

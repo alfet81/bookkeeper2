@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.bookkeeper.types.EntryType.CREDIT;
+import static com.bookkeeper.type.EntryType.CREDIT;
 import static com.bookkeeper.utils.MiscUtils.getDefaultCurrency;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;

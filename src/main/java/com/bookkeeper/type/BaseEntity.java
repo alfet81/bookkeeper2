@@ -1,4 +1,4 @@
-package com.bookkeeper.types;
+package com.bookkeeper.type;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

@@ -1,12 +1,10 @@
 package com.bookkeeper.mvc.controller;
 
-import static com.bookkeeper.ui.dialog.DialogHelper.showExceptionDialog;
+import static com.bookkeeper.ui.support.DialogHelper.showExceptionDialog;
 
-import com.bookkeeper.Main;
 import com.bookkeeper.mvc.facade.AccountManager;
 import com.bookkeeper.mvc.facade.CategoryManager;
 import com.bookkeeper.mvc.facade.CsvImportManager;
-import com.bookkeeper.mvc.view.TestView;
 
 import de.felixroske.jfxsupport.FXMLController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Window;
 
 @FXMLController
@@ -58,8 +55,6 @@ public class ToolBarController implements Initializable {
   public void manageAccounts(final Event event) {
 
     var menuItem = (MenuItem) event.getSource();
-
-    //Main.showView(TestView.class, Modality.APPLICATION_MODAL);
 
     try {
       menuItem.setDisable(true);

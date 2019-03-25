@@ -4,10 +4,10 @@ import static com.bookkeeper.app.AppContext.getAccountRoot;
 import static com.bookkeeper.app.AppContext.getAccountService;
 import static java.util.stream.Collectors.toList;
 
-import com.bookkeeper.types.TreeNode;
+import com.bookkeeper.type.TreeNode;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.account.AccountGroup;
-import com.bookkeeper.ui.dialog.FxmlDialogPane;
+import com.bookkeeper.ui.support.FxmlDialogPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;

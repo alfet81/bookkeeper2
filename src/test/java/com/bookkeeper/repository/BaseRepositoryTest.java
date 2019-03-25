@@ -3,8 +3,8 @@ package com.bookkeeper.repository;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.category.CategoryGroup;
-import static com.bookkeeper.types.EntryType.CREDIT;
-import static com.bookkeeper.types.EntryType.DEBIT;
+import static com.bookkeeper.type.EntryType.CREDIT;
+import static com.bookkeeper.type.EntryType.DEBIT;
 
 public class BaseRepositoryTest {
 

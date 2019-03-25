@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import static javax.persistence.FetchType.LAZY;
 
-import com.bookkeeper.types.BaseEntity;
+import com.bookkeeper.type.BaseEntity;
 import com.bookkeeper.domain.entry.Entry;
 
 @Entity

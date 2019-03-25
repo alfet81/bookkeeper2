@@ -4,9 +4,9 @@ import static java.util.Collections.emptySet;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
-import com.bookkeeper.types.BaseEntity;
-import com.bookkeeper.types.TreeNode;
-import com.bookkeeper.types.AccountIcon;
+import com.bookkeeper.type.BaseEntity;
+import com.bookkeeper.type.TreeNode;
+import com.bookkeeper.type.AccountIcon;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

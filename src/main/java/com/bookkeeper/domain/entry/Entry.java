@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.EAGER;
 
 //import org.hibernate.search.annotations.Field;
 //import org.hibernate.search.annotations.Indexed;
-import com.bookkeeper.types.BaseEntity;
+import com.bookkeeper.type.BaseEntity;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.attachment.Attachment;

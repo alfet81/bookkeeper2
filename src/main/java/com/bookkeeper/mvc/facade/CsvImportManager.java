@@ -1,7 +1,7 @@
 package com.bookkeeper.mvc.facade;
 
-import static com.bookkeeper.ui.dialog.DialogHelper.showCsvFileChooserDialog;
-import static com.bookkeeper.ui.dialog.DialogHelper.showExceptionDialog;
+import static com.bookkeeper.ui.support.DialogHelper.showCsvFileChooserDialog;
+import static com.bookkeeper.ui.support.DialogHelper.showExceptionDialog;
 
 import com.bookkeeper.domain.edi.CsvDataImportService;
 import com.bookkeeper.domain.entry.EntryService;

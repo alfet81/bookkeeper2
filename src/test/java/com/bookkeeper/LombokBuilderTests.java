@@ -4,7 +4,7 @@ import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.category.CategoryGroup;
 import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.types.EntryType;
+import com.bookkeeper.type.EntryType;
 import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;

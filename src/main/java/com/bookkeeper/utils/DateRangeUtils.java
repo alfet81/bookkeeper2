@@ -5,8 +5,8 @@ import static java.time.LocalDate.now;
 import static java.time.Month.JANUARY;
 
 import com.bookkeeper.exceptions.BookkeeperException;
-import com.bookkeeper.types.DateRange;
-import com.bookkeeper.types.DateRangeType;
+import com.bookkeeper.dto.DateRange;
+import com.bookkeeper.type.DateRangeType;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -110,39 +110,17 @@ public class DateRangeUtils {
     return new DateRange(yearStart, yearEnd);
   }
 
-  public static DateRange getDateRange(DateRangeType type) {
-    switch (type) {
-      case CURRENT_WEEK:
-        return getWeekBounds(now());
-      case CURRENT_MONTH:
-        return getMonthBounds(now());
-      case CURRENT_QUARTER:
-        return getQuarterBounds(now(), null);
-      case CURRENT_YEAR:
-        return getYearBounds(now(), false);
-      case JAN:
-      case FEB:
-      case MAR:
-      case APR:
-      case MAY:
-      case JUN:
-      case JUL:
-      case AUG:
-      case SEP:
-      case OCT:
-      case NOV:
-      case DEC:
-        return getMonthBounds(now(), Month.of(type.getNum()));
-      case QUARTER_1:
-      case QUARTER_2:
-      case QUARTER_3:
-      case QUARTER_4:
-        return getQuarterBounds(now(), type.getNum());
-      case PRIOR_YEAR:
-        return getYearBounds(now().minusYears(1), true);
-      case ALL:
-        return null;
-    }
-    throw new BookkeeperException("Unsupported type: " + type);
+  public static DateRange getDateRangeByType(DateRangeType type) {
+    return switch (type) {
+      case CURRENT_WEEK -> getWeekBounds(now());
+      case CURRENT_MONTH -> getMonthBounds(now());
+      case CURRENT_QUARTER -> getQuarterBounds(now(), null);
+      case CURRENT_YEAR -> getYearBounds(now(), false);
+      case JAN, FEB, MAR,APR, MAY, JUN,
+          JUL, AUG, SEP, OCT, NOV, DEC -> getMonthBounds(now(), Month.of(type.getValue()));
+      case QUARTER_1, QUARTER_2, QUARTER_3, QUARTER_4 -> getQuarterBounds(now(), type.getValue());
+      case PRIOR_YEAR -> getYearBounds(now().minusYears(1), true);
+      default -> new DateRange();
+    };
   }
 }

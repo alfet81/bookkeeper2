@@ -1,15 +1,15 @@
 package com.bookkeeper.csv;
 
-import static com.bookkeeper.types.CsvRecordColumn.AMOUNT;
-import static com.bookkeeper.types.CsvRecordColumn.CATEGORY;
-import static com.bookkeeper.types.CsvRecordColumn.DATE;
-import static com.bookkeeper.types.CsvRecordColumn.NOTES;
+import static com.bookkeeper.type.CsvRecordColumn.AMOUNT;
+import static com.bookkeeper.type.CsvRecordColumn.CATEGORY;
+import static com.bookkeeper.type.CsvRecordColumn.DATE;
+import static com.bookkeeper.type.CsvRecordColumn.NOTES;
 import static com.bookkeeper.utils.CsvUtils.getColumnValue;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.types.CsvRecordStatus;
+import com.bookkeeper.type.CsvRecordStatus;
 
 import lombok.AccessLevel;
 import lombok.Data;

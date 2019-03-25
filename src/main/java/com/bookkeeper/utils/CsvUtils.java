@@ -1,14 +1,15 @@
 package com.bookkeeper.utils;
 
+import static com.bookkeeper.type.CsvRecordColumn.findByProperty;
+import static com.bookkeeper.type.DateConverter.convert;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static java.util.Optional.empty;
 
 import com.bookkeeper.exceptions.BookkeeperException;
-import com.bookkeeper.types.CsvRecordColumn;
-import com.bookkeeper.types.DateConverter;
-import com.bookkeeper.types.ObjectModifier;
+import com.bookkeeper.type.CsvRecordColumn;
+import com.bookkeeper.type.ObjectModifier;
 import com.bookkeeper.csv.CsvRecordWrapper;
 
 import org.apache.commons.csv.CSVRecord;
@@ -22,17 +23,19 @@ public class CsvUtils {
   public static String getColumnValue(CSVRecord csvRecord, CsvRecordColumn csvRecordColumn) {
     try {
       return trimToNull(csvRecord.get(csvRecordColumn));
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     return null;
   }
 
   public static Optional<CsvRecordColumn> getCsvRecordColumn(String columnName) {
-    return CsvRecordColumn.findByProperty(columnName);
+    return findByProperty(columnName);
   }
 
   public static Optional<LocalDate> string2Date(String value) {
-    return asOptional(DateConverter.convert(value));
+    return asOptional(convert(value));
   }
 
   public static Optional<BigDecimal> string2Decimal(String value) {
@@ -44,16 +47,12 @@ public class CsvUtils {
   }
 
   public static ObjectModifier<CsvRecordWrapper, String> getCsvRecordModifier(CsvRecordColumn column) {
-    switch (column) {
-      case DATE:
-        return CsvRecordWrapper::setDate;
-      case AMOUNT:
-        return CsvRecordWrapper::setAmount;
-      case CATEGORY:
-        return CsvRecordWrapper::setCategory;
-      case NOTES:
-        return CsvRecordWrapper::setNotes;
-    }
-    throw new BookkeeperException("Unsupported column type");
+    return switch (column) {
+      case DATE -> CsvRecordWrapper::setDate;
+      case AMOUNT -> CsvRecordWrapper::setAmount;
+      case CATEGORY -> CsvRecordWrapper::setCategory;
+      case NOTES -> CsvRecordWrapper::setNotes;
+      default -> throw new BookkeeperException("Unsupported column type");
+    };
   }
 }

@@ -1,10 +1,10 @@
 package com.bookkeeper.ui.csv;
 
-import static com.bookkeeper.AppConstants.CSV_IMPORT_DIALOG_TITLE;
+import static com.bookkeeper.app.AppConstants.CSV_IMPORT_DIALOG_TITLE;
 import static com.bookkeeper.app.AppContext.getAccountRoot;
 import static com.bookkeeper.app.AppContext.getCurrentAccount;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
-import static com.bookkeeper.ui.dialog.DialogHelper.showAlertDialog;
+import static com.bookkeeper.ui.support.DialogHelper.showAlertDialog;
 
 import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.observableArrayList;

@@ -1,5 +1,6 @@
-package com.bookkeeper;
+package com.bookkeeper.app;
 
+import static java.time.format.DateTimeFormatter.ofLocalizedDate;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.time.format.FormatStyle.SHORT;
 
@@ -9,7 +10,7 @@ public interface AppConstants {
 
   DateTimeFormatter DEFAULT_DATE_FORMATTER = ofPattern("MM/dd/yyyy");
 
-  DateTimeFormatter SHORT_DATE_FRORMATTER = DateTimeFormatter.ofLocalizedDate(SHORT);
+  DateTimeFormatter SHORT_DATE_FORMATTER = ofLocalizedDate(SHORT);
 
   String CSV_FILE_EXTENSION = "*.csv";
 

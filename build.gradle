@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.1.3'
+        springBootVersion = '2.1.3.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -11,6 +11,8 @@ buildscript {
 }
 
 plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.7'
   id 'io.github.divinespear.jpa-schema-generate' version '0.3.5.1'
 }
 
@@ -22,7 +24,7 @@ apply plugin: 'io.spring.dependency-management'
 group = 'com.bookkeeper'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = 1.10
+sourceCompatibility = 12
 
 repositories {
     mavenCentral()
@@ -53,10 +55,17 @@ dependencies {
     generateSchema 'org.threeten:threetenbp:1.3.6'
 }
 
+javafx {
+  version = "12"
+  modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+}
+
+mainClassName = 'com.bookkeeper.Main'
+
 generateSchema {
   vendor = 'hibernate'
   packageToScan = ['com.bookkeeper.domain']
-  scriptAction = 'create'
+  scriptAction = 'none'
   jdbcDriver = 'org.h2.Driver'
   jdbcUrl = 'jdbc:h2:~/bookkeeper;MODE=MySQL'
   jdbcUser = 'sa'

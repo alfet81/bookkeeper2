@@ -4,9 +4,9 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.observableArrayList;
 
-import com.bookkeeper.types.EntryType;
+import com.bookkeeper.type.EntryType;
 import com.bookkeeper.domain.category.Category;
-import com.bookkeeper.ui.dialog.FxmlDialogPane;
+import com.bookkeeper.ui.support.FxmlDialogPane;
 
 import java.net.URL;
 import java.util.ArrayList;

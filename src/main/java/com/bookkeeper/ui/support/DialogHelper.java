@@ -1,7 +1,7 @@
-package com.bookkeeper.ui.dialog;
+package com.bookkeeper.ui.support;
 
-import static com.bookkeeper.AppConstants.CSV_FILE_EXTENSION;
-import static com.bookkeeper.AppConstants.CSV_FILE_FILTER_DESCRIPTION;
+import static com.bookkeeper.app.AppConstants.CSV_FILE_EXTENSION;
+import static com.bookkeeper.app.AppConstants.CSV_FILE_FILTER_DESCRIPTION;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import java.io.File;

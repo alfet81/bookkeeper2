@@ -1,4 +1,4 @@
-package com.bookkeeper.ui.dialog;
+package com.bookkeeper.ui.support;
 
 import com.bookkeeper.exceptions.BookkeeperException;
 

@@ -2,7 +2,7 @@ package com.bookkeeper.domain.settings;
 
 import static java.util.stream.Collectors.toMap;
 
-import com.bookkeeper.types.Property;
+import com.bookkeeper.type.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.EnumMap;

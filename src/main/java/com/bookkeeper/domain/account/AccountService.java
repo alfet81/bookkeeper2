@@ -1,9 +1,9 @@
 package com.bookkeeper.domain.account;
 
-import static com.bookkeeper.AppConstants.DEFAULT_ACCOUNT_ROOT_NAME;
-import static com.bookkeeper.AppConstants.DEFAULT_GENERAL_ACCOUNT_NAME;
+import static com.bookkeeper.app.AppConstants.DEFAULT_ACCOUNT_ROOT_NAME;
+import static com.bookkeeper.app.AppConstants.DEFAULT_GENERAL_ACCOUNT_NAME;
 import static com.bookkeeper.app.AppContext.getPreferredCurrency;
-import static com.bookkeeper.types.TreeNode.buildTreeRoot;
+import static com.bookkeeper.type.TreeNode.buildTreeRoot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

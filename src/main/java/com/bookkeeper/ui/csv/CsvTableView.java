@@ -1,15 +1,16 @@
 package com.bookkeeper.ui.csv;
 
-import static com.bookkeeper.types.CsvRecordColumn.ERRORS;
-import static com.bookkeeper.types.CsvRecordColumn.STATUS;
+import static com.bookkeeper.type.CsvRecordColumn.ERRORS;
+import static com.bookkeeper.type.CsvRecordColumn.STATUS;
 import static com.bookkeeper.utils.CsvUtils.getCsvRecordModifier;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 import com.bookkeeper.csv.CsvRecordWrapper;
-import com.bookkeeper.types.CsvRecordColumn;
-import com.bookkeeper.types.CsvRecordStatus;
+import com.bookkeeper.type.CsvRecordColumn;
+import com.bookkeeper.type.CsvRecordStatus;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -54,17 +55,14 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private void addColumn(CsvRecordColumn columnType) {
     switch (columnType) {
-      case STATUS:
-        addStatusColumn();
-        break;
-      default:
-        addRegularColumn(columnType);
+      case STATUS -> addStatusColumn();
+      default -> addRegularColumn(columnType);
     }
   }
 
   private void addStatusColumn() {
 
-    var column = new TableColumn<CsvRecordWrapper, CsvRecordStatus>(STATUS.getName());
+    var column = new TableColumn<CsvRecordWrapper, CsvRecordStatus>(EMPTY);
 
     column.setMinWidth(STATUS.getDefaultWidth());
     column.setPrefWidth(STATUS.getDefaultWidth());
@@ -87,7 +85,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
       }
     });
 
-    column.setCellValueFactory(new PropertyValueFactory<>(STATUS.getProperty()));
+    column.setCellValueFactory(new PropertyValueFactory<>(STATUS.name().toLowerCase()));
 
     getColumns().add(column);
   }
@@ -106,7 +104,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private void addRegularColumn(CsvRecordColumn columnType) {
 
-    var column = new TableColumn<CsvRecordWrapper, String>(columnType.getName());
+    var column = new TableColumn<CsvRecordWrapper, String>(columnType.toString());
 
     column.setMinWidth(columnType.getDefaultWidth());
 
@@ -118,7 +116,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
     column.setEditable(columnType.isEditable());
 
-    column.setCellValueFactory(new PropertyValueFactory<>(columnType.getProperty()));
+    column.setCellValueFactory(new PropertyValueFactory<>(columnType.name().toLowerCase()));
 
     if (columnType != ERRORS) {
       column.setCellFactory(TextFieldTableCell.forTableColumn());

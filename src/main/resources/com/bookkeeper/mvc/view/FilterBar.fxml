@@ -15,51 +15,51 @@
   <children>
     <MenuButton fx:id="dateRangeMenu" layoutX="7.0" layoutY="10.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="229.0" text="Report Date Range">
       <items>
-        <MenuItem id="CURRENT_WEEK" mnemonicParsing="false" text="This Week" onAction="#chooseDateRange" />
-        <MenuItem id="CURRENT_MONTH" mnemonicParsing="false" text="This Month" onAction="#chooseDateRange" />
-        <MenuItem id="CURRENT_QUARTER" mnemonicParsing="false" text="This Quarter" onAction="#chooseDateRange" />
-        <MenuItem id="CURRENT_YEAR" mnemonicParsing="false" text="Beginning Of Year" onAction="#chooseDateRange" />
+        <MenuItem id="CURRENT_WEEK" mnemonicParsing="false" text="This Week" onAction="#dateRangeHandler" />
+        <MenuItem id="CURRENT_MONTH" mnemonicParsing="false" text="This Month" onAction="#dateRangeHandler" />
+        <MenuItem id="CURRENT_QUARTER" mnemonicParsing="false" text="This Quarter" onAction="#dateRangeHandler" />
+        <MenuItem id="CURRENT_YEAR" mnemonicParsing="false" text="Beginning Of Year" onAction="#dateRangeHandler" />
         <SeparatorMenuItem mnemonicParsing="false" />
         <Menu mnemonicParsing="false" text="Month">
           <items>
-            <MenuItem id="JAN" mnemonicParsing="false" text="January" onAction="#chooseDateRange" />
-            <MenuItem id="FEB" mnemonicParsing="false" text="February" onAction="#chooseDateRange" />
-            <MenuItem id="MAR" mnemonicParsing="false" text="March" onAction="#chooseDateRange" />
-            <MenuItem id="APR" mnemonicParsing="false" text="April" onAction="#chooseDateRange" />
-            <MenuItem id="MAY" mnemonicParsing="false" text="May" onAction="#chooseDateRange" />
-            <MenuItem id="JUN" mnemonicParsing="false" text="June" onAction="#chooseDateRange" />
-            <MenuItem id="JUL" mnemonicParsing="false" text="July" onAction="#chooseDateRange" />
-            <MenuItem id="AUG" mnemonicParsing="false" text="August" onAction="#chooseDateRange" />
-            <MenuItem id="SEP" mnemonicParsing="false" text="September" onAction="#chooseDateRange" />
-            <MenuItem id="OCT" mnemonicParsing="false" text="October" onAction="#chooseDateRange" />
-            <MenuItem id="NOV" mnemonicParsing="false" text="November" onAction="#chooseDateRange" />
-            <MenuItem id="DEC" mnemonicParsing="false" text="December" onAction="#chooseDateRange" />
+            <MenuItem id="JAN" mnemonicParsing="false" text="January" onAction="#dateRangeHandler" />
+            <MenuItem id="FEB" mnemonicParsing="false" text="February" onAction="#dateRangeHandler" />
+            <MenuItem id="MAR" mnemonicParsing="false" text="March" onAction="#dateRangeHandler" />
+            <MenuItem id="APR" mnemonicParsing="false" text="April" onAction="#dateRangeHandler" />
+            <MenuItem id="MAY" mnemonicParsing="false" text="May" onAction="#dateRangeHandler" />
+            <MenuItem id="JUN" mnemonicParsing="false" text="June" onAction="#dateRangeHandler" />
+            <MenuItem id="JUL" mnemonicParsing="false" text="July" onAction="#dateRangeHandler" />
+            <MenuItem id="AUG" mnemonicParsing="false" text="August" onAction="#dateRangeHandler" />
+            <MenuItem id="SEP" mnemonicParsing="false" text="September" onAction="#dateRangeHandler" />
+            <MenuItem id="OCT" mnemonicParsing="false" text="October" onAction="#dateRangeHandler" />
+            <MenuItem id="NOV" mnemonicParsing="false" text="November" onAction="#dateRangeHandler" />
+            <MenuItem id="DEC" mnemonicParsing="false" text="December" onAction="#dateRangeHandler" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Quarter">
           <items>
-            <MenuItem id="QUARTER_1" mnemonicParsing="false" text="Quarter I" onAction="#chooseDateRange" />
-            <MenuItem id="QUARTER_2" mnemonicParsing="false" text="Quarter II" onAction="#chooseDateRange" />
-            <MenuItem id="QUARTER_3" mnemonicParsing="false" text="Quarter III" onAction="#chooseDateRange" />
-            <MenuItem id="QUARTER_4" mnemonicParsing="false" text="Quarter IV" onAction="#chooseDateRange" />
+            <MenuItem id="QUARTER_1" mnemonicParsing="false" text="Quarter I" onAction="#dateRangeHandler" />
+            <MenuItem id="QUARTER_2" mnemonicParsing="false" text="Quarter II" onAction="#dateRangeHandler" />
+            <MenuItem id="QUARTER_3" mnemonicParsing="false" text="Quarter III" onAction="#dateRangeHandler" />
+            <MenuItem id="QUARTER_4" mnemonicParsing="false" text="Quarter IV" onAction="#dateRangeHandler" />
           </items>
         </Menu>
         <SeparatorMenuItem mnemonicParsing="false" />
-        <MenuItem id="PRIOR_YEAR" mnemonicParsing="false" text="Prior Year" onAction="#chooseDateRange" />
-        <MenuItem id="ALL" mnemonicParsing="false" text="All" onAction="#chooseDateRange" />
+        <MenuItem id="PRIOR_YEAR" mnemonicParsing="false" text="Prior Year" onAction="#dateRangeHandler" />
+        <MenuItem id="ALL" mnemonicParsing="false" text="All" onAction="#dateRangeHandler" />
       </items>
     </MenuButton>
     <Label layoutX="7.0" layoutY="41.0" prefHeight="17.0" prefWidth="37.0" text="Start" />
-    <DatePicker fx:id="startDatePicker" layoutX="7.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" />
+    <DatePicker fx:id="startDatePicker" layoutX="7.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
     <Label layoutX="121.0" layoutY="41.0" text="End" />
-    <DatePicker fx:id="endDatePicker" layoutX="121.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" />
-    <ComboBox id="accountComboBox" layoutX="309.0" layoutY="19.0" prefHeight="27.0" prefWidth="149.0" />
+    <DatePicker fx:id="endDatePicker" layoutX="121.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
+    <ComboBox fx:id="accountComboBox" layoutX="309.0" layoutY="19.0" prefHeight="27.0" prefWidth="149.0" onAction="#accountHandler"/>
     <Label layoutX="245.0" layoutY="24.0" prefHeight="17.0" prefWidth="53.0" text="Account" />
-    <Button id="accountResetButton" layoutX="458.0" layoutY="19.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="44.0" text="CLR" />
-    <TextField id="revenueTextField" disable="true" layoutX="586.0" layoutY="36.0" prefHeight="27.0" prefWidth="127.0" />
+    <Button layoutX="458.0" layoutY="19.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="44.0" text="CLR" onAction="#accountHandler"/>
+    <TextField fx:id="revenueTextField" disable="true" layoutX="586.0" layoutY="36.0" prefHeight="27.0" prefWidth="127.0" />
     <Label layoutX="525.0" layoutY="41.0" text="Revenue" />
     <Label layoutX="258.0" layoutY="55.0" text="Labels" />
-    <ChoiceBox layoutX="309.0" layoutY="50.0" prefHeight="27.0" prefWidth="150.0" />
-    <Button layoutX="459.0" layoutY="50.0" mnemonicParsing="false" text="CLR" />
+    <ChoiceBox fx:id="labelsChoiceBox" layoutX="309.0" layoutY="50.0" prefHeight="27.0" prefWidth="150.0" onAction="#labelsHandler"/>
+    <Button id="CLR_BUTTON" layoutX="459.0" layoutY="50.0" mnemonicParsing="false" text="CLR" onAction="#labelsHandler"/>
   </children>
 </Pane>

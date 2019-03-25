@@ -1,15 +1,15 @@
 package com.bookkeeper.csv;
 
-import static com.bookkeeper.AppConstants.CSV_ERROR_INVALID_AMOUNT;
-import static com.bookkeeper.AppConstants.CSV_ERROR_INVALID_CATEGORY;
-import static com.bookkeeper.AppConstants.CSV_ERROR_INVALID_DATE;
+import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_AMOUNT;
+import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_CATEGORY;
+import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_DATE;
 import static com.bookkeeper.app.AppContext.getCategoryRoot;
-import static com.bookkeeper.types.CsvRecordColumn.AMOUNT;
-import static com.bookkeeper.types.CsvRecordColumn.CATEGORY;
-import static com.bookkeeper.types.CsvRecordColumn.DATE;
-import static com.bookkeeper.types.CsvRecordColumn.getCsvColumns;
-import static com.bookkeeper.types.CsvRecordStatus.ERROR;
-import static com.bookkeeper.types.CsvRecordStatus.OK;
+import static com.bookkeeper.type.CsvRecordColumn.AMOUNT;
+import static com.bookkeeper.type.CsvRecordColumn.CATEGORY;
+import static com.bookkeeper.type.CsvRecordColumn.DATE;
+import static com.bookkeeper.type.CsvRecordColumn.getCsvColumns;
+import static com.bookkeeper.type.CsvRecordStatus.ERROR;
+import static com.bookkeeper.type.CsvRecordStatus.OK;
 import static com.bookkeeper.utils.CsvUtils.getCsvRecordColumn;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static com.bookkeeper.utils.CsvUtils.string2Date;
@@ -20,7 +20,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toMap;
 
-import com.bookkeeper.types.CsvRecordColumn;
+import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.entry.Entry;
 
@@ -84,17 +84,10 @@ public class CsvEntryBuilder {
 
   private void parse(CsvRecordColumn column) {
     switch (column) {
-      case DATE:
-        parseDate();
-        break;
-      case AMOUNT:
-        parseAmount();
-        break;
-      case CATEGORY:
-        matchCategory();
-        break;
-      case NOTES:
-        setNotes();
+      case DATE -> parseDate();
+      case AMOUNT -> parseAmount();
+      case CATEGORY -> matchCategory();
+      case NOTES -> setNotes();
     }
   }
 

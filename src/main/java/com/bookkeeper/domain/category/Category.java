@@ -6,10 +6,10 @@ import static javax.persistence.EnumType.ORDINAL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
-import com.bookkeeper.types.TreeNode;
-import com.bookkeeper.types.CategoryIcon;
-import com.bookkeeper.types.EntryType;
-import com.bookkeeper.types.BaseEntity;
+import com.bookkeeper.type.TreeNode;
+import com.bookkeeper.type.CategoryIcon;
+import com.bookkeeper.type.EntryType;
+import com.bookkeeper.type.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.bookkeeper.types;
+package com.bookkeeper.type;
 
 public enum CategoryIcon {
   HOUSEHOLD,

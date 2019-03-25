@@ -1,10 +1,10 @@
 package com.bookkeeper.ui.category;
 
-import static com.bookkeeper.types.CategoryColumn.ENTRY_TYPE;
-import static com.bookkeeper.types.CategoryColumn.NAME;
+import static com.bookkeeper.type.CategoryColumn.TYPE;
+import static com.bookkeeper.type.CategoryColumn.NAME;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-import com.bookkeeper.types.CategoryColumn;
+import com.bookkeeper.type.CategoryColumn;
 import com.bookkeeper.domain.category.Category;
 import java.beans.PropertyChangeSupport;
 
@@ -45,19 +45,14 @@ public class CategoryTreeTableView extends TreeTableView<Category> /*implements 
 
   private void addColumn(CategoryColumn column) {
     switch (column) {
-      case NAME:
-        addNameColumn();
-        break;
-      case ENTRY_TYPE:
-        addEntryTypeColumn();
-        break;
-      default:
-        addDefaultColumn(column);
+      case NAME -> addNameColumn();
+      case TYPE -> addEntryTypeColumn();
+      default -> addDefaultColumn(column);
     }
   }
 
   private void addNameColumn() {
-    var column = new TreeTableColumn<Category, String>(NAME.getName());
+    var column = new TreeTableColumn<Category, String>(NAME.toString());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(NAME.getProperty()));
     //column.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
     column.setOnEditCommit(handler -> {
@@ -73,15 +68,15 @@ public class CategoryTreeTableView extends TreeTableView<Category> /*implements 
   }
 
   private void addEntryTypeColumn() {
-    var column = new TreeTableColumn<Category, Currency>(ENTRY_TYPE.getName());
+    var column = new TreeTableColumn<Category, Currency>(TYPE.toString());
     //var data = observableArrayList(getCurrencies());
-    column.setCellValueFactory(new TreeItemPropertyValueFactory<>(ENTRY_TYPE.getProperty()));
+    column.setCellValueFactory(new TreeItemPropertyValueFactory<>(TYPE.getProperty()));
     //column.setCellFactory(ComboBoxTreeTableCell.forTreeTableColumn(data));
     getColumns().add(column);
   }
 
   private void addDefaultColumn(CategoryColumn columnType) {
-    var column = new TreeTableColumn<Category, String>(columnType.getName());
+    var column = new TreeTableColumn<Category, String>(columnType.toString());
     column.setCellValueFactory(new TreeItemPropertyValueFactory<>(columnType.getProperty()));
     //column.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
     getColumns().add(column);

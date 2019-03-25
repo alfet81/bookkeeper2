@@ -1,4 +1,4 @@
-package com.bookkeeper.types;
+package com.bookkeeper.type;
 
 @FunctionalInterface
 public interface ObjectModifier<T, V> {
