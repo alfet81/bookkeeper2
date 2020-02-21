@@ -8,7 +8,7 @@ import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
 @SpringBootApplication
 public class Main extends AbstractJavaFxApplicationSupport {
   public static void main(String[] args) {
-    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "This is my app");
+    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Personal Bookkeeper");
     launch(Main.class, MainWindowView.class, args);
   }
 }

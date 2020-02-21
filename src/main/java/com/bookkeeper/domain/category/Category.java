@@ -1,7 +1,7 @@
 package com.bookkeeper.domain.category;
 
+import static lombok.AccessLevel.PROTECTED;
 import static java.util.Collections.emptySet;
-
 import static javax.persistence.EnumType.ORDINAL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
@@ -11,7 +11,6 @@ import com.bookkeeper.type.CategoryIcon;
 import com.bookkeeper.type.EntryType;
 import com.bookkeeper.type.BaseEntity;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,13 +33,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "categories")
-@Inheritance(strategy = SINGLE_TABLE)
-@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
+@Builder
 @Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "categories")
+@Inheritance(strategy = SINGLE_TABLE)
+@AllArgsConstructor(access = PROTECTED)
 @ToString(callSuper = true, exclude = {"parent"})
+@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 public class Category extends BaseEntity implements TreeNode<Category> {
 
   @ManyToOne
@@ -60,13 +60,6 @@ public class Category extends BaseEntity implements TreeNode<Category> {
   @Enumerated(STRING)
   @Column(name = "icon", length = 100)
   private CategoryIcon categoryIcon;
-
-  @Builder
-  private static Category buildCategory(Category parent, String name, EntryType entryType,
-      BigDecimal defaultAmount, CategoryIcon categoryIcon) {
-
-    return new Category(parent, name, entryType, defaultAmount, categoryIcon);
-  }
 
   @Override
   @Transient

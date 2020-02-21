@@ -8,6 +8,12 @@ import static com.bookkeeper.utils.CsvUtils.getColumnValue;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toMap;
+
+import com.bookkeeper.domain.account.Account;
+import com.bookkeeper.domain.category.Category;
+import com.bookkeeper.domain.category.CategoryService;
 import com.bookkeeper.domain.entry.Entry;
 import com.bookkeeper.type.CsvRecordStatus;
 
@@ -24,11 +30,12 @@ import javax.annotation.PostConstruct;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Map;
 import java.util.function.Function;
 
 @Data
-@ToString(of = {"date", "amount", "category", "notes", "status", "errors", "entry"})
 @Scope(SCOPE_PROTOTYPE)
+@ToString(of = {"date", "amount", "category", "notes", "status", "errors", "entry"})
 public class CsvRecordWrapper {
 
   @NotNull(message = "Missing date")
@@ -60,6 +67,11 @@ public class CsvRecordWrapper {
   @Setter(AccessLevel.NONE)
   private CsvEntryBuilder csvEntryBuilder;
 
+  @Autowired
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  private CategoryService categoryService;
+
   @SuppressWarnings("ConstantConditions")
   public CsvRecordWrapper(CSVRecord csvRecord) {
     date = getColumnValue(csvRecord, DATE);
@@ -71,6 +83,7 @@ public class CsvRecordWrapper {
   @PostConstruct
   protected void init() {
     csvEntryBuilder = getCsvEntryBuilder();
+    csvEntryBuilder.setCategories(getCategories());
   }
 
   public void process() {
@@ -79,5 +92,11 @@ public class CsvRecordWrapper {
 
   private CsvEntryBuilder getCsvEntryBuilder() {
     return entryBuilderFactory.apply(this);
+  }
+
+  private Map<String, Category> getCategories() {
+    return categoryService.findAll().stream()
+        .filter(Category::isLeaf)
+        .collect(toMap(c -> c.getName().toLowerCase(), c -> c, (c1, c2) -> c1));
   }
 }

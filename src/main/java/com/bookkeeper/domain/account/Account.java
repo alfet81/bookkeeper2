@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -30,13 +31,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+@Getter
+@Setter
 @Entity
+@Builder
+@DynamicUpdate
 @Table(name = "accounts")
 @Inheritance(strategy = SINGLE_TABLE)
-@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
-@Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"parent"})
+@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 public class Account extends BaseEntity implements TreeNode<Account> {
 
   @ManyToOne
@@ -55,12 +59,6 @@ public class Account extends BaseEntity implements TreeNode<Account> {
   @Enumerated(STRING)
   @Column(name = "icon", length = 100)
   protected AccountIcon accountIcon;
-
-  @Builder
-  private static Account buildAccount(Account parent, String name, Currency currency,
-      BigDecimal initialBalance, AccountIcon accountIcon) {
-    return new Account(parent, name, currency, initialBalance, accountIcon);
-  }
 
   @Override
   @Transient

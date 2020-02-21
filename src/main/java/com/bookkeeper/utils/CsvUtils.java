@@ -9,7 +9,6 @@ import static java.util.Optional.empty;
 
 import com.bookkeeper.exceptions.BookkeeperException;
 import com.bookkeeper.type.CsvRecordColumn;
-import com.bookkeeper.type.ObjectModifier;
 import com.bookkeeper.csv.CsvRecordWrapper;
 
 import org.apache.commons.csv.CSVRecord;
@@ -17,6 +16,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class CsvUtils {
 
@@ -24,7 +24,7 @@ public class CsvUtils {
     try {
       return trimToNull(csvRecord.get(csvRecordColumn));
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
     }
 
     return null;
@@ -46,13 +46,13 @@ public class CsvUtils {
     return empty();
   }
 
-  public static ObjectModifier<CsvRecordWrapper, String> getCsvRecordModifier(CsvRecordColumn column) {
-    return switch (column) {
-      case DATE -> CsvRecordWrapper::setDate;
-      case AMOUNT -> CsvRecordWrapper::setAmount;
-      case CATEGORY -> CsvRecordWrapper::setCategory;
-      case NOTES -> CsvRecordWrapper::setNotes;
-      default -> throw new BookkeeperException("Unsupported column type");
-    };
+  public static BiConsumer<CsvRecordWrapper, String> getCsvRecordModifier(CsvRecordColumn column) {
+    switch (column) {
+      case DATE: return CsvRecordWrapper::setDate;
+      case AMOUNT: return CsvRecordWrapper::setAmount;
+      case CATEGORY: return CsvRecordWrapper::setCategory;
+      case NOTES: return CsvRecordWrapper::setNotes;
+      default: throw new BookkeeperException("Unsupported column type");
+    }
   }
 }

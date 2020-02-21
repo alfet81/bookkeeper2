@@ -1,5 +1,6 @@
 package com.bookkeeper.domain.category;
 
+import static com.bookkeeper.app.AppConstants.DEFAULT_CATEGORY_ROOT_NAME;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import com.bookkeeper.type.EntryType;
@@ -14,20 +15,16 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 @Entity
-@ToString(callSuper = true, exclude = {"children"})
 @NoArgsConstructor
+@ToString(callSuper = true, exclude = {"children"})
 public class CategoryGroup extends Category {
 
   @Transient
   private Set<Category> children = new HashSet<>();
 
-  protected CategoryGroup(Category parent, String name, EntryType type) {
+  @Builder(builderMethodName = "creator", buildMethodName = "create")
+  private CategoryGroup(Category parent, String name, EntryType type) {
     super(parent, name, type, null, null);
-  }
-
-  @Builder(builderMethodName = "groupBuilder")
-  private static CategoryGroup buildCategoryGroup(Category parent, String name, EntryType type) {
-    return new CategoryGroup(parent, name, type);
   }
 
   @Override
@@ -47,5 +44,9 @@ public class CategoryGroup extends Category {
   @Transient
   public boolean isLeaf() {
     return false;
+  }
+
+  public static Category getRootInstance() {
+    return new CategoryGroup(null, DEFAULT_CATEGORY_ROOT_NAME, null);
   }
 }

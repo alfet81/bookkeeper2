@@ -3,7 +3,6 @@ package com.bookkeeper.csv;
 import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_AMOUNT;
 import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_CATEGORY;
 import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_DATE;
-import static com.bookkeeper.app.AppContext.getCategoryRoot;
 import static com.bookkeeper.type.CsvRecordColumn.AMOUNT;
 import static com.bookkeeper.type.CsvRecordColumn.CATEGORY;
 import static com.bookkeeper.type.CsvRecordColumn.DATE;
@@ -16,17 +15,17 @@ import static com.bookkeeper.utils.CsvUtils.string2Date;
 import static com.bookkeeper.utils.CsvUtils.string2Decimal;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
-import static java.util.stream.Collectors.toMap;
 
 import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.entry.Entry;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.ConstraintViolation;
@@ -35,10 +34,11 @@ import javax.validation.Validator;
 @Scope(SCOPE_PROTOTYPE)
 public class CsvEntryBuilder {
 
-  private Map<String, Category> categories;
-
   @Autowired
   private Validator validator;
+
+  @Setter
+  private Map<String, Category> categories = new HashMap<>();
 
   private CsvRecordWrapper record;
 
@@ -84,10 +84,10 @@ public class CsvEntryBuilder {
 
   private void parse(CsvRecordColumn column) {
     switch (column) {
-      case DATE -> parseDate();
-      case AMOUNT -> parseAmount();
-      case CATEGORY -> matchCategory();
-      case NOTES -> setNotes();
+      case DATE: parseDate(); break;
+      case AMOUNT: parseAmount(); break;
+      case CATEGORY: matchCategory(); break;
+      case NOTES: setNotes();
     }
   }
 
@@ -121,22 +121,7 @@ public class CsvEntryBuilder {
       return empty();
     }
 
-    return asOptional(getCategories().get(categoryName.toLowerCase()));
-  }
-
-  private Map<String, Category> getCategories() {
-    if (categories == null) {
-      categories = getLeafCategories();
-    }
-    return categories;
-  }
-
-  private Map<String, Category> getLeafCategories() {
-    if (getCategoryRoot() == null) {
-      return emptyMap();
-    }
-    return getCategoryRoot().collectLeafChildren().stream()
-        .collect(toMap(c -> c.getName().toLowerCase(), c -> c, (c1, c2) -> c1));
+    return asOptional(categories.get(categoryName.toLowerCase()));
   }
 
   private void setStatus() {

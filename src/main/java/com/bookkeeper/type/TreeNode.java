@@ -1,11 +1,8 @@
 package com.bookkeeper.type;
 
-import static com.bookkeeper.utils.MiscUtils.asOptional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface TreeNode<T extends TreeNode<T>> {
 
@@ -47,18 +44,13 @@ public interface TreeNode<T extends TreeNode<T>> {
     return results;
   }
 
-  static <T extends TreeNode<T>> Optional<T> buildTreeRoot(List<T> items) {
-
-    T root = null;
-
+  static <T extends TreeNode<T>> void buildTreeRoot(List<T> items, T root) {
     for (var item : items) {
       if (item.getParent() != null) {
         item.getParent().addChild(item);
       } else {
-        root = item;
+        root.addChild(item);
       }
     }
-
-    return asOptional(root);
   }
 }

@@ -129,15 +129,15 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
   protected Category buildCategoryTree() {
 
     //initFromAccount root category
-    rootCategory = CategoryGroup.groupBuilder().name("root").build();
+    rootCategory = CategoryGroup.creator().name("root").create();
 
     //initFromAccount 1st child of root
-    CategoryGroup child1 = CategoryGroup.groupBuilder().name("child1").type(CREDIT).build();
+    CategoryGroup child1 = CategoryGroup.creator().name("child1").type(CREDIT).create();
 
     rootCategory.addChild(child1);
 
     //initFromAccount 2nd child of root
-    CategoryGroup child2 = CategoryGroup.groupBuilder().name("child2").type(DEBIT).build();
+    CategoryGroup child2 = CategoryGroup.creator().name("child2").type(DEBIT).create();
 
     rootCategory.addChild(child2);
 

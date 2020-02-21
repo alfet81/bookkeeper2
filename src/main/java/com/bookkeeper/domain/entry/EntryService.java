@@ -1,5 +1,7 @@
 package com.bookkeeper.domain.entry;
 
+import com.bookkeeper.dto.DateRange;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,10 @@ public class EntryService {
 
   public void delete(Entry entry) {
     entryRepository.delete(entry);
+  }
+
+  public List<Entry> fetch(DateRange dateRange) {
+    return entryRepository.findByTransactionDateBetweenOrderByTransactionDateAscIdAsc(
+        dateRange.getStartDate(), dateRange.getEndDate());
   }
 }

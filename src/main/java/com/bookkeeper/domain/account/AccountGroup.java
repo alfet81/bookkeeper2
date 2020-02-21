@@ -1,10 +1,12 @@
 package com.bookkeeper.domain.account;
 
+import static com.bookkeeper.app.AppConstants.DEFAULT_ACCOUNT_ROOT_NAME;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Currency;
 import java.util.HashSet;
@@ -13,20 +15,17 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 @Entity
-@ToString(callSuper = true, exclude = {"children"})
+@DynamicUpdate
 @NoArgsConstructor
+@ToString(callSuper = true, exclude = {"children"})
 public class AccountGroup extends Account {
 
   @Transient
   private Set<Account> children = new HashSet<>();
 
-  protected AccountGroup(Account parent, String name, Currency currency) {
+  @Builder(builderMethodName = "creator", buildMethodName = "create")
+  private AccountGroup(Account parent, String name, Currency currency) {
     super(parent, name, currency, null, null);
-  }
-
-  @Builder(builderMethodName = "groupBuilder")
-  private static AccountGroup buildAccountGroup(Account parent, String name, Currency currency) {
-    return new AccountGroup(parent, name, currency);
   }
 
   @Override
@@ -46,5 +45,9 @@ public class AccountGroup extends Account {
   @Transient
   public boolean isLeaf() {
     return false;
+  }
+
+  public static Account getRootInstance() {
+    return new AccountGroup(null, DEFAULT_ACCOUNT_ROOT_NAME, null);
   }
 }

@@ -55,8 +55,8 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private void addColumn(CsvRecordColumn columnType) {
     switch (columnType) {
-      case STATUS -> addStatusColumn();
-      default -> addRegularColumn(columnType);
+      case STATUS: addStatusColumn(); break;
+      default: addRegularColumn(columnType);
     }
   }
 
@@ -132,7 +132,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
       var record = handler.getTableView().getItems().get(handler.getTablePosition().getRow());
 
-      getCsvRecordModifier(column).modify(record, trimToNull(handler.getNewValue()));
+      getCsvRecordModifier(column).accept(record, trimToNull(handler.getNewValue()));
 
       record.process();
 

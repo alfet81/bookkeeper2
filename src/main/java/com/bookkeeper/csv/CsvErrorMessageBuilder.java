@@ -30,8 +30,7 @@ class CsvErrorMessageBuilder {
   }
 
   String getErrorMessages() {
-    return asOptional(COLUMN_ERRORS.entrySet().stream()
-        .map(Map.Entry::getValue)
+    return asOptional(COLUMN_ERRORS.values().stream()
         .flatMap(Collection::stream)
         .collect(joining(", ")))
         .orElse(null);

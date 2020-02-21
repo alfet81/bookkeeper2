@@ -1,126 +1,160 @@
 package com.bookkeeper.utils;
 
 import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SUNDAY;
 import static java.time.LocalDate.now;
+import static java.time.Month.APRIL;
 import static java.time.Month.JANUARY;
+import static java.time.Month.JULY;
+import static java.time.Month.OCTOBER;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
-import com.bookkeeper.exceptions.BookkeeperException;
 import com.bookkeeper.dto.DateRange;
+import com.bookkeeper.type.DateRangeCategory;
+import com.bookkeeper.type.DateRangeShiftAction;
 import com.bookkeeper.type.DateRangeType;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Period;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
-public class DateRangeUtils {
+public final class DateRangeUtils {
 
-  private static final Period PERIOD_OF_WEEK = Period.ofDays(6);
+  private static final Month[] QUARTER_1ST_MONTHS = { JANUARY, APRIL, JULY, OCTOBER };
 
-  private static final Period PERIOD_OF_MONTH = Period.of(0, 1, -1);
-
-  private static final Period PERIOD_OF_QUARTER = Period.of(0, 3, -1);
-
-  private static final Period PERIOD_OF_YEAR = Period.of(1, 0, -1);
+  private static final Object[][] SHIFT_ACTION_MATRIX = {
+      //PREV_DBL, PREV_SNGL, NEXT_SNGL, NEXT_DBL, CURRENT
+      { prevYear(), prevMonth(), nextMonth(), nextYear(), currentMonth() },//NONE
+      { prevWeek(), prevWeek(), nextWeek(), nextWeek(), currentWeek() },//WEEK
+      { prevYear(), prevMonth(), nextMonth(), nextYear(), currentMonth() },//MONTH
+      { prevYear(), prevQuarter(), nextQuarter(), nextYear(), currentQuarter() },//QUARTER
+      { prevYear(), prevYear(), nextYear(), nextYear(), currentYear() }//YEAR
+  };
 
   public static DateRange getWeekBounds(LocalDate date) {
-
-    if (date == null) {
-      return null;
-    }
-
-    int days = date.getDayOfWeek().ordinal() - MONDAY.ordinal();
-
-    date = date.minusDays(days);
-
-    return new DateRange(date, date.plus(PERIOD_OF_WEEK));
+    return DateRange.builder()
+        .startDate(date.with(previousOrSame(MONDAY)))
+        .endDate(date.with(nextOrSame(SUNDAY)))
+        .build();
   }
 
   public static DateRange getMonthBounds(LocalDate date) {
-
-    if(date == null) {
-      return null;
-    }
-
-    var monthStart = date.withDayOfMonth(1);
-    var monthEnd = monthStart.plus(PERIOD_OF_MONTH);
-
-    return new DateRange(monthStart, monthEnd);
+    return DateRange.builder()
+        .startDate(date.with(firstDayOfMonth()))
+        .endDate(date.with(lastDayOfMonth()))
+        .build();
   }
 
   public static DateRange getMonthBounds(LocalDate date, Month month) {
-
-    if(date == null || month == null) {
-      return null;
-    }
-
-    date = date.withMonth(month.getValue());
-
-    var monthStart = date.withDayOfMonth(1);
-    var monthEnd = monthStart.plus(PERIOD_OF_MONTH);
-
-    return new DateRange(monthStart, monthEnd);
+    var startDate = date.with(month).with(firstDayOfMonth());
+    return DateRange.builder()
+        .startDate(startDate)
+        .endDate(startDate.with(lastDayOfMonth()))
+        .build();
   }
 
-  private static DateRange[] prepareQuarters(int year) {
+  public static DateRange getQuarterBounds(LocalDate date, Integer quarterNum) {
 
-    if (year < 1970) {
-      throw new IllegalArgumentException("Year can't be less than 1970");
-    }
+    boolean validQuarterNum = (quarterNum != null && quarterNum >= 1 && quarterNum <= 4);
 
-    var quarters = new DateRange[4];
+    var stagingDate = validQuarterNum ? date.withMonth(QUARTER_1ST_MONTHS[quarterNum - 1].getValue())
+        : date.with(date.getMonth().firstMonthOfQuarter());
 
-    var lower = LocalDate.of(year, JANUARY, 1);
+    var startDate = stagingDate.with(firstDayOfMonth());
+    var endDate = startDate.plusMonths(2).with(lastDayOfMonth());
 
-    for (int i = 0; i < quarters.length; i++) {
-
-      var upper = lower.plus(PERIOD_OF_QUARTER);
-
-      quarters[i] = new DateRange(lower, upper);
-
-      lower = upper.plusDays(1);
-    }
-
-    return quarters;
+    return new DateRange(startDate, endDate);
   }
 
-  public static DateRange getQuarterBounds(LocalDate date, Integer quarterNumber) {
-
-    if (date == null) {
-      return null;
-    }
-
-    var quarters = prepareQuarters(date.getYear());
-
-    var isValidQuarter = quarterNumber != null && quarterNumber >= 1 && quarterNumber <= 4;
-
-    return isValidQuarter ? quarters[quarterNumber - 1] :
-        Stream.of(quarters).filter(quarter -> quarter.contains(date)).findFirst().orElse(null);
-  }
-
-  public static DateRange getYearBounds(LocalDate date, boolean fully) {
-
-    if (date == null) {
-      return null;
-    }
-
-    var yearStart = date.withDayOfYear(1);
-    var yearEnd = fully ? yearStart.plus(PERIOD_OF_YEAR) : date;
-
-    return new DateRange(yearStart, yearEnd);
+  public static DateRange getYearBounds(LocalDate date, boolean completely) {
+    return DateRange.builder()
+        .startDate(date.with(firstDayOfYear()))
+        .endDate(completely ? date.with(lastDayOfYear()) : date)
+        .build();
   }
 
   public static DateRange getDateRangeByType(DateRangeType type) {
-    return switch (type) {
-      case CURRENT_WEEK -> getWeekBounds(now());
-      case CURRENT_MONTH -> getMonthBounds(now());
-      case CURRENT_QUARTER -> getQuarterBounds(now(), null);
-      case CURRENT_YEAR -> getYearBounds(now(), false);
-      case JAN, FEB, MAR,APR, MAY, JUN,
-          JUL, AUG, SEP, OCT, NOV, DEC -> getMonthBounds(now(), Month.of(type.getValue()));
-      case QUARTER_1, QUARTER_2, QUARTER_3, QUARTER_4 -> getQuarterBounds(now(), type.getValue());
-      case PRIOR_YEAR -> getYearBounds(now().minusYears(1), true);
-      default -> new DateRange();
-    };
+    switch (type) {
+      case CURRENT_WEEK: return getWeekBounds(now());
+      case CURRENT_MONTH: return getMonthBounds(now());
+      case CURRENT_QUARTER: return getQuarterBounds(now(), null);
+      case CURRENT_YEAR: return getYearBounds(now(), false);
+      case JAN: case FEB: case MAR: case APR: case MAY: case JUN:
+      case JUL: case AUG: case SEP: case OCT: case NOV: case DEC:
+        return getMonthBounds(now(), Month.of(type.getValue()));
+      case QUARTER_1: case QUARTER_2: case QUARTER_3: case QUARTER_4:
+        return getQuarterBounds(now(), type.getValue());
+      case PRIOR_YEAR: return getYearBounds(now().minusYears(1), true);
+      default: return new DateRange();
+    }
+  }
+
+  public static DateRange shiftDateRange(DateRange dateRange, DateRangeCategory category,
+      DateRangeShiftAction shiftAction) {
+    return getShiftDateRangeFunction(category.ordinal(), shiftAction.ordinal()).apply(dateRange);
+  }
+
+  private static Function<DateRange, DateRange> getShiftDateRangeFunction(int row, int col) {
+    try {
+      return (Function<DateRange, DateRange>) SHIFT_ACTION_MATRIX[row][col];
+    } catch (Exception e) {}
+    return doNothing();
+  }
+
+  private static Function<DateRange, DateRange> doNothing() {
+    return dateRange -> dateRange;
+  }
+
+  private static Function<DateRange, DateRange> prevWeek() {
+    return dateRange -> dateRange.minusDays(7);
+  }
+
+  private static Function<DateRange, DateRange> nextWeek() {
+    return dateRange -> dateRange.plusDays(7);
+  }
+
+  private static Function<DateRange, DateRange> prevMonth() {
+    return dateRange -> dateRange.minusMonths(1);
+  }
+
+  private static Function<DateRange, DateRange> nextMonth() {
+    return dateRange -> dateRange.plusMonths(1);
+  }
+
+  private static Function<DateRange, DateRange> prevQuarter() {
+    return dateRange -> dateRange.minusMonths(3);
+  }
+
+  private static Function<DateRange, DateRange> nextQuarter() {
+    return dateRange -> dateRange.plusMonths(3);
+  }
+
+  private static Function<DateRange, DateRange> prevYear() {
+    return dateRange -> dateRange.minusYears(1);
+  }
+
+  private static Function<DateRange, DateRange> nextYear() {
+    return dateRange -> dateRange.plusYears(1);
+  }
+
+  private static Function<DateRange, DateRange> currentWeek() {
+    return dateRange -> getWeekBounds(now());
+  }
+
+  private static Function<DateRange, DateRange> currentMonth() {
+    return dateRange -> getMonthBounds(now());
+  }
+
+  private static Function<DateRange, DateRange> currentQuarter() {
+    return dateRange -> getQuarterBounds(now(), null);
+  }
+
+  private static Function<DateRange, DateRange> currentYear() {
+    return dateRange -> getYearBounds(now(), false);
   }
 }

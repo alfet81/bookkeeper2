@@ -18,7 +18,7 @@
             <fx:include fx:id="filterBar" source="FilterBar.fxml"/>
           </top>
           <center>
-            <fx:include fx:id="workSpace" source="WorkSpace.fxml"/>
+            <fx:include fx:id="workSpace" source="TabContent.fxml"/>
           </center>
         </BorderPane>
       </center>

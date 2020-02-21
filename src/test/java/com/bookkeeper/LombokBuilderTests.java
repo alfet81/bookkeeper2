@@ -23,10 +23,10 @@ public class LombokBuilderTests {
   @Test
   public void testCategoryGroup() {
 
-    CategoryGroup categoryGroup = CategoryGroup.groupBuilder()
+    CategoryGroup categoryGroup = CategoryGroup.creator()
         .name("test name")
         .type(EntryType.CREDIT)
-        .build();
+        .create();
 
     assertEquals(expectedName, categoryGroup.getName());
     assertEquals(expectedType, categoryGroup.getEntryType());

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 
 <MenuBar prefHeight="29.0" prefWidth="270.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.4"
-  fx:id="menuBar" fx:controller="com.bookkeeper.mvc.controller.MenuController" >
+  fx:id="menuBar" fx:controller="com.bookkeeper.mvc.controller.MenuBarController" >
   <menus>
     <Menu mnemonicParsing="false" text="File">
       <items>

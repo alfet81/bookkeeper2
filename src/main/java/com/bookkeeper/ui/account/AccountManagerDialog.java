@@ -1,13 +1,9 @@
 package com.bookkeeper.ui.account;
 
-import static com.bookkeeper.app.AppContext.getAccountRoot;
-import static com.bookkeeper.app.AppContext.getAccountService;
-import static java.util.stream.Collectors.toList;
-
-import com.bookkeeper.type.TreeNode;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.account.AccountGroup;
 import com.bookkeeper.ui.support.FxmlDialogPane;
+import com.bookkeeper.ui.model.TreeNodeItem;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,15 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class AccountManagerDialog extends FxmlDialogPane {
-
-  static Image folderCollapseImage = new Image("/images/folder_col.png");
-
-  static Image folderExpandImage = new Image("/images/folder_exp.png");
 
   @FXML
   private ToolBar toolBar;
@@ -103,62 +93,7 @@ public class AccountManagerDialog extends FxmlDialogPane {
   }
 
   private TreeItem<Account> getAccountModel() {
-    return buildTree(getAccountRoot());
-  }
-
-  private static TreeItem<Account> buildTree(Account parent) {
-
-    var item = new TreeNodeItem<Account>(parent);
-
-    var items = parent.getChildren().stream().map(AccountManagerDialog::buildTree).collect(toList());
-
-    item.getChildren().addAll(items);
-
-    return item;
-  }
-
-  static class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
-
-    private T item;
-
-    TreeNodeItem(T item) {
-      super(item);
-      this.item = item;
-
-      if (!item.isLeaf()) {
-        setGraphic(new ImageView(folderCollapseImage));
-      }
-
-      addEventHandler(TreeItem.branchExpandedEvent(), handler -> {
-
-          TreeNodeItem source = (TreeNodeItem) handler.getSource();
-
-          if(!source.isLeaf() && source.isExpanded()) {
-
-            ImageView iv = (ImageView) source.getGraphic();
-
-            iv.setImage(folderExpandImage);
-
-          }
-      });
-
-      addEventHandler(TreeItem.branchCollapsedEvent(), handler -> {
-
-        TreeNodeItem source = (TreeNodeItem) handler.getSource();
-
-        if(!source.isLeaf() && !source.isExpanded()) {
-
-          ImageView iv = (ImageView) source.getGraphic();
-
-          iv.setImage(folderCollapseImage);
-        }
-      });
-    }
-
-    @Override
-    public boolean isLeaf() {
-      return item.isLeaf();
-    }
+    return new TreeItem<>();
   }
 
   @FXML
@@ -166,13 +101,13 @@ public class AccountManagerDialog extends FxmlDialogPane {
     try {
       new AccountEditorDialog(new AccountGroup()).showAndWait().ifPresent(account -> {
         try {
-          Account root = getAccountRoot();
+          Account root = new AccountGroup();//getAccountRoot();
           root.addChild(account);
-          getAccountService().save(account);
+          //getAccountService().save(account);
           addToModel(accountTreeRoot, account);
           accountTreeRoot.setExpanded(true);
         } catch (Exception e) {
-          getAccountRoot().removeChild(account);
+          //getAccountRoot().removeChild(account);
           e.printStackTrace();
           //showExceptionDialog(e);
         }
@@ -191,7 +126,7 @@ public class AccountManagerDialog extends FxmlDialogPane {
     new AccountEditorDialog(new AccountGroup()).showAndWait().ifPresent(account -> {
       try {
         parentAccount.addChild(account);
-        getAccountService().save(account);
+        //getAccountService().save(account);
         addToModel(item, account);
         item.setExpanded(true);
       } catch (Exception e) {
@@ -211,7 +146,7 @@ public class AccountManagerDialog extends FxmlDialogPane {
       try {
         item.setExpanded(true);
         parentAccount.addChild(account);
-        getAccountService().save(account);
+        //getAccountService().save(account);
         addToModel(item, account);
       } catch (Exception e) {
         parentAccount.removeChild(account);
@@ -228,7 +163,7 @@ public class AccountManagerDialog extends FxmlDialogPane {
 
     new AccountEditorDialog(account).showAndWait().ifPresent(acc -> {
       try {
-        getAccountService().save(acc);
+        //getAccountService().save(acc);
         accountTreeTableView.refresh();
       } catch (Exception e) {
         e.printStackTrace();
@@ -245,7 +180,7 @@ public class AccountManagerDialog extends FxmlDialogPane {
 
     try {
       parent.removeChild(account);
-      getAccountService().delete(account);
+      //getAccountService().delete(account);
       item.getParent().getChildren().remove(item);
       accountTreeTableView.getSelectionModel().select(accountTreeTableView.getSelectionModel().getSelectedIndex() - 1);
     } catch (Exception e) {

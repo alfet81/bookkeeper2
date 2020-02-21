@@ -50,9 +50,9 @@ public class AccountTreeTableView extends TreeTableView<Account> /*implements Tr
 
   private void addColumn(AccountColumn column) {
     switch (column) {
-      case NAME -> addNameColumn();
-      case CURRENCY -> addCurrencyColumn();
-      default -> addDefaultColumn(column);
+      case NAME: addNameColumn(); break;
+      case CURRENCY: addCurrencyColumn(); break;
+      default: addDefaultColumn(column);
     }
   }
 

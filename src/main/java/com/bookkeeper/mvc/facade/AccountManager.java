@@ -4,9 +4,11 @@ import static com.bookkeeper.ui.support.DialogHelper.buildCustomDialog;
 
 import com.bookkeeper.Main;
 import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.mvc.view.AccountsView;
 import com.bookkeeper.ui.account.AccountManagerDialog;
 import org.springframework.stereotype.Component;
 
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 @Component
@@ -15,7 +17,8 @@ public class AccountManager {
   private Stage accountDialog;
 
   public void showDialog() {
-    getAccountDialog().showAndWait();
+    //getAccountDialog().showAndWait();
+    Main.showView(AccountsView.class, Modality.NONE);
   }
 
   private Stage getAccountDialog() {

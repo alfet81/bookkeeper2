@@ -81,8 +81,11 @@ public class CategoryEditorDialogPane extends FxmlDialogPane {
 
   private static ObservableList<TypeWrapper> getTypeItems() {
     var types = new ArrayList<TypeWrapper>();
+
     types.add(new TypeWrapper());
+
     types.addAll(EntryType.stream().map(TypeWrapper::new).collect(toList()));
+
     return observableArrayList(types);
   }
 }

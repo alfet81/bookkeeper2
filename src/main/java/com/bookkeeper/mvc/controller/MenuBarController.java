@@ -2,9 +2,9 @@ package com.bookkeeper.mvc.controller;
 
 import static com.bookkeeper.ui.support.DialogHelper.showExceptionDialog;
 
-import com.bookkeeper.mvc.facade.AccountManager;
-import com.bookkeeper.mvc.facade.CategoryManager;
+import com.bookkeeper.Main;
 import com.bookkeeper.mvc.facade.CsvImportManager;
+import com.bookkeeper.mvc.view.AccountsView;
 
 import de.felixroske.jfxsupport.FXMLController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +16,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.event.Event;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Window;
+import javafx.stage.Modality;
 
 @FXMLController
-public class MenuController implements Initializable {
+public class MenuBarController implements Initializable {
 
   @FXML
   private MenuBar menuBar;
 
-  @FXML
-  private BorderPane mainWindow;
-
   @Autowired
   private CsvImportManager csvImportManager;
-
-  @Autowired
-  private AccountManager accountManager;
-
-  @Autowired
-  private CategoryManager categoryManager;
 
   @FXML
   public void importCsvFile(final Event event) {
@@ -46,6 +36,7 @@ public class MenuController implements Initializable {
       menuItem.setDisable(true);
       csvImportManager.importCsvFile();
     } catch (Exception e) {
+      e.printStackTrace();
       showExceptionDialog(e);
     } finally {
       menuItem.setDisable(false);
@@ -59,7 +50,7 @@ public class MenuController implements Initializable {
 
     try {
       menuItem.setDisable(true);
-      accountManager.showDialog();
+      Main.showView(AccountsView.class, Modality.NONE);
     } catch (Exception e) {
       e.printStackTrace();
       showExceptionDialog(e);
@@ -75,7 +66,7 @@ public class MenuController implements Initializable {
 
     try {
       menuItem.setDisable(true);
-      categoryManager.showDialog();
+      //categoryManager.showDialog();
     } catch (Exception e) {
       e.printStackTrace();
       showExceptionDialog(e);
@@ -84,11 +75,6 @@ public class MenuController implements Initializable {
     }
   }
 
-  private Window getParentWindow() {
-    return menuBar.getParent().getScene().getWindow();
-  }
-
-  @FXML
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     final String os = System.getProperty("os.name");

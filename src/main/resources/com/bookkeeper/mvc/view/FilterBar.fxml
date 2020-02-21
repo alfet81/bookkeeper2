@@ -9,9 +9,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import com.bookkeeper.ui.controls.TreeViewComboBox?>
 
 <Pane prefHeight="102.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="com.bookkeeper.mvc.controller.FilterController">
+  fx:controller="com.bookkeeper.mvc.controller.FilterBarController">
   <children>
     <MenuButton fx:id="dateRangeMenu" layoutX="7.0" layoutY="10.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="229.0" text="Report Date Range">
       <items>
@@ -49,11 +50,9 @@
         <MenuItem id="ALL" mnemonicParsing="false" text="All" onAction="#dateRangeHandler" />
       </items>
     </MenuButton>
-    <Label layoutX="7.0" layoutY="41.0" prefHeight="17.0" prefWidth="37.0" text="Start" />
-    <DatePicker fx:id="startDatePicker" layoutX="7.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
-    <Label layoutX="121.0" layoutY="41.0" text="End" />
-    <DatePicker fx:id="endDatePicker" layoutX="121.0" layoutY="62.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
-    <ComboBox fx:id="accountComboBox" layoutX="309.0" layoutY="19.0" prefHeight="27.0" prefWidth="149.0" onAction="#accountHandler"/>
+    <DatePicker fx:id="startDatePicker" layoutX="7.0" layoutY="42.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
+    <DatePicker fx:id="endDatePicker" layoutX="124.0" layoutY="42.0" prefHeight="27.0" prefWidth="112.0" onAction="#datePickHandler"/>
+    <TreeViewComboBox fx:id="accountComboBox" layoutX="309.0" layoutY="19.0" prefHeight="27.0" prefWidth="149.0"/>
     <Label layoutX="245.0" layoutY="24.0" prefHeight="17.0" prefWidth="53.0" text="Account" />
     <Button layoutX="458.0" layoutY="19.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="44.0" text="CLR" onAction="#accountHandler"/>
     <TextField fx:id="revenueTextField" disable="true" layoutX="586.0" layoutY="36.0" prefHeight="27.0" prefWidth="127.0" />
@@ -61,5 +60,10 @@
     <Label layoutX="258.0" layoutY="55.0" text="Labels" />
     <ChoiceBox fx:id="labelsChoiceBox" layoutX="309.0" layoutY="50.0" prefHeight="27.0" prefWidth="150.0" onAction="#labelsHandler"/>
     <Button id="CLR_BUTTON" layoutX="459.0" layoutY="50.0" mnemonicParsing="false" text="CLR" onAction="#labelsHandler"/>
+    <Button layoutX="7.0" layoutY="75.0" prefHeight="27.0" prefWidth="35.0" text="&lt;&lt;" id="PREV_DBL" onAction="#dateShiftHandler"/>
+    <Button layoutX="43.0" layoutY="75.0" prefHeight="27.0" prefWidth="35.0" text="&lt;" id="PREV_SNGL" onAction="#dateShiftHandler"/>
+    <Button layoutX="79.0" layoutY="75.0" prefHeight="27.0" prefWidth="80.0" text="Current" id="CURRENT" onAction="#dateShiftHandler"/>
+    <Button layoutX="160.0" layoutY="75.0" prefHeight="27.0" prefWidth="35.0" text="&gt;" id="NEXT_SNGL" onAction="#dateShiftHandler"/>
+    <Button layoutX="196.0" layoutY="75.0" prefHeight="27.0" prefWidth="35.0" text="&gt;&gt;" id="NEXT_DBL" onAction="#dateShiftHandler"/>
   </children>
 </Pane>

@@ -45,9 +45,9 @@ public class CategoryTreeTableView extends TreeTableView<Category> /*implements 
 
   private void addColumn(CategoryColumn column) {
     switch (column) {
-      case NAME -> addNameColumn();
-      case TYPE -> addEntryTypeColumn();
-      default -> addDefaultColumn(column);
+      case NAME: addNameColumn(); break;
+      case TYPE: addEntryTypeColumn(); break;
+      default: addDefaultColumn(column);
     }
   }
 

@@ -1,8 +1,5 @@
 package com.bookkeeper.ui.category;
 
-import static com.bookkeeper.app.AppContext.getCategoryRoot;
-import static com.bookkeeper.app.AppContext.getCategoryService;
-
 import static java.util.stream.Collectors.toList;
 
 import com.bookkeeper.type.TreeNode;
@@ -104,7 +101,7 @@ public class CategoryManagerDialog extends FxmlDialogPane {
   }
 
   private TreeItem<Category> getCategoryModel() {
-    return buildTree(getCategoryRoot());
+    return new TreeItem<>();
   }
 
   private static TreeItem<Category> buildTree(Category parent) {
@@ -167,13 +164,13 @@ public class CategoryManagerDialog extends FxmlDialogPane {
     try {
       new CategoryEditorDialog(new CategoryGroup()).showAndWait().ifPresent(category -> {
         try {
-          Category root = getCategoryRoot();
+          Category root = new CategoryGroup();
           root.addChild(category);
-          getCategoryService().save(category);
+          //getCategoryService().save(category);
           addToModel(categoryTreeRoot, category);
           categoryTreeRoot.setExpanded(true);
         } catch (Exception e) {
-          getCategoryRoot().removeChild(category);
+          //getCategoryRoot().removeChild(category);
           e.printStackTrace();
           //showExceptionDialog(e);
         }
@@ -188,12 +185,12 @@ public class CategoryManagerDialog extends FxmlDialogPane {
 
     var item = getSelectedItem();
     var parentCategory = item.getValue();
-    var newGroup = CategoryGroup.groupBuilder().type(parentCategory.getEntryType()).build();
+    var newGroup = CategoryGroup.creator().type(parentCategory.getEntryType()).create();
 
     new CategoryEditorDialog(newGroup).showAndWait().ifPresent(category -> {
       try {
         parentCategory.addChild(category);
-        getCategoryService().save(category);
+        //getCategoryService().save(category);
         addToModel(item, category);
         item.setExpanded(true);
       } catch (Exception e) {
@@ -214,7 +211,7 @@ public class CategoryManagerDialog extends FxmlDialogPane {
       try {
         item.setExpanded(true);
         parentCategory.addChild(category);
-        getCategoryService().save(category);
+        //getCategoryService().save(category);
         addToModel(item, category);
       } catch (Exception e) {
         parentCategory.removeChild(category);
@@ -231,7 +228,7 @@ public class CategoryManagerDialog extends FxmlDialogPane {
 
     new CategoryEditorDialog(category).showAndWait().ifPresent(cat -> {
       try {
-        getCategoryService().save(cat);
+        //getCategoryService().save(cat);
         categoryTreeTableView.refresh();
       } catch (Exception e) {
         e.printStackTrace();
@@ -248,7 +245,7 @@ public class CategoryManagerDialog extends FxmlDialogPane {
 
     try {
       parent.removeChild(category);
-      getCategoryService().delete(category);
+      //getCategoryService().delete(category);
       item.getParent().getChildren().remove(item);
       categoryTreeTableView.getSelectionModel().select(categoryTreeTableView.getSelectionModel().getSelectedIndex() - 1);
     } catch (Exception e) {

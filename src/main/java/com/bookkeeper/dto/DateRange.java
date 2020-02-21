@@ -1,14 +1,15 @@
 package com.bookkeeper.dto;
 
-import static com.bookkeeper.utils.DateTimeUtils.date2String;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.time.LocalDate;
 
-@Setter @Getter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DateRange {
@@ -16,14 +17,59 @@ public class DateRange {
   private LocalDate startDate;
   private LocalDate endDate;
 
-  public boolean contains(LocalDate date) {
-    return date != null
-        && ((date.isEqual(startDate) || date.isAfter(startDate))
-        && (date.isEqual(endDate) || date.isBefore(endDate)));
+  public boolean isValid() {
+    return startDate != null && endDate != null;
   }
 
-  @Override
-  public String toString() {
-    return "[" + date2String(startDate) + " --> " + date2String(endDate) + "]";
+  public DateRange minusDays(long days) {
+    startDate = startDate.minusDays(days);
+    endDate = endDate.minusDays(days);
+    return this;
+  }
+
+  public DateRange plusDays(long days) {
+    startDate = startDate.plusDays(days);
+    endDate = endDate.plusDays(days);
+    return this;
+  }
+
+  public DateRange minusMonths(long months) {
+
+    startDate = startDate.minusMonths(months);
+
+    var maxDays = endDate.getMonth().length(endDate.isLeapYear());
+    var lastDay = (endDate.getDayOfMonth() == maxDays);
+
+    endDate = endDate.minusMonths(months);
+
+    endDate = lastDay ? endDate.with(lastDayOfMonth()) : endDate;
+
+    return this;
+  }
+
+  public DateRange plusMonths(long months) {
+
+    startDate = startDate.plusMonths(months);
+
+    var maxDays = endDate.getMonth().length(endDate.isLeapYear());
+    var lastDay = (endDate.getDayOfMonth() == maxDays);
+
+    endDate = endDate.plusMonths(months);
+
+    endDate = lastDay ? endDate.with(lastDayOfMonth()) : endDate;
+
+    return this;
+  }
+
+  public DateRange minusYears(long years) {
+    startDate = startDate.minusYears(years);
+    endDate = endDate.minusYears(years);
+    return this;
+  }
+
+  public DateRange plusYears(long years) {
+    startDate = startDate.plusYears(years);
+    endDate = endDate.plusYears(years);
+    return this;
   }
 }

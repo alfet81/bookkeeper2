@@ -1,35 +1,47 @@
 package com.bookkeeper.type;
 
-import static com.bookkeeper.app.AppConstants.DEFAULT_DATE_FORMATTER;
 import static com.bookkeeper.utils.MiscUtils.getDefaultCurrency;
+
+import com.bookkeeper.utils.DateTimeUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.Locale;
+import java.util.function.Function;
 
 @Getter
 @AllArgsConstructor
 public enum Property {
-  USER_NAME(null),
-  USER_PASSWORD(null),
-  PREFERRED_CURRENCY(getDefaultCurrencyCode()),
-  PREFERRED_LOCALE(getDefaultLocale()),
-  DEFAULT_ACCOUNT(null),
-  LAST_LOGIN_DATE(getCurrentDate()),
-  LAST_CSV_FILE_DIR(null);
+  USER_NAME(null, none()),
+  USER_PASSWORD(null, none()),
+  PREFERRED_CURRENCY(getDefaultCurrency(), currency()),
+  PREFERRED_LOCALE(Locale.getDefault(), locale()),
+  DEFAULT_ACCOUNT(null, none()),
+  LAST_LOGIN_DATE(LocalDate.now(), date()),
+  LAST_CSV_FILE_DIR(null, none());
 
-  private String defaultValue;
+  private final Object defaultValue;
+  private final Function<String, Object> dataConverter;
 
-  private static String getDefaultCurrencyCode() {
-    return getDefaultCurrency().getCurrencyCode();
+  public Object convertValue(String value) {
+    return dataConverter != null ? dataConverter.apply(value) : value;
   }
 
-  private static String getDefaultLocale() {
-    return Locale.getDefault().toString();
+  private static Function<String, Object> none() {
+    return s -> s;
   }
 
-  private static String getCurrentDate() {
-    return LocalDate.now().format(DEFAULT_DATE_FORMATTER);
+  private static Function<String, Object> currency() {
+    return Currency::getInstance;
+  }
+
+  private static Function<String, Object> locale() {
+    return Locale::new;
+  }
+
+  private static Function<String, Object> date() {
+    return DateTimeUtils::string2Date;
   }
 }

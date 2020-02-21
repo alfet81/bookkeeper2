@@ -1,10 +1,11 @@
 package com.bookkeeper.repository;
 
+import static com.bookkeeper.type.EntryType.CREDIT;
+import static com.bookkeeper.type.EntryType.DEBIT;
+
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.category.Category;
 import com.bookkeeper.domain.category.CategoryGroup;
-import static com.bookkeeper.type.EntryType.CREDIT;
-import static com.bookkeeper.type.EntryType.DEBIT;
 
 public class BaseRepositoryTest {
 
@@ -19,15 +20,15 @@ public class BaseRepositoryTest {
   protected Category buildCategoryTree() {
 
     //initFromAccount root category
-    rootCategory = CategoryGroup.groupBuilder().name("root").build();
+    rootCategory = CategoryGroup.creator().name("root").create();
 
     //initFromAccount 1st child of root
-    CategoryGroup child1 = CategoryGroup.groupBuilder().name("child1").type(CREDIT).build();
+    CategoryGroup child1 = CategoryGroup.creator().name("child1").type(CREDIT).create();
 
     rootCategory.addChild(child1);
 
     //initFromAccount 2nd child of root
-    CategoryGroup child2 = CategoryGroup.groupBuilder().name("child2").type(DEBIT).build();
+    CategoryGroup child2 = CategoryGroup.creator().name("child2").type(DEBIT).create();
 
     rootCategory.addChild(child2);
 

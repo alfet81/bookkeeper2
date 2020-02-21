@@ -12,6 +12,14 @@ public class DateTimeUtils {
   }
 
   public static String date2String(LocalDate date) {
-    return date.format(SHORT_DATE_FORMATTER);
+    return date == null ? "N/A" : date.format(SHORT_DATE_FORMATTER);
+  }
+
+  public static LocalDate string2Date(String date) {
+    try {
+      return LocalDate.parse(date, SHORT_DATE_FORMATTER);
+    } catch (Exception e) {
+    }
+    return null;
   }
 }

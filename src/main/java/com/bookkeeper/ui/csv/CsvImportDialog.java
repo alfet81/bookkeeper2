@@ -1,8 +1,6 @@
 package com.bookkeeper.ui.csv;
 
 import static com.bookkeeper.app.AppConstants.CSV_IMPORT_DIALOG_TITLE;
-import static com.bookkeeper.app.AppContext.getAccountRoot;
-import static com.bookkeeper.app.AppContext.getCurrentAccount;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static com.bookkeeper.ui.support.DialogHelper.showAlertDialog;
 
@@ -16,9 +14,11 @@ import static javafx.stage.Modality.NONE;
 
 import com.bookkeeper.csv.CsvRecordWrapper;
 import com.bookkeeper.domain.account.Account;
+import com.bookkeeper.domain.account.AccountGroup;
 import com.bookkeeper.domain.entry.Entry;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -71,7 +71,9 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   private Pane buildComboBoxPane() {
 
     var accountLabel = new Label("Account:");
+
     accountComboBox = buildAccountComboBox();
+
     var pane = new FlowPane();
 
     pane.getChildren().add(accountLabel);
@@ -81,9 +83,9 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   }
 
   private ComboBox<Account> buildAccountComboBox() {
-    var comboBox = new ComboBox<Account>(getAccountComboBoxModel());
+    var comboBox = new ComboBox<>(getAccountComboBoxModel());
     //comboBox.valueProperty().addListener();
-    var account = getCurrentAccount();
+    var account = new AccountGroup();// getCurrentAccount();
     //System.out.println(account);
     comboBox.getSelectionModel().select(account);
     comboBox.setConverter(new StringConverter<>() {
@@ -146,7 +148,7 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   }
 
   private ObservableList<Account> getAccountComboBoxModel() {
-    var accounts = getAccountRoot().collectLeafChildren();
+    List<Account> accounts = Collections.emptyList();//getAccountRoot().collectLeafChildren();
     return observableArrayList(accounts);
   }
 

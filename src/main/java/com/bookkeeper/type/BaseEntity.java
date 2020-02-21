@@ -13,10 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
-@Getter @Setter
-@NoArgsConstructor
 @ToString
+@Getter @Setter
+@MappedSuperclass
+@NoArgsConstructor
 public abstract class BaseEntity implements Serializable {
 
   @Id
@@ -35,6 +35,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     BaseEntity other = (BaseEntity) obj;
+
     return Objects.equals(id, other.id);
   }
 
