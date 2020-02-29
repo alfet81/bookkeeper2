@@ -58,7 +58,7 @@ public class EntryRepositoryTest extends BaseRepositoryTest {
         .category(category)
         .currency(getDefaultCurrency())
         .notes("test entry")
-        .transactionDate(LocalDate.now())
+        .date(LocalDate.now())
         .build();
   }
 
@@ -169,7 +169,7 @@ public class EntryRepositoryTest extends BaseRepositoryTest {
     assertThat(found.getCategory()).isEqualTo(category);
     assertThat(found.getCategory().getName()).isEqualTo("Test Category");
     assertThat(found.getCurrency()).isEqualTo(getDefaultCurrency());
-    assertThat(found.getTransactionDate()).isEqualTo(now());
+    assertThat(found.getDate()).isEqualTo(now());
   }
 
   @Test

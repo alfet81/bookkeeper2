@@ -140,7 +140,7 @@ public class LabelRepositoryTest extends BaseRepositoryTest {
         .category(category)
         .currency(getDefaultCurrency())
         .notes("test entry")
-        .transactionDate(LocalDate.now())
+        .date(LocalDate.now())
         .build();
   }
 }

@@ -13,5 +13,5 @@ import java.util.List;
 public interface EntryRepository extends JpaRepository<Entry, Long> {
   List<Entry> findByCategoryIn(Collection<Category> categories);
   List<Entry> findByLabelsIn(Collection<Label> labels);
-  List<Entry> findByTransactionDateBetweenOrderByTransactionDateAscIdAsc(LocalDate startDate, LocalDate endDate);
+  List<Entry> findByDateBetweenOrderByDateAscIdAsc(LocalDate startDate, LocalDate endDate);
 }

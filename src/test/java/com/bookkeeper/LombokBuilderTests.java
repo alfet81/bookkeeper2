@@ -58,19 +58,19 @@ public class LombokBuilderTests {
   public void testItem() {
 
     Currency expectedCurrency = Currency.getInstance(Locale.getDefault());
-    LocalDate expectedTransactionDate = LocalDate.now();
+    LocalDate expectedDate = LocalDate.now();
     String expectedNotes = "test notes";
 
     Entry item = Entry.builder()
         .currency(expectedCurrency)
-        .transactionDate(expectedTransactionDate)
+        .date(expectedDate)
         .amount(BigDecimal.ONE)
         .notes(expectedNotes)
         .build();
 
     assertEquals(expectedNotes, item.getNotes());
     assertEquals(expectedCurrency, item.getCurrency());
-    assertEquals(expectedTransactionDate, item.getTransactionDate());
+    assertEquals(expectedDate, item.getDate());
     assertEquals(BigDecimal.ONE, item.getAmount());
   }
 }

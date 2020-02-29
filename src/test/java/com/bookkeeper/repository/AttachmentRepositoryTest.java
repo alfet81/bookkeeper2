@@ -60,7 +60,7 @@ public class AttachmentRepositoryTest extends BaseRepositoryTest {
         .account(account)
         .category(category)
         .currency(Currency.getInstance(Locale.getDefault()))
-        .transactionDate(LocalDate.now())
+        .date(LocalDate.now())
         .build();
   }
 

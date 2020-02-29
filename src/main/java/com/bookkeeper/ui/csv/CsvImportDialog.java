@@ -10,18 +10,20 @@ import static javafx.scene.control.Alert.AlertType.ERROR;
 import static javafx.event.ActionEvent.ACTION;
 import static javafx.scene.control.ButtonType.CANCEL;
 import static javafx.scene.control.ButtonType.FINISH;
+import static javafx.scene.control.ButtonType.NEXT;
 import static javafx.stage.Modality.NONE;
 
-import com.bookkeeper.csv.CsvRecordWrapper;
+import com.bookkeeper.csv.CsvRecordEntry;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.account.AccountGroup;
 import com.bookkeeper.domain.entry.Entry;
-import org.apache.commons.lang3.StringUtils;
+import com.bookkeeper.type.CsvRecordStatus;
 
 import java.util.Collections;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -33,11 +35,13 @@ import javafx.util.StringConverter;
 
 public class CsvImportDialog extends Dialog<List<Entry>> {
 
-  private List<CsvRecordWrapper> csvRecords;
+  private List<CsvRecordEntry> csvRecords;
 
   private ComboBox<Account> accountComboBox;
 
-  public CsvImportDialog(List<CsvRecordWrapper> records) {
+  private CsvTableView csvTableView;
+
+  public CsvImportDialog(List<CsvRecordEntry> records) {
     super();
     this.csvRecords = records;
     initDialog();
@@ -47,24 +51,24 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
     initModality(NONE);
     setTitle(CSV_IMPORT_DIALOG_TITLE);
     getDialogPane().setContent(buildContentPane());
-    getDialogPane().getButtonTypes().addAll(CANCEL, FINISH);
-    configFinishButton();
+    getDialogPane().getButtonTypes().addAll(CANCEL, NEXT);
+    configNextButton();
     setResultConverter();
   }
 
   private void setResultConverter() {
     setResultConverter(buttonType -> {
       if (buttonType == FINISH) {
-        return csvRecords.stream().map(CsvRecordWrapper::getEntry).collect(toList());
+        return csvRecords.stream().map(CsvRecordEntry::getEntry).collect(toList());
       }
       return null;
     });
   }
 
   private Pane buildContentPane() {
+    csvTableView = buildCsvTableView();
+    var tablePane = new ScrollPane(csvTableView);
     var comboBoxPane = buildComboBoxPane();
-    var tableView = buildCsvTableView();
-    var tablePane = new ScrollPane(tableView);
     return new VBox(comboBoxPane, tablePane);
   }
 
@@ -106,41 +110,45 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
     return new CsvTableView(getModel());
   }
 
-  private ObservableList<CsvRecordWrapper> getModel() {
+  private ObservableList<CsvRecordEntry> getModel() {
     return observableArrayList(csvRecords);
   }
 
-  private void configFinishButton() {
-    getFinishButton().addEventFilter(ACTION, event -> {
-      if (isValidInput()) {
-        updateEntries();
-      } else {
-        event.consume();
+  private void configNextButton() {
+    getButton(NEXT).addEventFilter(ACTION, event -> {
+      if (processCsvRecords()) {
+        getDialogPane().getButtonTypes().removeAll(NEXT);
+        getDialogPane().getButtonTypes().addAll(FINISH);
+        configFinishButton();
       }
+      event.consume();
     });
   }
 
-  private Button getFinishButton() {
-    return (Button) getDialogPane().lookupButton(FINISH);
+  private void configFinishButton() {
+    getButton(FINISH).addEventFilter(ACTION, event -> updateEntries());
   }
 
-  private boolean isValidInput() {
-    if (hasValidationErrors()) {
-      showAlertDialog(ERROR,"There are records with unresolved errors.");
-      return false;
-    }
-    return true;
+  private Button getButton(ButtonType buttonType) {
+    return (Button) getDialogPane().lookupButton(buttonType);
   }
 
-  private boolean hasValidationErrors() {
-    return csvRecords.stream().map(CsvRecordWrapper::getErrors).anyMatch(StringUtils::isNotEmpty);
+  private boolean processCsvRecords() {
+
+    csvRecords.parallelStream().forEach(CsvRecordEntry::process);
+
+    csvTableView.refresh();
+
+    return csvRecords.parallelStream()
+        .map(CsvRecordEntry::getStatus)
+        .noneMatch(status -> status == CsvRecordStatus.ERROR);
   }
 
   private void updateEntries() {
     csvRecords.forEach(this::updateEntry);
   }
 
-  private void updateEntry(CsvRecordWrapper record) {
+  private void updateEntry(CsvRecordEntry record) {
     var account = getSelectedAccount();
     var entry = record.getEntry();
     entry.setAccount(account);

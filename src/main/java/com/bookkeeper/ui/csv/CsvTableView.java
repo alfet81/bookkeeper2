@@ -8,7 +8,7 @@ import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-import com.bookkeeper.csv.CsvRecordWrapper;
+import com.bookkeeper.csv.CsvRecordEntry;
 import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.type.CsvRecordStatus;
 
@@ -25,7 +25,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-class CsvTableView extends TableView<CsvRecordWrapper> {
+class CsvTableView extends TableView<CsvRecordEntry> {
 
   private final Map<CsvRecordStatus, Image> statusImages = new EnumMap<>(CsvRecordStatus.class);
 
@@ -39,7 +39,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
     }
   }
 
-  CsvTableView(ObservableList<CsvRecordWrapper> items) {
+  CsvTableView(ObservableList<CsvRecordEntry> items) {
     super(items);
     init();
   }
@@ -62,7 +62,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private void addStatusColumn() {
 
-    var column = new TableColumn<CsvRecordWrapper, CsvRecordStatus>(EMPTY);
+    var column = new TableColumn<CsvRecordEntry, CsvRecordStatus>(EMPTY);
 
     column.setMinWidth(STATUS.getDefaultWidth());
     column.setPrefWidth(STATUS.getDefaultWidth());
@@ -104,7 +104,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
 
   private void addRegularColumn(CsvRecordColumn columnType) {
 
-    var column = new TableColumn<CsvRecordWrapper, String>(columnType.toString());
+    var column = new TableColumn<CsvRecordEntry, String>(columnType.toString());
 
     column.setMinWidth(columnType.getDefaultWidth());
 
@@ -126,7 +126,7 @@ class CsvTableView extends TableView<CsvRecordWrapper> {
     getColumns().add(column);
   }
 
-  private EventHandler<CellEditEvent<CsvRecordWrapper, String>> getCellEditEventHandler(CsvRecordColumn column) {
+  private EventHandler<CellEditEvent<CsvRecordEntry, String>> getCellEditEventHandler(CsvRecordColumn column) {
 
     return handler -> {
 

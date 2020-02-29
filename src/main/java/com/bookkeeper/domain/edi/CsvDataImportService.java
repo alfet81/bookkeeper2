@@ -4,7 +4,7 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import static org.apache.commons.csv.CSVParser.parse;
 import static java.util.stream.Collectors.toList;
 
-import com.bookkeeper.csv.CsvRecordWrapper;
+import com.bookkeeper.csv.CsvRecordEntry;
 import com.bookkeeper.exceptions.BookkeeperException;
 
 import org.apache.commons.csv.CSVRecord;
@@ -22,24 +22,17 @@ import java.util.function.Function;
 public class CsvDataImportService {
 
   @Autowired
-  private Function<CSVRecord, CsvRecordWrapper> csvRecordWrapperFactory;
+  private Function<CSVRecord, CsvRecordEntry> csvRecordWrapperFactory;
 
-  private CsvRecordWrapper buildCsvRecordWrapper(CSVRecord record) {
-    return csvRecordWrapperFactory.apply(record);
-  }
-
-  public List<CsvRecordWrapper> importCsvFile(File file) {
-
+  public List<CsvRecordEntry> importCsvFile(File file) {
     try {
-      var records = readCsvFile(new FileReader(file));
-      processCsvRecords(records);
-      return records;
+      return readCsvFile(new FileReader(file));
     } catch (IOException e) {
       throw new BookkeeperException("Failed to import CSV file. " + e.getMessage());
     }
   }
 
-  private List<CsvRecordWrapper> readCsvFile(Reader csvFileReader) throws IOException {
+  private List<CsvRecordEntry> readCsvFile(Reader csvFileReader) throws IOException {
 
     var csvParser = parse(csvFileReader, RFC4180.withFirstRecordAsHeader());
 
@@ -48,7 +41,7 @@ public class CsvDataImportService {
     }
   }
 
-  private void processCsvRecords(List<CsvRecordWrapper> records) {
-    records.forEach(CsvRecordWrapper::process);
+  private CsvRecordEntry buildCsvRecordWrapper(CSVRecord record) {
+    return csvRecordWrapperFactory.apply(record);
   }
 }

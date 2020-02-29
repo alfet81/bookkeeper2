@@ -30,7 +30,7 @@ public class EntryService {
   }
 
   public List<Entry> fetch(DateRange dateRange) {
-    return entryRepository.findByTransactionDateBetweenOrderByTransactionDateAscIdAsc(
-        dateRange.getStartDate(), dateRange.getEndDate());
+    return entryRepository.findByDateBetweenOrderByDateAscIdAsc(dateRange.getStartDate(),
+        dateRange.getEndDate());
   }
 }

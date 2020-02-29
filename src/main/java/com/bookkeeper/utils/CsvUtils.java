@@ -1,6 +1,6 @@
 package com.bookkeeper.utils;
 
-import static com.bookkeeper.type.CsvRecordColumn.findByProperty;
+import static com.bookkeeper.type.CsvRecordColumn.optionalOf;
 import static com.bookkeeper.type.DateConverter.convert;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -9,7 +9,7 @@ import static java.util.Optional.empty;
 
 import com.bookkeeper.exceptions.BookkeeperException;
 import com.bookkeeper.type.CsvRecordColumn;
-import com.bookkeeper.csv.CsvRecordWrapper;
+import com.bookkeeper.csv.CsvRecordEntry;
 
 import org.apache.commons.csv.CSVRecord;
 
@@ -31,7 +31,7 @@ public class CsvUtils {
   }
 
   public static Optional<CsvRecordColumn> getCsvRecordColumn(String columnName) {
-    return findByProperty(columnName);
+    return optionalOf(columnName);
   }
 
   public static Optional<LocalDate> string2Date(String value) {
@@ -46,12 +46,11 @@ public class CsvUtils {
     return empty();
   }
 
-  public static BiConsumer<CsvRecordWrapper, String> getCsvRecordModifier(CsvRecordColumn column) {
+  public static BiConsumer<CsvRecordEntry, String> getCsvRecordModifier(CsvRecordColumn column) {
     switch (column) {
-      case DATE: return CsvRecordWrapper::setDate;
-      case AMOUNT: return CsvRecordWrapper::setAmount;
-      case CATEGORY: return CsvRecordWrapper::setCategory;
-      case NOTES: return CsvRecordWrapper::setNotes;
+      case DATE: return CsvRecordEntry::setDate;
+      case AMOUNT: return CsvRecordEntry::setAmount;
+      case NOTES: return CsvRecordEntry::setNotes;
       default: throw new BookkeeperException("Unsupported column type");
     }
   }

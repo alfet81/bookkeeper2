@@ -1,34 +1,34 @@
-"Date","Amount","Category","Comments","Labels"
-"2018-05-25",2880.67,"/Income/Salary","MOREDIRECT INC",
-"2018-05-22",189.16,"/Expenses/Transport/Automobile","Car insurance",
-"2018-05-17",21.39,"/Expenses/Living/Bills","Gym",
-"2018-05-11",2880.66,"/Income/Salary","MOREDIRECT INC",
-"2018-05-09",55.1,"/Expenses/Living/Bills","FPL ",
-"2018-05-03",1558.95,"/Expenses/Living/Apartment","Oasis",
-"2018-05-01",973.77,"/Expenses/Transport/Automobile","Lexus Payment",
-"05/23/2018",-49.28,"/Expenses/Bank & Credit Fees","Chase INTEREST CHARGE",
-"05/23/2018",-0.2,"/Expenses/Bank & Credit Fees",,
-"05/23/2018",-57.38,"/Expenses/Living/Food","WALMART",
-"05/21/2018",-15.86,"/Expenses/Living/Lunch","BOMBAY CAFE",
-"05/21/2018",-148,"/Expenses/Rare/Misc","UM PATIENT FINL SERVICES",
-"05/21/2018",-52.85,"/Expenses/Living/Food","WINN-DIXIE",
-"05/21/2018",-46.69,"/Expenses/Rare/Misc","CVS",
-"05/19/2018",-4.54,"/Expenses/Shopping/Amazon","Amazon Video On Demand",
-"05/18/2018",-93.82,"/Expenses/Living/Food","RUSSIAN Store",
-"05/18/2018",-15.86,"/Expenses/Living/Lunch","BOMBAY CAFE",
-"05/15/2018",-3.9,"/Expenses/Shopping/Amazon","Amazon.com",
-"05/15/2018",-51.11,"/Expenses/Transport/Gas",,
-"05/14/2018",-33.95,"/Expenses/Living/Food","WINN-DIXIE",
-"05/13/2018",-27.92,"/Expenses/Fun/Uber&Lyft","To hooters",
-"05/13/2018",-103.18,"/Expenses/Fun/Restaurants&Bars","HOOTERS OF FT. LAU",
-"05/12/2018",-119.15,"/Expenses/Living/Food","PUBLIX",
-"05/12/2018",-27.52,"/Expenses/Fun/Uber&Lyft","from hooters",
-"05/11/2018",-15.86,"/Expenses/Living/Lunch","BOMBAY CAFE",
-"05/10/2018",-38.03,"/Expenses/Rare/Misc","STRAIGHTTALK",
-"05/07/2018",-15.05,"/Expenses/Living/Bills","Netflix.com",
-"05/05/2018",-58.75,"/Expenses/Rare/Misc","ZAP CABLES",
-"05/05/2018",-13.72,"/Expenses/Fun/Restaurants&Bars","RIVERSIDE MARKET CAFE",
-"05/05/2018",-9.42,"/Expenses/Fun/Restaurants&Bars","TIJUANA FLATS BURRITO",
-"05/01/2018",69,"/Expenses/Shopping/Amazon","AMAZON MKTPLACE PMTS",
-"05/01/2018",499,"/Expenses/Rare/Misc","KEYMOUSE",
-"05/01/2018",-7.93,"/Expenses/Living/Lunch","CHICK-FIL-A",
+"Date","Amount","Comments"
+"2018-05-25",2880.67,"MOREDIRECT INC"
+"2018-05-22",189.16,"Car insurance"
+"2018-05-17",21.39,"Gym"
+"2018-05-11",2880.66,"MOREDIRECT INC"
+"2018-05-09",55.1,"FPL "
+"2018-05-03",1558.95,"Oasis"
+"2018-05-01",973.77,"Lexus Payment"
+"05/23/2018",-49.28,"Chase INTEREST CHARGE"
+"05/23/2018",-0.2,
+"05/23/2018",-57.38,"WALMART"
+"05/21/2018",-15.86,"BOMBAY CAFE"
+"05/21/2018",-148,"UM PATIENT FINL SERVICES"
+"05/21/2018",-52.85,"WINN-DIXIE"
+"05/21/2018",-46.69,"CVS"
+"05/19/2018",-4.54,"Amazon Video On Demand"
+"05/18/2018",-93.82,"RUSSIAN Store"
+"05/18/2018",-15.86,"BOMBAY CAFE"
+"05/15/2018",-3.9,"Amazon.com"
+"05/15/2018",-51.11,,
+"05/14/2018",-33.95,"WINN-DIXIE"
+"05/13/2018",-27.92,"To hooters"
+"05/13/2018",-103.18,"HOOTERS OF FT. LAU"
+"05/12/2018",-119.15,"PUBLIX"
+"05/12/2018",-27.52,"from hooters"
+"05/11/2018",-15.86,"BOMBAY CAFE"
+"05/10/2018",-38.03,"STRAIGHTTALK"
+"05/07/2018",-15.05,"Netflix.com"
+"05/05/2018",-58.75,"ZAP CABLES"
+"05/05/2018",-13.72,"RIVERSIDE MARKET CAFE"
+"05/05/2018",-9.42,"TIJUANA FLATS BURRITO"
+"05/01/2018",69,"AMAZON MKTPLACE PMTS"
+"05/01/2018",499,"KEYMOUSE"
+"05/01/2018",-7.93,"CHICK-FIL-A"

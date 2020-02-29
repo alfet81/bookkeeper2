@@ -50,11 +50,10 @@ import javax.persistence.UniqueConstraint;
 
 //@Indexed
 @Entity
-@Table(name = "entries",
-indexes = {@Index(name = "idx_entries_transaction_date", columnList = "transaction_date")})
 @Getter @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
+@Table(name = "entries", indexes = {@Index(name = "idx_entries_entry_date", columnList = "entry_date")})
 public class Entry extends BaseEntity {
 
   @ManyToOne
@@ -63,10 +62,7 @@ public class Entry extends BaseEntity {
   private Account account;
 
   @OneToOne
-  @JoinColumn(
-      name = "category_id",
-      nullable = false,
-      foreignKey = @ForeignKey(name = "fk_entries_category_id"))
+  @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_entries_category_id"))
   private Category category;
 
   @Column(nullable = false, precision = 9, scale = 2)
@@ -75,8 +71,8 @@ public class Entry extends BaseEntity {
   @Column(nullable = false, length = 3)
   private Currency currency;
 
-  @Column(name = "transaction_date", nullable = false)
-  private LocalDate transactionDate;
+  @Column(name = "entry_date", nullable = false)
+  private LocalDate date;
 
   //@Field
   private String notes;
@@ -101,12 +97,12 @@ public class Entry extends BaseEntity {
 
   @Builder
   protected Entry(Account account, Category category, BigDecimal amount, Currency currency,
-      LocalDate transactionDate, String notes) {
+      LocalDate date, String notes) {
     this.account = account;
     this.category = category;
     this.amount = amount;
     this.currency = currency;
-    this.transactionDate = transactionDate;
+    this.date = date;
     this.notes = notes;
   }
 

@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class CsvErrorMessageBuilderTest {
+public class CsvErrorRegisterTest {
 
   @Test
   public void whenThereNoErrors_ThenNull() {
-    var builder = new CsvErrorMessageBuilder();
-    assertThat(builder.getErrorMessages()).isNull();
+    var builder = new CsvErrorRegister();
+    assertThat(builder.getErrors()).isNull();
   }
 }
