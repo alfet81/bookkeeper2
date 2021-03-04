@@ -2,7 +2,7 @@ package com.bookkeeper.mvc.facade;
 
 import static com.bookkeeper.ui.support.DialogHelper.buildCustomDialog;
 
-import com.bookkeeper.Main;
+import com.bookkeeper.Application;
 import com.bookkeeper.exceptions.BookkeeperException;
 import com.bookkeeper.ui.category.CategoryManagerDialog;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class CategoryManager {
     if (categoryDialog == null) {
       try {
         categoryDialog = buildCustomDialog(new CategoryManagerDialog());
-        categoryDialog.initOwner(Main.getStage());
+        categoryDialog.initOwner(Application.getStage());
       } catch (Exception e) {
         System.out.println(e);
         throw new BookkeeperException("Ooops!!", e);

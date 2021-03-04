@@ -1,6 +1,6 @@
 package com.bookkeeper.mvc.model;
 
-import static com.bookkeeper.app.AppConstants.DEFAULT_GENERAL_ACCOUNT_NAME;
+import static com.bookkeeper.common.AppConstants.DEFAULT_GENERAL_ACCOUNT_NAME;
 import static com.bookkeeper.type.EntryType.CREDIT;
 import static com.bookkeeper.type.EntryType.DEBIT;
 import static com.bookkeeper.type.Property.LAST_LOGIN_DATE;

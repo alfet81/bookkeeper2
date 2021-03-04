@@ -2,7 +2,7 @@ package com.bookkeeper.mvc.controller;
 
 import static com.bookkeeper.ui.support.DialogHelper.showExceptionDialog;
 
-import com.bookkeeper.Main;
+import com.bookkeeper.Application;
 import com.bookkeeper.mvc.facade.CsvImportManager;
 import com.bookkeeper.mvc.view.AccountsView;
 
@@ -50,7 +50,7 @@ public class MenuBarController implements Initializable {
 
     try {
       menuItem.setDisable(true);
-      Main.showView(AccountsView.class, Modality.NONE);
+      Application.showView(AccountsView.class, Modality.NONE);
     } catch (Exception e) {
       e.printStackTrace();
       showExceptionDialog(e);

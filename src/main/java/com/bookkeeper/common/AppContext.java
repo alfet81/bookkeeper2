@@ -1,4 +1,4 @@
-package com.bookkeeper.app;
+package com.bookkeeper.common;
 
 import com.bookkeeper.mvc.model.AppViewModel;
 import com.bookkeeper.domain.settings.SettingsService;

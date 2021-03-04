@@ -1,6 +1,6 @@
 package com.bookkeeper.utils;
 
-import static com.bookkeeper.app.AppConstants.SHORT_DATE_FORMATTER;
+import static com.bookkeeper.common.AppConstants.SHORT_DATE_FORMATTER;
 
 import java.time.LocalDate;
 import java.util.Date;

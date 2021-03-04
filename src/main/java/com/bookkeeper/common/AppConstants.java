@@ -1,4 +1,4 @@
-package com.bookkeeper.app;
+package com.bookkeeper.common;
 
 import static java.time.format.DateTimeFormatter.ofLocalizedDate;
 import static java.time.format.DateTimeFormatter.ofPattern;

@@ -1,6 +1,6 @@
 package com.bookkeeper.domain.account;
 
-import static com.bookkeeper.app.AppConstants.DEFAULT_ACCOUNT_ROOT_NAME;
+import static com.bookkeeper.common.AppConstants.DEFAULT_ACCOUNT_ROOT_NAME;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import lombok.Builder;

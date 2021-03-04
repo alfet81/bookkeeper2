@@ -1,6 +1,6 @@
 package com.bookkeeper.ui.csv;
 
-import static com.bookkeeper.app.AppConstants.CSV_IMPORT_DIALOG_TITLE;
+import static com.bookkeeper.common.AppConstants.CSV_IMPORT_DIALOG_TITLE;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import static java.util.stream.Collectors.toList;

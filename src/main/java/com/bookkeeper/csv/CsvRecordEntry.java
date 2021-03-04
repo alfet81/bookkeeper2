@@ -1,7 +1,7 @@
 package com.bookkeeper.csv;
 
-import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_AMOUNT;
-import static com.bookkeeper.app.AppConstants.CSV_ERROR_INVALID_DATE;
+import static com.bookkeeper.common.AppConstants.CSV_ERROR_INVALID_AMOUNT;
+import static com.bookkeeper.common.AppConstants.CSV_ERROR_INVALID_DATE;
 import static com.bookkeeper.type.CsvRecordColumn.AMOUNT;
 import static com.bookkeeper.type.CsvRecordColumn.DATE;
 import static com.bookkeeper.type.CsvRecordColumn.NOTES;
@@ -19,8 +19,8 @@ import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.type.CsvRecordStatus;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,13 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
+@Setter
 @Scope(SCOPE_PROTOTYPE)
 @ToString(of = {"date", "amount", "notes", "status", "errors", "entry"})
 public class CsvRecordEntry {
+
+  private static final Set<CsvRecordColumn> COLUMNS = EnumSet.of(DATE, AMOUNT, NOTES);
 
   @NotNull(message = "Missing date")
   private String date;
@@ -86,8 +89,8 @@ public class CsvRecordEntry {
 
   private void addErrorMessage(ConstraintViolation<CsvRecordEntry> constraintViolation) {
 
-    String columnName = constraintViolation.getPropertyPath().toString();
-    String errorMessage = constraintViolation.getMessage();
+    var columnName = constraintViolation.getPropertyPath().toString();
+    var errorMessage = constraintViolation.getMessage();
 
     getCsvRecordColumn(columnName).ifPresent(column -> addErrorMessage(column, errorMessage));
   }
@@ -105,11 +108,7 @@ public class CsvRecordEntry {
   }
 
   private void parse() {
-    getColumns().forEach(this::parse);
-  }
-
-  private static Set<CsvRecordColumn> getColumns() {
-    return EnumSet.of(DATE, AMOUNT, NOTES);
+    COLUMNS.forEach(this::parse);
   }
 
   private void parse(CsvRecordColumn column) {

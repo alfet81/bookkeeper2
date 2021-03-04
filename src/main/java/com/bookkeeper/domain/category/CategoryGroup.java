@@ -1,6 +1,6 @@
 package com.bookkeeper.domain.category;
 
-import static com.bookkeeper.app.AppConstants.DEFAULT_CATEGORY_ROOT_NAME;
+import static com.bookkeeper.common.AppConstants.DEFAULT_CATEGORY_ROOT_NAME;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import com.bookkeeper.type.EntryType;

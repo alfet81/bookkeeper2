@@ -46,6 +46,6 @@ class CsvErrorRegister {
   }
 
   void clear() {
-    errors.forEach((column, errors) -> errors.clear());
+    errors.values().forEach(Set::clear);
   }
 }
