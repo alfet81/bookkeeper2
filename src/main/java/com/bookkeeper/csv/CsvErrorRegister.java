@@ -20,30 +20,32 @@ class CsvErrorRegister {
 
   private static final Set<CsvRecordColumn> CSV_COLUMNS = EnumSet.of(DATE, AMOUNT, NOTES);
 
-  private final Map<CsvRecordColumn, Set<String>> ERRORS = new EnumMap<>(CsvRecordColumn.class);
+  private final Map<CsvRecordColumn, Set<String>> errors = new EnumMap<>(CsvRecordColumn.class);
 
   CsvErrorRegister() {
     for (CsvRecordColumn column : CSV_COLUMNS) {
-      ERRORS.put(column, new LinkedHashSet<>());
+      errors.put(column, new LinkedHashSet<>());
     }
   }
 
   void addError(CsvRecordColumn column, String error) {
-    if (isNotEmpty(error) && ERRORS.containsKey(column)) {
-      ERRORS.get(column).add(error);
+    if (isNotEmpty(error) && errors.containsKey(column)) {
+      errors.get(column).add(error);
     }
   }
 
   String getErrors() {
-    return hasErrors() ? ERRORS.values().stream().flatMap(Collection::stream).collect(joining(", "))
+    return hasErrors() ? errors.values().stream()
+        .flatMap(Collection::stream)
+        .collect(joining(", "))
         : null;
   }
 
   boolean hasErrors() {
-    return ERRORS.values().stream().anyMatch(CollectionUtils::isNotEmpty);
+    return errors.values().stream().anyMatch(CollectionUtils::isNotEmpty);
   }
 
   void clear() {
-    ERRORS.forEach((column, errors) -> errors.clear());
+    errors.forEach((column, errors) -> errors.clear());
   }
 }

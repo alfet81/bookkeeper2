@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class CsvDataImportService {
 
   @Autowired
-  private Function<CSVRecord, CsvRecordEntry> csvRecordWrapperFactory;
+  private Function<CSVRecord, CsvRecordEntry> csvRecordEntryFactory;
 
   public List<CsvRecordEntry> importCsvFile(File file) {
     try {
@@ -42,6 +42,6 @@ public class CsvDataImportService {
   }
 
   private CsvRecordEntry buildCsvRecordWrapper(CSVRecord record) {
-    return csvRecordWrapperFactory.apply(record);
+    return csvRecordEntryFactory.apply(record);
   }
 }

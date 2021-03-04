@@ -14,13 +14,13 @@ import java.util.function.Function;
 public class FactoryConfig {
 
   @Bean
-  public Function<CSVRecord, CsvRecordEntry> csvRecordWrapperFactory() {
-    return this::csvRecordWrapper;
+  public Function<CSVRecord, CsvRecordEntry> csvRecordEntryFactory() {
+    return this::buildCsvRecordEntry;
   }
 
   @Bean
   @Scope(SCOPE_PROTOTYPE)
-  public CsvRecordEntry csvRecordWrapper(CSVRecord csvRecord) {
+  public CsvRecordEntry buildCsvRecordEntry(CSVRecord csvRecord) {
     return new CsvRecordEntry(csvRecord);
   }
 }

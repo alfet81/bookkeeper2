@@ -2,18 +2,19 @@ package com.bookkeeper.ui.csv;
 
 import static com.bookkeeper.type.CsvRecordColumn.ERRORS;
 import static com.bookkeeper.type.CsvRecordColumn.STATUS;
-import static com.bookkeeper.utils.CsvUtils.getCsvRecordModifier;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 import com.bookkeeper.csv.CsvRecordEntry;
+import com.bookkeeper.exceptions.BookkeeperException;
 import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.type.CsvRecordStatus;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableCell;
@@ -126,7 +127,8 @@ class CsvTableView extends TableView<CsvRecordEntry> {
     getColumns().add(column);
   }
 
-  private EventHandler<CellEditEvent<CsvRecordEntry, String>> getCellEditEventHandler(CsvRecordColumn column) {
+  private EventHandler<CellEditEvent<CsvRecordEntry, String>> getCellEditEventHandler(
+      CsvRecordColumn column) {
 
     return handler -> {
 
@@ -138,5 +140,14 @@ class CsvTableView extends TableView<CsvRecordEntry> {
 
       handler.getTableView().refresh();
     };
+  }
+
+  private static BiConsumer<CsvRecordEntry, String> getCsvRecordModifier(CsvRecordColumn column) {
+    switch (column) {
+      case DATE: return CsvRecordEntry::setDate;
+      case AMOUNT: return CsvRecordEntry::setAmount;
+      case NOTES: return CsvRecordEntry::setNotes;
+      default: throw new BookkeeperException("Unsupported column type");
+    }
   }
 }

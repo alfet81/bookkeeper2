@@ -34,12 +34,12 @@ public class CsvImportManager {
 
       var records = csvDataImportService.importCsvFile(csvFile);
 
-      records.forEach(System.out::println);
-
       if (records.isEmpty()) {
         //TODO: show alert "not found"
         return;
       }
+
+      records.forEach(System.out::println);
 
       var result = new CsvImportDialog(records).showAndWait();
 
