@@ -3,8 +3,6 @@ package com.bookkeeper.mvc.model;
 import static com.bookkeeper.common.AppConstants.DEFAULT_GENERAL_ACCOUNT_NAME;
 import static com.bookkeeper.type.EntryType.CREDIT;
 import static com.bookkeeper.type.EntryType.DEBIT;
-import static com.bookkeeper.type.Property.LAST_LOGIN_DATE;
-import static com.bookkeeper.type.Property.PREFERRED_CURRENCY;
 import static com.bookkeeper.type.TreeNode.buildTreeRoot;
 import static com.bookkeeper.utils.DateRangeUtils.getMonthBounds;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
@@ -12,6 +10,7 @@ import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.observableArrayList;
 
+import com.bookkeeper.common.AppContext;
 import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.account.AccountGroup;
 import com.bookkeeper.domain.account.AccountService;
@@ -21,7 +20,6 @@ import com.bookkeeper.domain.category.CategoryService;
 import com.bookkeeper.domain.entry.Entry;
 import com.bookkeeper.domain.entry.EntryService;
 import com.bookkeeper.domain.label.Label;
-import com.bookkeeper.domain.settings.SettingsService;
 import com.bookkeeper.dto.DateRange;
 import com.bookkeeper.type.EntryType;
 import com.bookkeeper.type.TreeNode;
@@ -30,9 +28,8 @@ import com.bookkeeper.ui.model.TreeNodeItem;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.time.LocalDate;
+
 import java.util.Collections;
-import java.util.Currency;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -60,9 +57,6 @@ public class AppViewModel {
   private TreeItem<Account> accountTreeRoot;
 
   private TreeItem<Category> categoryTreeRoot;
-
-  @Autowired
-  private SettingsService settingsService;
 
   @Autowired
   private AccountService accountService;
@@ -101,8 +95,7 @@ public class AppViewModel {
   }
 
   private DateRange getInitialDateRange() {
-    var date = (LocalDate) settingsService.getProperty(LAST_LOGIN_DATE);
-    return getMonthBounds(date);
+    return getMonthBounds(AppContext.getUserSettings().getLastLoginDate());
   }
 
   private void modelChangeHandler() {
@@ -171,17 +164,13 @@ public class AppViewModel {
   private Account createDefaultAccount() {
     var account = Account.builder()
         .name(DEFAULT_GENERAL_ACCOUNT_NAME)
-        .currency(getPreferredCurrency())
+        .currency(AppContext.getUserSettings().getCurrency())
         .initialBalance(ZERO)
         .build();
 
     accountService.save(account);
 
     return account;
-  }
-
-  private Currency getPreferredCurrency() {
-    return (Currency) settingsService.getProperty(PREFERRED_CURRENCY);
   }
 
   public void initCategoryRoot() {

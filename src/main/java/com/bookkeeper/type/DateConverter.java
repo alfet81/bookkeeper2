@@ -13,7 +13,7 @@ public enum DateConverter {
   ISO_8601("yyyy-MM-dd"),
   US("MM/dd/yyyy");
 
-  private DateTimeFormatter formatter;
+  private final DateTimeFormatter formatter;
 
   DateConverter(String pattern) {
     formatter = ofPattern(pattern);
@@ -22,7 +22,7 @@ public enum DateConverter {
   private Optional<LocalDate> parse(String date) {
     try {
       return asOptional(LocalDate.parse(date, formatter));
-    } catch (Exception ignored) {}
+    } catch (Exception e) {}
 
     return empty();
   }

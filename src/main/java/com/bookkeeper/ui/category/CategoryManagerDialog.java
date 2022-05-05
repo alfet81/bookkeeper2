@@ -48,7 +48,7 @@ public class CategoryManagerDialog extends FxmlDialogPane {
 
   @Override
   protected String getFxmlResourceFile() {
-    return "/com/bookkeeper/ui/fxml/CategoryTreeTableView.fxml";
+    return "/com/bookkeeper/ui/fxml/category/CategoryTreeTableView.fxml";
   }
 
   @FXML

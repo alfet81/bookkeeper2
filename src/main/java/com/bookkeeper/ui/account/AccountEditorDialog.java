@@ -9,8 +9,8 @@ import javafx.scene.control.Dialog;
 
 public class AccountEditorDialog extends Dialog<Account> {
 
-  private AccountEditorDialogPane dialogPane;
   private Account account;
+  private AccountEditorDialogPane dialogPane;
 
   public AccountEditorDialog(Account account) {
     this.account = account;
@@ -18,11 +18,15 @@ public class AccountEditorDialog extends Dialog<Account> {
   }
 
   private void initDialog() {
+
     dialogPane = new AccountEditorDialogPane();
+
     dialogPane.setAccount(account);
 
     getDialogPane().setContent(dialogPane);
+
     getDialogPane().getButtonTypes().addAll(CANCEL, FINISH);
+
     setResultConverter();
   }
 

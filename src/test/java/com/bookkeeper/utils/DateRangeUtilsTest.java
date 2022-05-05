@@ -41,9 +41,16 @@ public class DateRangeUtilsTest {
   }
 
   @Test
+  public void testMonthBoundsWithCurrentMonthByDefault() {
+    DateRange monthBounds = getMonthBounds(TEST_DATE, null);
+    assertEquals(LocalDate.of(TEST_DATE.getYear(), DECEMBER, 1), monthBounds.getStartDate());
+    assertEquals(LocalDate.of(TEST_DATE.getYear(), DECEMBER, 31), monthBounds.getEndDate());
+  }
+
+  @Test
   public void testMonthBoundsWithOtherMonth() {
     LocalDate date = LocalDate.of(TEST_DATE.getYear(), JULY, 1);
-    DateRange monthBounds = getMonthBounds(date);
+    DateRange monthBounds = getMonthBounds(date, JULY);
     assertEquals(LocalDate.of(TEST_DATE.getYear(), JULY, 1), monthBounds.getStartDate());
     assertEquals(LocalDate.of(TEST_DATE.getYear(), JULY, 31), monthBounds.getEndDate());
   }

@@ -28,7 +28,7 @@ public class CategoryEditorDialogPane extends FxmlDialogPane {
 
   @Override
   protected String getFxmlResourceFile() {
-    return "/com/bookkeeper/ui/fxml/CategoryEditorView.fxml";
+    return "/com/bookkeeper/ui/fxml/category/CategoryEditorView.fxml";
   }
 
   @FXML

@@ -14,7 +14,7 @@ public enum CategoryColumn {
   AMOUNT("defaultAmount"),
   ICON("categoryIcon");
 
-  private String property;
+  private final String property;
 
   @Override
   public String toString() {

@@ -1,9 +1,8 @@
 package com.bookkeeper.utils;
 
-import static com.bookkeeper.type.CsvRecordColumn.optionalOf;
 import static com.bookkeeper.type.DateConverter.convert;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static java.util.Optional.empty;
 
@@ -27,7 +26,7 @@ public class CsvUtils {
   }
 
   public static Optional<CsvRecordColumn> getCsvRecordColumn(String columnName) {
-    return optionalOf(columnName);
+    return CsvRecordColumn.optionalOf(columnName);
   }
 
   public static Optional<LocalDate> string2Date(String value) {
@@ -35,8 +34,13 @@ public class CsvUtils {
   }
 
   public static Optional<BigDecimal> string2Decimal(String value) {
+
+    if (isEmpty(value)) {
+      return empty();
+    }
+
     try {
-      return isNotEmpty(value) ? asOptional(new BigDecimal(value)) : empty();
+      return asOptional(new BigDecimal(value));
     } catch (Exception e) {}
 
     return empty();

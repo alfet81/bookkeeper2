@@ -24,6 +24,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
@@ -36,14 +37,15 @@ import javax.persistence.Transient;
 @Entity
 @Builder
 @DynamicUpdate
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "accounts")
 @Inheritance(strategy = SINGLE_TABLE)
-@NoArgsConstructor @AllArgsConstructor
+@DiscriminatorColumn(name = "entity_type")
 @ToString(callSuper = true, exclude = {"parent"})
-@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 public class Account extends BaseEntity implements TreeNode<Account> {
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "fk_accounts_parent_id"))
   protected Account parent;
 

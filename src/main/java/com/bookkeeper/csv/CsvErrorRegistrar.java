@@ -16,13 +16,13 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-class CsvErrorRegister {
+class CsvErrorRegistrar {
 
   private static final Set<CsvRecordColumn> CSV_COLUMNS = EnumSet.of(DATE, AMOUNT, NOTES);
 
   private final Map<CsvRecordColumn, Set<String>> errors = new EnumMap<>(CsvRecordColumn.class);
 
-  CsvErrorRegister() {
+  CsvErrorRegistrar() {
     for (CsvRecordColumn column : CSV_COLUMNS) {
       errors.put(column, new LinkedHashSet<>());
     }

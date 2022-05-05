@@ -11,7 +11,6 @@ import static com.bookkeeper.utils.CsvUtils.getColumnValue;
 import static com.bookkeeper.utils.CsvUtils.getCsvRecordColumn;
 import static com.bookkeeper.utils.CsvUtils.string2Date;
 import static com.bookkeeper.utils.CsvUtils.string2Decimal;
-import static com.bookkeeper.utils.MiscUtils.asOptional;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 import com.bookkeeper.domain.entry.Entry;
@@ -37,7 +36,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Scope(SCOPE_PROTOTYPE)
-@ToString(of = {"date", "amount", "notes", "status", "errors", "entry"})
+@ToString(of = {"date", "amount", "notes"})
 public class CsvRecordEntry {
 
   private static final Set<CsvRecordColumn> COLUMNS = EnumSet.of(DATE, AMOUNT, NOTES);
@@ -52,10 +51,6 @@ public class CsvRecordEntry {
   @Size(max = 255, message = "Notes exceeds 255 chars")
   private String notes;
 
-  private CsvRecordStatus status;
-
-  private String errors;
-
   private final Entry entry = new Entry();
 
   @Autowired
@@ -63,7 +58,7 @@ public class CsvRecordEntry {
   private Validator validator;
 
   @Getter(AccessLevel.NONE)
-  private final CsvErrorRegister errorRegister = new CsvErrorRegister();
+  private CsvErrorRegistrar errorRegister;
 
   @SuppressWarnings("ConstantConditions")
   public CsvRecordEntry(CSVRecord csvRecord) {
@@ -76,11 +71,18 @@ public class CsvRecordEntry {
     reset();
     validate();
     parse();
-    setStatus();
+  }
+
+  public String getErrors() {
+    return errorRegister != null ? errorRegister.getErrors() : null;
+  }
+
+  public CsvRecordStatus getStatus() {
+    return errorRegister != null ? (errorRegister.hasErrors() ? ERROR : OK) : null;
   }
 
   private void reset() {
-    errorRegister.clear();
+    errorRegister = new CsvErrorRegistrar();
   }
 
   private void validate() {
@@ -120,21 +122,18 @@ public class CsvRecordEntry {
   }
 
   private void parseDate() {
-    asOptional(date).ifPresent(value ->
-      string2Date(value).ifPresentOrElse(entry::setDate, this::addInvalidDateError));
+    if (date != null) {
+      string2Date(date).ifPresentOrElse(entry::setDate, this::addInvalidDateError);
+    }
   }
 
   private void parseAmount() {
-    asOptional(amount).ifPresent(value ->
-        string2Decimal(value).ifPresentOrElse(entry::setAmount, this::addInvalidAmountError));
+    if (amount != null) {
+      string2Decimal(amount).ifPresentOrElse(entry::setAmount, this::addInvalidAmountError);
+    }
   }
 
   private void setNotes() {
     entry.setNotes(notes);
-  }
-
-  private void setStatus() {
-    setStatus(errorRegister.hasErrors() ? ERROR : OK);
-    setErrors(errorRegister.getErrors());
   }
 }

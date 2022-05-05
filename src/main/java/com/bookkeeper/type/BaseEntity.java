@@ -13,8 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+@Getter
+@Setter
 @ToString
-@Getter @Setter
 @MappedSuperclass
 @NoArgsConstructor
 public abstract class BaseEntity implements Serializable {

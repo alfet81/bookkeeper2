@@ -2,7 +2,7 @@ package com.bookkeeper.domain.category;
 
 import static java.util.Collections.singletonList;
 
-import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.exceptions.ApplicationException;
 import com.bookkeeper.domain.entry.EntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +27,14 @@ public class CategoryService {
     boolean isNotEmpty = !category.getChildren().isEmpty();
 
     if (isFolder && isNotEmpty) {
-      throw new BookkeeperException("Can't delete folder. Delete its content first.");
+      throw new ApplicationException("Can't delete folder. Delete its content first.");
     }
 
     if (!isFolder) {
       boolean hasEntries = !entryRepository.findByCategoryIn(singletonList(category)).isEmpty();
 
       if (hasEntries) {
-        throw new BookkeeperException("Can't delete category. Delete its entries first.");
+        throw new ApplicationException("Can't delete category. Delete its entries first.");
       }
     }
 

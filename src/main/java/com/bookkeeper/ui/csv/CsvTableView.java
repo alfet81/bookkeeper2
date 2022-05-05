@@ -8,7 +8,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 import com.bookkeeper.csv.CsvRecordEntry;
-import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.exceptions.ApplicationException;
 import com.bookkeeper.type.CsvRecordColumn;
 import com.bookkeeper.type.CsvRecordStatus;
 
@@ -147,7 +147,7 @@ class CsvTableView extends TableView<CsvRecordEntry> {
       case DATE: return CsvRecordEntry::setDate;
       case AMOUNT: return CsvRecordEntry::setAmount;
       case NOTES: return CsvRecordEntry::setNotes;
-      default: throw new BookkeeperException("Unsupported column type");
+      default: throw new ApplicationException("Unsupported column type");
     }
   }
 }

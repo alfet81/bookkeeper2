@@ -1,6 +1,6 @@
 package com.bookkeeper.common;
 
-import com.bookkeeper.mvc.model.AppViewModel;
+import com.bookkeeper.domain.settings.UserSettings;
 import com.bookkeeper.domain.settings.SettingsService;
 
 import org.springframework.beans.BeansException;
@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import java.time.LocalDate;
+import javax.annotation.PreDestroy;
 
 @Component
 public class AppContext implements ApplicationContextAware {
@@ -16,20 +18,24 @@ public class AppContext implements ApplicationContextAware {
 
   private static SettingsService settingsService;
 
-  private static AppViewModel appViewModel;
+  private static UserSettings userSettings;
 
   @Autowired
-  private AppContext(SettingsService settingsService, AppViewModel appViewModel) {
+  private AppContext(SettingsService settingsService) {
     AppContext.settingsService = settingsService;
-    AppContext.appViewModel = appViewModel;
   }
 
-  public static AppViewModel getAppViewModel() {
-    return appViewModel;
+  public static UserSettings getUserSettings() {
+
+    if (userSettings == null) {
+      userSettings = settingsService.getUserSettings();
+    }
+
+    return userSettings;
   }
 
-  public static SettingsService getSettingsService() {
-    return settingsService;
+  public void saveUserSettings() {
+    settingsService.saveUserSettings(getUserSettings());
   }
 
   @Override
@@ -43,5 +49,19 @@ public class AppContext implements ApplicationContextAware {
 
   public static <T> T getBean(Class<T> beanClass, Object...args) {
     return springAppContext.getBean(beanClass, args);
+  }
+
+  @PreDestroy
+  public void destroy() {
+
+    System.out.println("Destroying app context.");
+
+    var settings = getUserSettings();
+
+    System.out.println(settings);
+
+    settings.setLastLoginDate(LocalDate.now());
+
+    saveUserSettings();
   }
 }

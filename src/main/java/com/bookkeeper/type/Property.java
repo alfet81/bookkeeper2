@@ -11,6 +11,7 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.function.Function;
 
+@Deprecated
 @Getter
 @AllArgsConstructor
 public enum Property {

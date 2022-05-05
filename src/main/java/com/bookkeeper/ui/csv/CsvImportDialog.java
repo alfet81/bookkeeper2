@@ -16,6 +16,7 @@ import com.bookkeeper.domain.account.Account;
 import com.bookkeeper.domain.account.AccountGroup;
 import com.bookkeeper.domain.entry.Entry;
 import com.bookkeeper.type.CsvRecordStatus;
+import com.bookkeeper.ui.controls.AccountSelectorBox;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
@@ -35,7 +38,7 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
 
   private List<CsvRecordEntry> csvRecords;
 
-  private ComboBox<Account> accountComboBox;
+  private HBox accountSelectorBox;
 
   private CsvTableView csvTableView;
 
@@ -64,32 +67,42 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   }
 
   private Pane buildContentPane() {
+
+    var accountPane = buildAccountSelectorPane();
+
     csvTableView = buildCsvTableView();
+
     var tablePane = new ScrollPane(csvTableView);
-    var comboBoxPane = buildComboBoxPane();
-    return new VBox(comboBoxPane, tablePane);
+
+    return new VBox(accountPane, tablePane);
   }
 
-  private Pane buildComboBoxPane() {
+  private Pane buildAccountSelectorPane() {
 
     var accountLabel = new Label("Account:");
 
-    accountComboBox = buildAccountComboBox();
+    accountSelectorBox = new AccountSelectorBox(); //buildAccountSelectorBox();
 
     var pane = new FlowPane();
 
     pane.getChildren().add(accountLabel);
-    pane.getChildren().add(accountComboBox);
+    pane.getChildren().add(accountSelectorBox);
 
     return pane;
   }
 
-  private ComboBox<Account> buildAccountComboBox() {
+  private HBox buildAccountSelectorBox() {
+
+    TextField field = new TextField();
+
     var comboBox = new ComboBox<>(getAccountComboBoxModel());
+
     //comboBox.valueProperty().addListener();
     var account = new AccountGroup();// getCurrentAccount();
+
     //System.out.println(account);
     comboBox.getSelectionModel().select(account);
+
     comboBox.setConverter(new StringConverter<>() {
       @Override
       public String toString(Account value) {
@@ -101,7 +114,8 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
         return null;
       }
     });
-    return comboBox;
+
+    return null;
   }
 
   private CsvTableView buildCsvTableView() {
@@ -159,6 +173,6 @@ public class CsvImportDialog extends Dialog<List<Entry>> {
   }
 
   private Account getSelectedAccount() {
-    return accountComboBox.getSelectionModel().getSelectedItem();
+    return null;
   }
 }

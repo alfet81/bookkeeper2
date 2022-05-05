@@ -8,7 +8,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public enum EntryType {
   DEBIT("Income"),
-  CREDIT("Expense");
+  CREDIT("Expense"),
+  UNCATEGORIZED("Uncategorized");
 
   private String text;
 

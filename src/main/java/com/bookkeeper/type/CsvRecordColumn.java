@@ -19,10 +19,10 @@ public enum CsvRecordColumn {
   NOTES(120, true, true, true),
   ERRORS(200, false, false, true);
 
-  private int defaultWidth;
-  private boolean editable;
-  private boolean sortable;
-  private boolean resizable;
+  private final int defaultWidth;
+  private final boolean editable;
+  private final boolean sortable;
+  private final boolean resizable;
 
   @Override
   public String toString() {

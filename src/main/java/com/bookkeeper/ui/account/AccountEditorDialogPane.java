@@ -27,7 +27,7 @@ public class AccountEditorDialogPane extends FxmlDialogPane {
 
   @Override
   protected String getFxmlResourceFile() {
-    return "/com/bookkeeper/ui/fxml/AccountEditorView.fxml";
+    return "/com/bookkeeper/ui/fxml/account/AccountEditorView.fxml";
   }
 
   @FXML

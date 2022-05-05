@@ -2,23 +2,22 @@ package com.bookkeeper.ui.model;
 
 import com.bookkeeper.type.TreeNode;
 
+import java.util.Objects;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
 
-  static Image folderCollapseImage = new Image("/images/folder_col.png");
-  static Image folderExpandImage = new Image("/images/folder_exp.png");
-
-  private T item;
+  private static final Image FOLDER_COLLAPSE_IMAGE = new Image("/images/folder_col.png");
+  private static final Image FOLDER_EXPAND_IMAGE = new Image("/images/folder_exp.png");
 
   public TreeNodeItem(T item) {
+
     super(item);
-    this.item = item;
 
     if (!item.isLeaf()) {
-      setGraphic(new ImageView(folderCollapseImage));
+      setGraphic(new ImageView(FOLDER_COLLAPSE_IMAGE));
     }
 
     addEventHandler(TreeItem.branchExpandedEvent(), handler -> {
@@ -29,7 +28,7 @@ public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
 
         ImageView iv = (ImageView) source.getGraphic();
 
-        iv.setImage(folderExpandImage);
+        iv.setImage(FOLDER_EXPAND_IMAGE);
 
       }
     });
@@ -42,13 +41,34 @@ public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
 
         ImageView iv = (ImageView) source.getGraphic();
 
-        iv.setImage(folderCollapseImage);
+        iv.setImage(FOLDER_COLLAPSE_IMAGE);
       }
     });
   }
 
   @Override
   public boolean isLeaf() {
-    return item.isLeaf();
+    return getValue().isLeaf();
+  }
+
+  @Override
+  public int hashCode() {
+    return getValue() != null ? getValue().hashCode() : super.hashCode();
+  }
+
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof TreeNodeItem)) {
+      return false;
+    }
+
+    TreeNodeItem other = (TreeNodeItem) obj;
+
+    if (this.getValue() == null || other.getValue() == null) {
+      return false;
+    }
+
+    return Objects.equals(this.getValue(), other.getValue());
   }
 }

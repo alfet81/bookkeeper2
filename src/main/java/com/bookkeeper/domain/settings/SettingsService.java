@@ -1,61 +1,84 @@
 package com.bookkeeper.domain.settings;
 
-import static com.bookkeeper.type.Property.LAST_LOGIN_DATE;
-import static com.bookkeeper.utils.DateTimeUtils.date2String;
 import static com.bookkeeper.utils.MiscUtils.asOptional;
-import static java.time.LocalDate.now;
-import static java.util.stream.Collectors.toMap;
 
-import com.bookkeeper.type.Property;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.EnumMap;
-import java.util.Map;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 
 @Service
 public class SettingsService {
 
-  @Autowired
-  private SettingsRepository settingsRepository;
+  private static final String USER_SETTINGS_FILE_NAME = "settings.dat";
 
-  private Map<Property, String> settingsCache;
-
-  @PostConstruct
-  void init() {
-    settingsCache = getAllSettings();
+  public UserSettings getUserSettings() {
+    return load().orElseGet(SettingsService::buildDefaultUserSettings);
   }
 
-  public Map<Property, String> getAllSettings() {
-    return settingsRepository.findAll().stream()
-        .collect(toMap(
-            Settings::getProperty,
-            Settings::getValue,
-            (s1,s2) -> s1,
-            () -> new EnumMap<>(Property.class)));
+  public void saveUserSettings(UserSettings userSettings) {
+
+    String filePath = getUserSettingsFilePath();
+    String fileName = getUserSettingsFileName();
+
+    System.out.println("Saving settings into " + fileName);
+
+    File fileFolder = new File(filePath);
+
+    if (!fileFolder.exists()) {
+      fileFolder.mkdir();
+    }
+
+    try(var objOutput = new ObjectOutputStream(new FileOutputStream(fileName))) {
+
+      System.out.println(userSettings);
+
+      objOutput.writeObject(userSettings);
+
+    } catch (IOException e) {
+      System.out.println(e);
+      //TODO: add logging
+    }
   }
 
-  public void save(Settings settings) {
-    settingsRepository.save(settings);
+  private Optional<UserSettings> load() {
+
+    try(var objInput = new ObjectInputStream(new FileInputStream(getUserSettingsFileName()))) {
+
+      var settings = (UserSettings) objInput.readObject();
+
+      return asOptional(settings);
+
+    } catch (IOException | ClassNotFoundException e) {
+      //TODO: add logging
+    }
+    return Optional.empty();
   }
 
-  public void delete(Settings settings) {
-    settingsRepository.delete(settings);
+  private static UserSettings buildDefaultUserSettings() {
+
+    String dbFilePath = System.getProperty("user.home") + "/bookkeeper";
+
+    return UserSettings.builder()
+        .locale(Locale.getDefault())
+        .currency(Currency.getInstance(Locale.getDefault()))
+        .lastLoginDate(LocalDate.now())
+        .dbFilePath(dbFilePath)
+        .build();
   }
 
-  public Optional<Settings> findByProperty(Property property) {
-    return settingsRepository.findByProperty(property);
+  private static String getUserSettingsFilePath() {
+    return System.getProperty("user.home") + "/bookkeeper";
   }
 
-  public Object getProperty(Property property) {
-    return asOptional(settingsCache.get(property)).map(property::convertValue)
-        .orElse(property.getDefaultValue());
-  }
-
-  public void recordLoginDate() {
-    var setting = new Settings(LAST_LOGIN_DATE, date2String(now()));
-    save(setting);
+  private static String getUserSettingsFileName() {
+    return getUserSettingsFilePath() + "/" + USER_SETTINGS_FILE_NAME;
   }
 }

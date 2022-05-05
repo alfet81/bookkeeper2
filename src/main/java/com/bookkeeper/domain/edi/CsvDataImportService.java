@@ -5,7 +5,7 @@ import static org.apache.commons.csv.CSVParser.parse;
 import static java.util.stream.Collectors.toList;
 
 import com.bookkeeper.csv.CsvRecordEntry;
-import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.exceptions.ApplicationException;
 
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CsvDataImportService {
     try {
       return readCsvFile(new FileReader(file));
     } catch (IOException e) {
-      throw new BookkeeperException("Failed to import CSV file. " + e.getMessage());
+      throw new ApplicationException("Failed to import CSV file. " + e.getMessage());
     }
   }
 

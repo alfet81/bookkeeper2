@@ -14,7 +14,7 @@ public enum AccountColumn {
   BALANCE("initialBalance"),
   ICON("accountIcon");
 
-  private String property;
+  private final String property;
 
   @Override
   public String toString() {

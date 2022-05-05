@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
@@ -34,16 +34,17 @@ import javax.persistence.Transient;
 
 @Entity
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "categories")
 @Inheritance(strategy = SINGLE_TABLE)
 @AllArgsConstructor(access = PROTECTED)
+@DiscriminatorColumn(name = "entity_type")
 @ToString(callSuper = true, exclude = {"parent"})
-@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 public class Category extends BaseEntity implements TreeNode<Category> {
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "fk_categories_parent_id"))
   protected Category parent;
 

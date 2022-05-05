@@ -9,5 +9,5 @@ public enum CsvRecordStatus {
   OK("/images/ok_icon.jpg"),
   ERROR("/images/error_icon.png");
 
-  private String imagePath;
+  private final String imagePath;
 }

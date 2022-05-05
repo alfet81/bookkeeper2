@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public enum CurrencyUnit {
   USD, EUR, RUB;
 
-  private Currency currency;
+  private final Currency currency;
 
   CurrencyUnit() {
     currency = Currency.getInstance(name());

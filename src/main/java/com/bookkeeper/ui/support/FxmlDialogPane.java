@@ -1,6 +1,6 @@
 package com.bookkeeper.ui.support;
 
-import com.bookkeeper.exceptions.BookkeeperException;
+import com.bookkeeper.exceptions.ApplicationException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +17,7 @@ public abstract class FxmlDialogPane extends AnchorPane implements Initializable
       loader.setController(this);
       loader.load();
     } catch (IOException e) {
-      throw new BookkeeperException(e);
+      throw new ApplicationException(e);
     }
   }
 

@@ -20,7 +20,7 @@ public class FactoryConfig {
 
   @Bean
   @Scope(SCOPE_PROTOTYPE)
-  private CsvRecordEntry buildCsvRecordEntry(CSVRecord csvRecord) {
+  protected CsvRecordEntry buildCsvRecordEntry(CSVRecord csvRecord) {
     return new CsvRecordEntry(csvRecord);
   }
 }
