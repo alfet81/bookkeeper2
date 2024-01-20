@@ -4,7 +4,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
-import com.bookkeeper.type.TreeNode;
+import com.bookkeeper.common.entity.TreeNode;
 import com.bookkeeper.ui.model.TreeNodeItem;
 
 import java.util.Collection;

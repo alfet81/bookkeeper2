@@ -3,7 +3,7 @@ package com.bookkeeper.ui.common;
 import static javafx.scene.control.ButtonType.CANCEL;
 import static javafx.scene.control.ButtonType.FINISH;
 
-import com.bookkeeper.type.TreeNode;
+import com.bookkeeper.common.entity.TreeNode;
 import com.bookkeeper.ui.model.TreeNodeItem;
 
 import javafx.scene.control.Dialog;
@@ -13,9 +13,9 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-public class TreeViewDialog<T extends TreeNode<T>> extends Dialog<T> {
+public class TreeViewDialog<T extends TreeNode<?>> extends Dialog<T> {
 
-  private TreeView<T> treeView;
+  private final TreeView<T> treeView;
 
   public TreeViewDialog(String title, TreeItem<T> treeRoot) {
 
@@ -23,11 +23,19 @@ public class TreeViewDialog<T extends TreeNode<T>> extends Dialog<T> {
 
     treeView = new TreeView<>(treeRoot);
 
+    treeView.setShowRoot(true);
+
     getDialogPane().setContent(buildContentPane());
 
     getDialogPane().getButtonTypes().addAll(CANCEL, FINISH);
 
     setResultConverter();
+  }
+
+  public TreeViewDialog(String title, TreeItem<T> treeRoot, boolean showRoot) {
+    this(title, treeRoot);
+
+    treeView.setShowRoot(showRoot);
   }
 
   public void setSelectedItem(T item) {

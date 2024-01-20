@@ -1,11 +1,11 @@
 package com.bookkeeper.repository;
 
-import static com.bookkeeper.type.EntryType.CREDIT;
-import static com.bookkeeper.type.EntryType.DEBIT;
+import static com.bookkeeper.entry.model.EntryType.CREDIT;
+import static com.bookkeeper.entry.model.EntryType.DEBIT;
 
-import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.domain.category.Category;
-import com.bookkeeper.domain.category.CategoryGroup;
+import com.bookkeeper.account.entity.Account;
+import com.bookkeeper.category.entity.Category;
+import com.bookkeeper.category.entity.CategoryGroup;
 
 public class BaseRepositoryTest {
 

@@ -8,13 +8,17 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
-public class MiscUtils {
+public final class MiscUtils {
+
+  private MiscUtils() {
+  }
 
   public static Optional<Currency> getCurrency(String currencyCode) {
     try {
       return asOptional(Currency.getInstance(currencyCode));
-    } catch (Exception e) {}
-    return empty();
+    } catch (Exception ignored) {
+      return empty();
+    }
   }
 
   public static Currency getDefaultCurrency() {

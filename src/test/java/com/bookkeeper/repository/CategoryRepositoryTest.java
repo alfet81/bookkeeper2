@@ -1,24 +1,26 @@
 package com.bookkeeper.repository;
 
-import com.bookkeeper.domain.category.Category;
-import com.bookkeeper.domain.category.CategoryGroup;
-import com.bookkeeper.domain.category.CategoryRepository;
+import static com.bookkeeper.entry.model.EntryType.CREDIT;
+import static com.bookkeeper.entry.model.EntryType.DEBIT;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.bookkeeper.category.entity.Category;
+import com.bookkeeper.category.entity.CategoryGroup;
+import com.bookkeeper.category.repo.CategoryRepository;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 import java.util.function.Predicate;
-import static com.bookkeeper.type.EntryType.CREDIT;
-import static com.bookkeeper.type.EntryType.DEBIT;
-import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class CategoryRepositoryTest extends BaseRepositoryTest {
 
   @Autowired
@@ -29,9 +31,9 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
 
   private Category rootCategory;
 
-  private static Predicate<Category> hasNoParent = ctg -> ctg.getParent() == null;
+  private static final Predicate<Category> HAS_NO_PARENT = ctg -> ctg.getParent() == null;
 
-  @Before
+  @BeforeEach
   public void initTestData() {
     rootCategory = buildCategoryTree();
   }
@@ -45,7 +47,7 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
     List<Category> found = categoryRepository.findAll();
 
     //then
-    Category actualRoot = found.stream().filter(hasNoParent).findAny().orElseThrow(() ->
+    Category actualRoot = found.stream().filter(HAS_NO_PARENT).findAny().orElseThrow(() ->
     new RuntimeException("Category root not fond"));
 
     assertThat(actualRoot).isEqualTo(rootCategory);
@@ -59,7 +61,7 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
     //when
     List<Category> found = categoryRepository.findAll();
 
-    Category actualRoot = found.stream().filter(hasNoParent).findAny().orElseThrow(() ->
+    Category actualRoot = found.stream().filter(HAS_NO_PARENT).findAny().orElseThrow(() ->
     new RuntimeException("Category root not fond"));
 
     //then
@@ -74,7 +76,7 @@ public class CategoryRepositoryTest extends BaseRepositoryTest {
     //when
     List<Category> found = categoryRepository.findAll();
 
-    Category actualRoot = found.stream().filter(hasNoParent).findAny().orElseThrow(() ->
+    Category actualRoot = found.stream().filter(HAS_NO_PARENT).findAny().orElseThrow(() ->
     new RuntimeException("Category root not fond"));
 
     //then

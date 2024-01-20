@@ -1,21 +1,21 @@
 package com.bookkeeper.service;
 
 import com.bookkeeper.config.CsvLoaderTestConfig;
-import com.bookkeeper.domain.edi.CsvDataImportService;
+import com.bookkeeper.csv.service.CsvDataImportService;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import(CsvLoaderTestConfig.class)
 public class CsvImportServiceTest {
 

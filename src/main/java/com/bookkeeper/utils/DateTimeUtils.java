@@ -5,7 +5,10 @@ import static com.bookkeeper.common.AppConstants.SHORT_DATE_FORMATTER;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class DateTimeUtils {
+public final class DateTimeUtils {
+
+  private DateTimeUtils() {
+  }
 
   public static Date convert2LegacyDate(LocalDate date) {
     return date != null ? new Date(date.toEpochDay()) : null;
@@ -19,7 +22,7 @@ public class DateTimeUtils {
     try {
       return LocalDate.parse(date, SHORT_DATE_FORMATTER);
     } catch (Exception e) {
+      return null;
     }
-    return null;
   }
 }

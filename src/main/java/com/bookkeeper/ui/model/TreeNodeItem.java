@@ -1,13 +1,13 @@
 package com.bookkeeper.ui.model;
 
-import com.bookkeeper.type.TreeNode;
+import com.bookkeeper.common.entity.TreeNode;
 
 import java.util.Objects;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
+public class TreeNodeItem<T extends TreeNode<?>> extends TreeItem<T> {
 
   private static final Image FOLDER_COLLAPSE_IMAGE = new Image("/images/folder_col.png");
   private static final Image FOLDER_EXPAND_IMAGE = new Image("/images/folder_exp.png");
@@ -22,26 +22,25 @@ public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
 
     addEventHandler(TreeItem.branchExpandedEvent(), handler -> {
 
-      TreeNodeItem source = (TreeNodeItem) handler.getSource();
+      var source = (TreeItem<?>) handler.getSource();
 
       if(!source.isLeaf() && source.isExpanded()) {
 
-        ImageView iv = (ImageView) source.getGraphic();
+        var imageView = (ImageView) source.getGraphic();
 
-        iv.setImage(FOLDER_EXPAND_IMAGE);
-
+        imageView.setImage(FOLDER_EXPAND_IMAGE);
       }
     });
 
     addEventHandler(TreeItem.branchCollapsedEvent(), handler -> {
 
-      TreeNodeItem source = (TreeNodeItem) handler.getSource();
+      var source = (TreeItem<?>) handler.getSource();
 
       if(!source.isLeaf() && !source.isExpanded()) {
 
-        ImageView iv = (ImageView) source.getGraphic();
+        var imageView = (ImageView) source.getGraphic();
 
-        iv.setImage(FOLDER_COLLAPSE_IMAGE);
+        imageView.setImage(FOLDER_COLLAPSE_IMAGE);
       }
     });
   }
@@ -59,11 +58,10 @@ public class TreeNodeItem<T extends TreeNode> extends TreeItem<T> {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof TreeNodeItem)) {
+
+    if (!(obj instanceof TreeNodeItem<?> other)) {
       return false;
     }
-
-    TreeNodeItem other = (TreeNodeItem) obj;
 
     if (this.getValue() == null || other.getValue() == null) {
       return false;

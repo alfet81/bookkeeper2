@@ -3,7 +3,6 @@ package com.bookkeeper.exceptions;
 public class ApplicationException extends RuntimeException {
 
   public ApplicationException() {
-    super();
   }
 
   public ApplicationException(String message) {

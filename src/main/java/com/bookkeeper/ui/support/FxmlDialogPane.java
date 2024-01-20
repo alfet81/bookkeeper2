@@ -10,14 +10,18 @@ import java.net.URL;
 
 public abstract class FxmlDialogPane extends AnchorPane implements Initializable {
 
+
   protected FxmlDialogPane() {
     try {
+
       var loader = new FXMLLoader(getResourceURL());
+
       loader.setRoot(this);
       loader.setController(this);
       loader.load();
+
     } catch (IOException e) {
-      throw new ApplicationException(e);
+      throw new ApplicationException("Failed to load FXML Dialog Pane.", e);
     }
   }
 

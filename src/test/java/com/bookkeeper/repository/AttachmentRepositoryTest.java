@@ -1,29 +1,29 @@
 package com.bookkeeper.repository;
 
-import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.domain.attachment.Attachment;
-import com.bookkeeper.domain.attachment.AttachmentRepository;
-import com.bookkeeper.domain.category.Category;
-import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.type.EntryType;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.bookkeeper.account.entity.Account;
+import com.bookkeeper.attachment.entity.Attachment;
+import com.bookkeeper.attachment.repo.AttachmentRepository;
+import com.bookkeeper.category.entity.Category;
+import com.bookkeeper.entry.entity.Entry;
+import com.bookkeeper.entry.model.EntryType;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-@RunWith(SpringRunner.class)
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class AttachmentRepositoryTest extends BaseRepositoryTest {
 
   @Autowired
@@ -36,14 +36,19 @@ public class AttachmentRepositoryTest extends BaseRepositoryTest {
 
   private Entry entry;
 
-  @Before
+  @BeforeEach
   public void initTestData() {
+
     account = getTestAccount();
+
     category = getTestCategory();
+
     entry = getTestEntry(account, category);
 
     entityManager.persistAndFlush(account);
+
     entityManager.persistAndFlush(category);
+
     entityManager.persistAndFlush(entry);
   }
 

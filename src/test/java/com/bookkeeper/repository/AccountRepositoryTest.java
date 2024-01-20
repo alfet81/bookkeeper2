@@ -1,19 +1,21 @@
 package com.bookkeeper.repository;
 
-import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.domain.account.AccountRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.bookkeeper.account.entity.Account;
+import com.bookkeeper.account.repo.AccountRepository;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class AccountRepositoryTest extends BaseRepositoryTest {
 
   @Autowired
@@ -22,9 +24,11 @@ public class AccountRepositoryTest extends BaseRepositoryTest {
   @Autowired
   private AccountRepository accountRepository;
 
-  @Before
+  @BeforeEach
   public void initData() {
+
     Account account = getTestAccount();
+
     entityManager.persistAndFlush(account);
   }
 

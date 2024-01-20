@@ -2,7 +2,7 @@ package com.bookkeeper.config;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-import com.bookkeeper.csv.CsvRecordEntry;
+import com.bookkeeper.csv.model.CsvRecordEntry;
 
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.context.annotation.Bean;

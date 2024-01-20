@@ -1,16 +1,20 @@
 package com.bookkeeper;
 
-import com.bookkeeper.domain.account.Account;
-import com.bookkeeper.domain.category.Category;
-import com.bookkeeper.domain.category.CategoryGroup;
-import com.bookkeeper.domain.entry.Entry;
-import com.bookkeeper.type.EntryType;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.bookkeeper.account.entity.Account;
+import com.bookkeeper.category.entity.Category;
+import com.bookkeeper.category.entity.CategoryGroup;
+import com.bookkeeper.entry.entity.Entry;
+import com.bookkeeper.entry.model.EntryType;
+
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Locale;
-import static org.junit.Assert.assertEquals;
+
 
 public class LombokBuilderTests {
 
