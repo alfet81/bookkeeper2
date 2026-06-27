@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1755930545795-1
+      author: alfet
+      objectQuotingStrategy: QUOTE_ALL_OBJECTS
+      changes:
+        - createTable:
+            tableName: accounts
+            schemaName: data
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_accounts
+              - column:
+                  name: parent_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_code
+                  type: VARCHAR(3)
+              - column:
+                  name: initial_balance
+                  type: DECIMAL(10, 2)
+              - column:
+                  name: icon_type
+                  type: VARCHAR(100)
+        - addForeignKeyConstraint:
+            constraintName: fk_accounts_parent_id
+            baseTableName: accounts
+            baseTableSchemaName: data
+            baseColumnNames: parent_id
+            referencedTableName: accounts
+            referencedTableSchemaName: data
+            referencedColumnNames: id
+

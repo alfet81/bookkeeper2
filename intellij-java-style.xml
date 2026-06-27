@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<code_scheme name="CustomStyle">
+<code_scheme name="CustomCodeStyle">
   <option name="OTHER_INDENT_OPTIONS">
     <value>
       <option name="INDENT_SIZE" value="2" />
@@ -22,16 +22,18 @@
     <value>
       <package name="com.bookkeeper" withSubpackages="true" static="true" />
       <package name="" withSubpackages="true" static="true" />
+      <package name="javafx" withSubpackages="true" static="true" />
       <package name="javax" withSubpackages="true" static="true" />
       <package name="java" withSubpackages="true" static="true" />
       <emptyLine />
       <package name="com.bookkeeper" withSubpackages="true" static="false" />
       <package name="" withSubpackages="true" static="false" />
+      <package name="javafx" withSubpackages="true" static="false" />
       <package name="javax" withSubpackages="true" static="false" />
       <package name="java" withSubpackages="true" static="false" />
     </value>
   </option>
-  <option name="RIGHT_MARGIN" value="100" />
+  <option name="RIGHT_MARGIN" value="120" />
   <option name="JD_ALIGN_PARAM_COMMENTS" value="false" />
   <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false" />
   <option name="JD_P_AT_EMPTY_LINES" value="false" />

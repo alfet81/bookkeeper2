@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1755930545795-6
+      author: alfet
+      objectQuotingStrategy: QUOTE_ALL_OBJECTS
+      changes:
+        - createTable:
+            tableName: entry_labels
+            schemaName: data
+            columns:
+              - column:
+                  name: entry_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: label_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            constraintName: pk_entry_labels
+            schemaName: data
+            tableName: entry_labels
+            columnNames: entry_id, label_id
+        - addForeignKeyConstraint:
+            constraintName: fk_entry_labels_entry_id
+            baseTableName: entry_labels
+            baseTableSchemaName: data
+            baseColumnNames: entry_id
+            referencedTableName: entries
+            referencedTableSchemaName: data
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_entry_labels_label_id
+            baseTableName: entry_labels
+            baseTableSchemaName: data
+            baseColumnNames: label_id
+            referencedTableName: labels
+            referencedTableSchemaName: data
+            referencedColumnNames: id
+

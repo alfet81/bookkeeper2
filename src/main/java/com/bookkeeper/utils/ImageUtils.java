@@ -1,32 +1,21 @@
 package com.bookkeeper.utils;
 
-import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import com.bookkeeper.common.exception.ApplicationException;
+import lombok.experimental.UtilityClass;
 
-import com.bookkeeper.exceptions.ApplicationException;
 import javafx.scene.image.Image;
-import javax.imageio.ImageIO;
 
-import java.io.IOException;
+@UtilityClass
+public class ImageUtils {
 
-public final class ImageUtils {
+  public static Image createImage(String imagePath) {
 
-  private ImageUtils() {
-  }
+    var imageUrl = ImageUtils.class.getResource(imagePath);
 
-  public static Image loadImage(String imagePath) {
-
-    try {
-
-      var bufferedImage = ImageIO.read(ImageUtils.class.getResource(imagePath));
-
-      var writableImage = toFXImage(bufferedImage, null);
-
-      if (writableImage.isError()) {
-        throw new ApplicationException(writableImage.getException());
-      }
-      return writableImage;
-    } catch (IOException e) {
-      throw new ApplicationException(e);
+    if (imageUrl != null) {
+      return new Image(imageUrl.toExternalForm());
     }
+
+    throw new ApplicationException("Failed to load image with path: " + imagePath);
   }
 }

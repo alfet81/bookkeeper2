@@ -1,0 +1,33 @@
+spring:
+  main:
+    banner-mode: off
+  test:
+    database:
+      replace: none
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS data;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        default_schema: data
+    show-sql: true
+    generate-ddl: true
+
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yml
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;INIT=CREATE SCHEMA IF NOT EXISTS data;CASE_INSENSITIVE_IDENTIFIERS=TRUE;
+    driverClassName: org.h2.Driver
+    user: sa
+    password:
+    default-schema: data
+    database-change-log-lock-table: database_changelog_lock
+    database-change-log-table: database_changelog
+    drop-first: true

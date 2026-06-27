@@ -1,7 +1,7 @@
 package com.bookkeeper.label.service;
 
-import com.bookkeeper.label.entity.Label;
-import com.bookkeeper.label.repo.LabelRepository;
+import com.bookkeeper.label.jpa.Label;
+import com.bookkeeper.label.jpa.LabelRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

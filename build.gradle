@@ -1,85 +1,135 @@
 buildscript {
-  ext {
-    springBootVersion = '2.7.5'
-  }
+    ext {
+        springBootVersion = '3.5.5'
+    }
+    dependencies {
+        classpath 'org.liquibase:liquibase-gradle-plugin:3.0.2'
+        classpath 'org.liquibase:liquibase-core:4.30.0'
+    }
 }
 
 plugins {
-  id 'application'
-  id 'org.gradle.wrapper'
-  id 'org.gradle.java'
-  id 'org.springframework.boot' version '2.7.5'
-  id 'io.spring.dependency-management' version '1.1.0'
-  id 'org.openjfx.javafxplugin' version '0.0.7'
-  id 'io.github.divinespear.jpa-schema-generate' version '0.4.0'
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'org.gradle.wrapper'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'io.github.divinespear.jpa-schema-generate' version '0.4.0'
+    id 'org.liquibase.gradle' version '3.0.2'
+    id 'jacoco'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.liquibase.gradle'
+apply plugin: 'jacoco'
 
 group = 'bookkeeper'
 version = '1.0.0'
 
-sourceCompatibility = 16
-targetCompatibility = 16
-
-repositories {
-  mavenCentral()
-}
-
-dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'de.roskenet:springboot-javafx-support:2.1.6'
-  //implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
-  implementation 'org.apache.commons:commons-lang3:3.12.0'
-  implementation 'org.apache.commons:commons-csv:1.9.0'
-  implementation 'org.apache.commons:commons-collections4:4.4'
-  implementation 'io.vavr:vavr:0.10.4'
-  implementation 'javax.xml.bind:jaxb-api:2.3.1'
-  implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
-  implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
-  implementation 'org.slf4j:slf4j-ext:2.0.3'
-  //compile 'org.hibernate:hibernate-search-orm:5.9.1.Final'
-  runtimeOnly 'com.h2database:h2'
-  compileOnly 'org.projectlombok:lombok'
-
-  //compile 'org.springframework.data:spring-data-commons-core:1.4.1.RELEASE'
-  //compile 'com.querydsl:querydsl-jpa:jpa'
-  //compile 'com.querydsl:querydsl-core:4.2.1'
-  //compile 'com.querydsl:querydsl-apt:4.2.1'
-  //compile 'com.querydsl:querydsl-jpa:4.2.1'
-
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'org.assertj:assertj-core:3.23.1'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
-
-  //generateSchema 'org.threeten:threetenbp:1.6.4'
-  annotationProcessor 'org.projectlombok:lombok'
-  //annotationProcessor 'com.querydsl:querydsl-apt:4.2.1:jpa'
+java {
+    sourceCompatibility = JavaVersion.VERSION_23
+    targetCompatibility = JavaVersion.VERSION_23
 }
 
 javafx {
-  modules = ['javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing']
+    modules = ['javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing']
 }
 
-mainClassName = 'com.bookkeeper.Application'
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
 
-generateSchema {
-  vendor = 'hibernate'
-  packageToScan = ['com.bookkeeper']
-  scriptAction = 'create'
-  jdbcDriver = 'org.h2.Driver'
-  jdbcUrl = 'jdbc:h2:~/bookkeeper;MODE=MySQL'
-  jdbcUser = 'sa'
-  jdbcPassword = ''
-  properties = [
-    'hibernate.dialect':'org.hibernate.dialect.H2Dialect',
-    'connection.pool_size':'1',
-    'show_sql':'true'
-  ]
+dependencies {
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    implementation 'jfx.support:javafx-support-springboot-starter:1.0.0'
+
+    // Apache
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.apache.commons:commons-csv:1.14.1'
+    implementation 'org.apache.commons:commons-collections4:4.5.0'
+
+    // Hibernate
+    //implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.hibernate.validator:hibernate-validator'
+    //implementation 'jakarta.el:jakarta.el-api:6.0.1'
+    implementation 'org.glassfish:jakarta.el:4.0.2'
+
+    // Misc
+    //implementation 'com.fasterxml.jackson.core:jackson-databind'
+    //implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation 'org.slf4j:slf4j-ext:2.0.17'
+    implementation 'org.liquibase:liquibase-core'
+    //compile 'org.hibernate:hibernate-search-orm:5.9.1.Final'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+    implementation 'org.javatuples:javatuples:1.2'
+    implementation 'org.javamoney:moneta:1.1'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.14.1'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.2.3'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
+    runtimeOnly 'com.h2database:h2:2.3.232'
+
+    //compile 'org.springframework.data:spring-data-commons-core:1.4.1.RELEASE'
+    //compile 'com.querydsl:querydsl-jpa:jpa'
+    //compile 'com.querydsl:querydsl-core:4.2.1'
+    //compile 'com.querydsl:querydsl-apt:4.2.1'
+    //compile 'com.querydsl:querydsl-jpa:4.2.1'
+
+    testImplementation 'org.apache.commons:commons-lang3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.hibernate.validator:hibernate-validator'
+    testCompileOnly 'org.projectlombok:lombok'
+    //testRuntimeOnly 'com.h2database:h2:2.3.232'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.mockito:mockito-core'
+
+    //annotationProcessor 'com.querydsl:querydsl-apt:4.2.1:jpa'
+
+    liquibaseRuntime 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'com.h2database:h2:2.3.232'
+    liquibaseRuntime 'info.picocli:picocli:4.7.5'
+    liquibaseRuntime 'org.yaml:snakeyaml:2.0'
+    liquibaseRuntime 'org.springframework.boot:spring-boot'
+    liquibaseRuntime 'org.apache.commons:commons-lang3:3.14.0'
+}
+
+compileJava {
+    options.compilerArgs << "-Amapstruct.unmappedtargetpolicy=ERROR"
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "failed", "passed", "skipped", "standardError", "standardOut", "started"
+    }
+
+    // Run tests in parallel (e.g., using 3 parallel worker processes)
+    maxParallelForks = 3
+}
+
+jacoco {
+    toolVersion = "0.8.13"
 }

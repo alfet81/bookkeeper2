@@ -1,12 +1,10 @@
 package com.bookkeeper.category.service;
 
-import static java.util.Collections.singletonList;
-
-import com.bookkeeper.category.entity.Category;
-import com.bookkeeper.category.repo.CategoryRepository;
-import com.bookkeeper.entry.repo.EntryRepository;
-import com.bookkeeper.exceptions.ApplicationException;
-
+import com.bookkeeper.category.jpa.CategoryRepository;
+import com.bookkeeper.category.mapper.CategoryCyclicGraphContext;
+import com.bookkeeper.category.mapper.CategoryMapper;
+import com.bookkeeper.category.model.Category;
+import com.bookkeeper.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,34 +15,53 @@ import java.util.List;
 public class CategoryService {
 
   private final CategoryRepository categoryRepository;
+  private final CategoryMapper categoryMapper;
 
-  private final EntryRepository entryRepository;
 
-  public void save(Category category) {
-    categoryRepository.save(category);
+  public List<Category> getAllCategories() {
+    var categoryEntities = categoryRepository.findAll();
+    return categoryMapper.toModel(categoryEntities, new CategoryCyclicGraphContext());
   }
+
+
+  public Category getCategory(Long id) {
+    var entity = findCategory(id);
+    return categoryMapper.toModel(entity, new CategoryCyclicGraphContext());
+  }
+
+
+  private com.bookkeeper.category.jpa.Category findCategory(Long id) {
+    return categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found for id: " + id));
+  }
+
+
+  public Category save(Category category) {
+    com.bookkeeper.category.jpa.Category categoryEntity;
+    com.bookkeeper.category.jpa.Category parentCategoryEntity;
+
+    if (category.getId() != null) {
+      categoryEntity = findCategory(category.getId());
+    } else {
+      categoryEntity = categoryMapper.toEntity(category);
+    }
+
+    if (category.getParent() != null) {
+      var parentCategory = category.getParent();
+      if (parentCategory.getId() != null) {
+        parentCategoryEntity = findCategory(parentCategory.getId());
+      } else {
+        parentCategoryEntity = categoryMapper.toEntity(parentCategory);
+        parentCategoryEntity = categoryRepository.save(parentCategoryEntity);
+      }
+      categoryEntity.setParent(parentCategoryEntity);
+    }
+    var savedCategoryEntity = categoryRepository.save(categoryEntity);
+    return categoryMapper.toModel(savedCategoryEntity, new CategoryCyclicGraphContext());
+  }
+
 
   public void delete(Category category) {
-
-    boolean isFolder = !category.isLeaf();
-    boolean isNotEmpty = !category.getChildren().isEmpty();
-
-    if (isFolder && isNotEmpty) {
-      throw new ApplicationException("Can't delete folder. Delete its content first.");
-    }
-
-    if (!isFolder) {
-      boolean hasEntries = !entryRepository.findByCategoryIn(singletonList(category)).isEmpty();
-
-      if (hasEntries) {
-        throw new ApplicationException("Can't delete category. Delete its entries first.");
-      }
-    }
-
-    categoryRepository.delete(category);
-  }
-
-  public List<Category> findAll() {
-    return categoryRepository.findAll();
+    var entity = findCategory(category.getId());
+    categoryRepository.delete(entity);
   }
 }

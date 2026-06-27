@@ -1,45 +1,48 @@
 package com.bookkeeper.csv.model;
 
 import static com.bookkeeper.utils.MiscUtils.asOptional;
-import static org.apache.commons.lang3.EnumUtils.getEnum;
+import static org.apache.commons.lang3.EnumUtils.getEnumIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.capitalize;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Getter
-@RequiredArgsConstructor
+/**
+ * Enum of supported CSV record columns.
+ */
 public enum CsvRecordColumn {
-  STATUS(25, false, false, false),
-  DATE(80, true, true, true),
-  AMOUNT(80, true, true, true),
-  NOTES(120, true, true, true),
-  ERRORS(200, false, false, true);
+  DATE,
+  AMOUNT,
+  NOTES;
 
-  private final int defaultWidth;
 
-  private final boolean editable;
-
-  private final boolean sortable;
-
-  private final boolean resizable;
-
-  @Override
-  public String toString() {
-    return capitalize(name().toLowerCase());
+  /**
+   * Returns optional CsvRecordColumn enum for provided enum name.
+   *
+   * @param name Name of the enum object.
+   * @return Optional of CsvRecordColumn enum.
+   */
+  public static Optional<CsvRecordColumn> forName(String name) {
+    return asOptional(name).map(enumName -> getEnumIgnoreCase(CsvRecordColumn.class, enumName));
   }
 
+
+  /**
+   * Returns a stream of enum values.
+   *
+   * @return Stream of CsvRecordColumn values.
+   */
   public static Stream<CsvRecordColumn> stream() {
     return Stream.of(values());
   }
 
-  public static Optional<CsvRecordColumn> forName(String name) {
 
-    name = asOptional(name).map(String::toUpperCase).orElse(null);
-
-    return asOptional(getEnum(CsvRecordColumn.class, name));
+  /**
+   * Returns name of the enum with the first letter capitalized and the rest as low-case.
+   *
+   * @return Name of the enum as a CSV record column name.
+   */
+  public String getColumnName() {
+    return capitalize(name().toLowerCase());
   }
 }

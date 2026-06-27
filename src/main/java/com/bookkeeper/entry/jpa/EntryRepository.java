@@ -1,0 +1,16 @@
+package com.bookkeeper.entry.jpa;
+
+import com.bookkeeper.category.jpa.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
+@Repository
+public interface EntryRepository extends JpaRepository<Entry, Long> {
+
+  List<Entry> findByCategoryIn(Collection<Category> categories);
+
+  List<Entry> findByDateBetweenOrderByDateAscIdAsc(LocalDate startDate, LocalDate endDate);
+}

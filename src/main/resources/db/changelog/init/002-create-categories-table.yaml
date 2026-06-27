@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1755930545795-2
+      author: alfet
+      objectQuotingStrategy: QUOTE_ALL_OBJECTS
+      changes:
+        - createTable:
+            tableName: categories
+            schemaName: data
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_categories
+              - column:
+                  name: parent_id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entry_type
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: default_amount
+                  type: DECIMAL(10, 2)
+              - column:
+                  name: icon_type
+                  type: VARCHAR(100)
+        - addForeignKeyConstraint:
+            constraintName: fk_categories_parent_id
+            baseColumnNames: parent_id
+            baseTableName: categories
+            baseTableSchemaName: data
+            referencedTableName: categories
+            referencedTableSchemaName: data
+            referencedColumnNames: id
+

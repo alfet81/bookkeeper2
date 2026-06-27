@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox accessibleRole="NODE" prefHeight="28.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bookkeeper.category.view.controller.CategorySelectorController">
+  <TextField fx:id="categoryTextField" editable="false" />
+  <Button alignment="CENTER_RIGHT" onAction="#showCategorySelectionDialog" prefHeight="25.0" prefWidth="27.0" text="..." />
+  <Button mnemonicParsing="false" onAction="#clearCategorySelection" prefHeight="25.0" prefWidth="44.0" text="CLR" />
+</HBox>

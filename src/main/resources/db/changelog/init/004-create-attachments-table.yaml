@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1755930545795-4
+      author: alfet
+      objectQuotingStrategy: QUOTE_ALL_OBJECTS
+      changes:
+        - createTable:
+            tableName: attachments
+            schemaName: data
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_attachments
+              - column:
+                  name: entry_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_path
+                  type: VARCHAR(2000)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_attachments_entry_id
+            baseTableName: attachments
+            baseTableSchemaName: data
+            baseColumnNames: entry_id
+            referencedTableName: entries
+            referencedTableSchemaName: data
+            referencedColumnNames: id

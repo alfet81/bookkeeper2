@@ -1,20 +1,15 @@
-###
-#   Database Settings
-###
+###########################
+###  Database Settings  ###
+###########################
 spring:
   datasource:
-    url: jdbc:h2:~/bookkeeper
-    init:
-      platform: h2
+    url: jdbc:h2:file:~/bookkeeper;MODE=MYSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;
     username: sa
     password:
-    driverClassName: org.h2.Driver
+    driver-class-name: org.h2.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         show_sql: true
@@ -22,7 +17,24 @@ spring:
         format_sql: true
         jdbc:
           batch_size: 50
-
+        #default_schema: data
+    defer-datasource-initialization: false
+    database-platform: org.hibernate.dialect.H2Dialect
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yml
+    url: jdbc:h2:file:~/bookkeeper;MODE=MYSQL;INIT=CREATE SCHEMA IF NOT EXISTS DATA;CASE_INSENSITIVE_IDENTIFIERS=TRUE;
+    driverClassName: org.h2.Driver
+    user: sa
+    password:
+    default-schema: data
+    database-change-log-lock-table: database_changelog_lock
+    database-change-log-table: database_changelog
+  cache:
+    type: caffeine
+    cache-names: user-settings
+    caffeine:
+      spec:
+        user-settings: maximumSize=5,expireAfterAccess=24h
 logging:
   level:
     root: INFO
@@ -33,3 +45,7 @@ javafx:
     width: 800
     height: 600
     resizable: true
+
+bookkeeper:
+  application-dir: bookkeeper2
+  user-settings-file: settings.dat
